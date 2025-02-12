@@ -15,7 +15,7 @@ return new class extends Migration
 			$table->renameColumn('name', 'firstname');
 			$table->string('patronymic')->nullable()->after('firstname');
 			$table->string('lastname')->nullable()->after('patronymic');
-			$table->tinyInteger('is_enabled')->length(1);
+			$table->tinyInteger('is_enabled')->length(1)->after('lastname');
 			$table->string('address', length: 511)->nullable()->after('is_enabled');
 			$table->date('birthdate')->nullable()->after('address');
 		});

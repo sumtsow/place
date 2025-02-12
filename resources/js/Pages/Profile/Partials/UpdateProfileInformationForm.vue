@@ -42,6 +42,12 @@ const form = useForm({
             @submit.prevent="form.patch(route('profile.update'))"
             class="mt-6 space-y-6"
         >
+			<div>
+			Roles:
+			<ul>
+				<li v-for="role in user.roles">{{ role.id }}: {{ role.name }}</li>
+			</ul>
+			</div>
             <div>
                 <InputLabel for="firstname" value="First Name" />
 
