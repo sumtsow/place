@@ -57,6 +57,6 @@ class User extends Authenticatable
      */
     public function roles(): HasMany
     {
-        return $this->hasMany(Role::class)->chaperone();
+        return $this->hasMany(Role::class);
     }
 }
