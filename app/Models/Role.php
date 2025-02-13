@@ -14,4 +14,12 @@ class Role extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+	/**
+     * Get the distributor that managed by role
+     */
+    public function distributor(): BelongsTo
+    {
+        return ($this->name === 'manager') ? $this->belongsTo(Distributor::class) : null;
+    }
 }

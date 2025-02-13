@@ -21,4 +21,20 @@ class Item extends Model
     {
         return $this->belongsTo(Unit::class);
     }
+
+	/**
+     * Get the posts for the item.
+     */
+    public function posts(): HasMany
+    {
+        return $this->hasMany(Post::class);
+    }
+
+	/**
+     * Get the distributors that sell the item
+     */
+    public function distributors(): BelongsToMany
+    {
+        return $this->belongsToMany(Distributor::class, 'distributor_has_item')->withPivot('count', 'price', 'discount', 'delivery', 'is_enabled');
+    }
 }
