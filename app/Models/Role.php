@@ -22,4 +22,12 @@ class Role extends Model
     {
         return ($this->name === 'manager') ? $this->belongsTo(Distributor::class) : null;
     }
+
+	/**
+     * Get the orders for the customer.
+     */
+    public function orders(): HasMany
+    {
+        return ($this->name === 'customer') ? $this->belongsTo(Order::class) : null;
+    }
 }

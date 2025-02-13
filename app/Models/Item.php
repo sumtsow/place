@@ -37,4 +37,12 @@ class Item extends Model
     {
         return $this->belongsToMany(Distributor::class, 'distributor_has_item')->withPivot('count', 'price', 'discount', 'delivery', 'is_enabled');
     }
+
+	/**
+     * Get the parameters that has the item
+     */
+    public function parameters(): BelongsToMany
+    {
+        return $this->belongsToMany(Parameter::class)->withPivot('value');
+    }
 }

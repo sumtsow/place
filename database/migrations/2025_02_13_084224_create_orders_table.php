@@ -11,16 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('distributors', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->id();
-			$table->string('name');
+			$table->foreignId('customer_id')->constrained(
+				table: 'roles', indexName: 'order_customer_id'
+			)->onUpdate('cascade')->onDelete('cascade');
 			$table->tinyInteger('is_enabled')->length(1);
-			$table->string('url')->nullable();
-			$table->string('email')->nullable();
-			$table->string('phone')->nullable();
-			$table->integer('like')->default(0);
-			$table->integer('dislike')->default(0);
-			$table->integer('sales')->default(0);
+			$table->enum('status', [ 'undefined', 'created', 'confirmed', 'progress', 'completed', 'canceled' ]);
+			$table->string('address');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('distributors');
+        Schema::dropIfExists('orders');
     }
 };

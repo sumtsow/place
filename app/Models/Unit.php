@@ -13,4 +13,12 @@ class Unit extends Model
     {
         return $this->hasMany(Item::class);
     }
+
+	/**
+     * Get the parameters that use this unit.
+     */
+    public function parameters(): HasMany
+    {
+        return $this->hasMany(Parameter::class);
+    }
 }

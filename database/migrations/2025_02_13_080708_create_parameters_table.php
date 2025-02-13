@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('units', function (Blueprint $table) {
+        Schema::create('parameters', function (Blueprint $table) {
             $table->id();
+			$table->foreignId('unit_id')->nullable()->constrained(
+				table: 'units', indexName: 'parameter_unit_id'
+			)->onUpdate('cascade')->onDelete('set null');
 			$table->string('name');
-			$table->tinyInteger('type')->length(1);
+			$table->tinyInteger('is_enabled')->length(1);
             $table->timestamps();
         });
     }
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('units');
+        Schema::dropIfExists('parameters');
     }
 };

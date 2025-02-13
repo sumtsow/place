@@ -17,7 +17,8 @@ return new class extends Migration
 			$table->string('lastname')->nullable()->after('patronymic');
 			$table->tinyInteger('is_enabled')->length(1)->after('lastname');
 			$table->string('address', length: 511)->nullable()->after('is_enabled');
-			$table->date('birthdate')->nullable()->after('address');
+			$table->string('phone')->nullable()->after('address');
+			$table->date('birthdate')->nullable()->after('phone');
 		});
     }
 
