@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
 			$table->string('name');
 			$table->tinyInteger('type')->length(1);
+			$table->tinyInteger('is_enabled')->length(1);
             $table->timestamps();
         });
     }
