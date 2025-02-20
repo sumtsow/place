@@ -42,7 +42,11 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return Inertia::render('Category', [
+			'canLogin' => Route::has('login'),
+			'canRegister' => Route::has('register'),
+			'category' => Category::findOrFail($id)->load(['subcategories', 'items']),
+		]);
     }
 
     /**

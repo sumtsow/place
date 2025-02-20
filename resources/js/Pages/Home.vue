@@ -1,7 +1,7 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
 import Page from '@/Layouts/PageLayout.vue';
-import CategoriesList from '@/Pages/Category/CategoriesList.vue';
+import CategoriesList from '@/Components/Category/CategoriesList.vue';
 
 defineProps({
     canLogin: {

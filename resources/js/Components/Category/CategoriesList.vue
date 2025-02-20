@@ -1,5 +1,5 @@
 <script setup>
-import Category from '@/Pages/Category/Category.vue';
+import Category from '@/Components/Category/Category.vue';
 defineProps({
     canLogin: {
         type: Boolean,
