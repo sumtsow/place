@@ -34,7 +34,7 @@ class Category extends Model
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Return all parent categories links.
      */
     public function getParentLinks()
     {

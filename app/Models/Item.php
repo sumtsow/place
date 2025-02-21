@@ -18,6 +18,14 @@ class Item extends Model
     }
 
 	/**
+     * Get the main category that contains the item
+     */
+    public function mainCategory(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class, 'category_has_item')->wherePivot('is_main', 1);
+    }
+
+	/**
      * Get the unit that use with this item
      */
     public function unit(): BelongsTo
@@ -47,5 +55,26 @@ class Item extends Model
     public function parameters(): BelongsToMany
     {
         return $this->belongsToMany(Parameter::class)->withPivot('value');
+    }
+
+	
+	/**
+     * Return all parent categories links.
+     */
+    public function getCategoryLinks()
+    {
+		$links = [];
+		$category = $this->mainCategory->firstOrFail();
+		if ($category) {
+			$links = $category->getParentLinks();
+			$last = count($links) - 1;
+			$links[$last]['route'] = 'category';
+			$links[$last]['param'] = [ $category->id ];
+			$links[] = [
+				'title' => $this->name,
+				'route' => false,
+			];
+		}
+		return $links;
     }
 }

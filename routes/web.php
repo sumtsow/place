@@ -2,12 +2,15 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ItemController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', [CategoryController::class, 'index'])->name('home');
 
 Route::get('/cat/{id}', [CategoryController::class, 'show'])->name('category');
+
+Route::get('/item/{id}', [ItemController::class, 'show'])->name('item');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
