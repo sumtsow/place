@@ -11,29 +11,35 @@ defineProps({
 </script>
 
 <template>
-	<header class="items-end gap-2 py-10" >
-		<nav v-if="auth.canLogin" class="-mx-3 flex flex-1 justify-end">
-			<Link
-				v-if="$page.props.auth.user"
-				:href="route('dashboard')"
-				class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-			>Dashboard
-			</Link>
+	<nav v-if="auth.canLogin" class="navbar navbar-expand-lg bg-body-tertiary">
+		<div class="container-fluid justify-content-end">
+			<div class="navbar-nav">
+				<div v-if="$page.props.auth.user" class="nav-item">
+					<Link
+						:href="route('dashboard')"
+						class="nav-link"
+					>Dashboard
+					</Link>
+				</div>
 
-		<template v-else>
-			<Link
-				:href="route('login')"
-				class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-			>Log in
-			</Link>
-
-			<Link
-				v-if="auth.canRegister"
-				:href="route('register')"
-				class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-			>Register
-			</Link>
-		</template>
-		</nav>
-	</header>
+				<template v-else>
+					<div class="nav-item">
+						<Link
+							:href="route('login')"
+							class="nav-link"
+						>Log in
+						</Link>
+					</div>
+					<div class="nav-item">
+						<Link
+							v-if="auth.canRegister"
+							:href="route('register')"
+							class="nav-link"
+						>Register
+						</Link>
+					</div>
+				</template>
+			</div>
+		</div>
+	</nav>
 </template>

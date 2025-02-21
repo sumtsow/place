@@ -36,38 +36,38 @@ const submit = () => {
         <Head title="Reset Password" />
 
         <form @submit.prevent="submit">
-            <div>
+            <div class="mb-3">
                 <InputLabel for="email" value="Email" />
 
                 <TextInput
                     id="email"
                     type="email"
-                    class="mt-1 block w-full"
+                    class="mb-3"
                     v-model="form.email"
                     required
                     autofocus
                     autocomplete="username"
                 />
 
-                <InputError class="mt-2" :message="form.errors.email" />
+                <InputError class="mt-2 text-danger" :message="form.errors.email" />
             </div>
 
-            <div class="mt-4">
+            <div class="mb-3">
                 <InputLabel for="password" value="Password" />
 
                 <TextInput
                     id="password"
                     type="password"
-                    class="mt-1 block w-full"
+                    class="mb-3"
                     v-model="form.password"
                     required
                     autocomplete="new-password"
                 />
 
-                <InputError class="mt-2" :message="form.errors.password" />
+                <InputError class="mt-2 text-danger" :message="form.errors.password" />
             </div>
 
-            <div class="mt-4">
+            <div class="mb-3">
                 <InputLabel
                     for="password_confirmation"
                     value="Confirm Password"
@@ -76,19 +76,19 @@ const submit = () => {
                 <TextInput
                     id="password_confirmation"
                     type="password"
-                    class="mt-1 block w-full"
+                    class="mb-3"
                     v-model="form.password_confirmation"
                     required
                     autocomplete="new-password"
                 />
 
                 <InputError
-                    class="mt-2"
+                    class="mt-2 text-danger"
                     :message="form.errors.password_confirmation"
                 />
             </div>
 
-            <div class="mt-4 flex items-center justify-end">
+            <div class="">
                 <PrimaryButton
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"

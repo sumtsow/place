@@ -29,18 +29,18 @@ const form = useForm({
 <template>
     <section>
         <header>
-            <h2 class="text-lg font-medium text-gray-900">
+            <h2 class="">
                 Profile Information
             </h2>
 
-            <p class="mt-1 text-sm text-gray-600">
+            <p class="">
                 Update your account's profile information and email address.
             </p>
         </header>
 
         <form
             @submit.prevent="form.patch(route('profile.update'))"
-            class="mt-6 space-y-6"
+            class=""
         >
 			<div>
 			Roles:
@@ -54,7 +54,7 @@ const form = useForm({
                 <TextInput
                     id="firstname"
                     type="text"
-                    class="mt-1 block w-full"
+                    class="mb-3"
                     v-model="form.firstname"
                     required
                     autofocus
@@ -70,7 +70,7 @@ const form = useForm({
                 <TextInput
                     id="patronymic"
                     type="text"
-                    class="mt-1 block w-full"
+                    class="mb-3"
                     v-model="form.patronymic"
                     autofocus
                     autocomplete="patronymic"
@@ -85,7 +85,7 @@ const form = useForm({
                 <TextInput
                     id="lastname"
                     type="text"
-                    class="mt-1 block w-full"
+                    class="mb-3"
                     v-model="form.lastname"
                     autofocus
                     autocomplete="lastname"
@@ -100,7 +100,7 @@ const form = useForm({
                 <TextInput
                     id="address"
                     type="text"
-                    class="mt-1 block w-full"
+                    class="mb-3"
                     v-model="form.address"
                     autofocus
                     autocomplete="address"
@@ -115,7 +115,7 @@ const form = useForm({
                 <TextInput
                     id="birthdate"
                     type="date"
-                    class="mt-1 block w-full"
+                    class="mb-3"
                     v-model="form.birthdate"
                     autofocus
                     autocomplete="birthdate"
@@ -130,7 +130,7 @@ const form = useForm({
                 <TextInput
                     id="email"
                     type="email"
-                    class="mt-1 block w-full"
+                    class="mb-3"
                     v-model="form.email"
                     required
                     autocomplete="username"
@@ -140,27 +140,24 @@ const form = useForm({
             </div>
 
             <div v-if="mustVerifyEmail && user.email_verified_at === null">
-                <p class="mt-2 text-sm text-gray-800">
+                <p class="">
                     Your email address is unverified.
                     <Link
                         :href="route('verification.send')"
                         method="post"
                         as="button"
-                        class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        class=""
                     >
                         Click here to re-send the verification email.
                     </Link>
                 </p>
 
-                <div
-                    v-show="status === 'verification-link-sent'"
-                    class="mt-2 text-sm font-medium text-green-600"
-                >
+                <div v-show="status === 'verification-link-sent'" class="">
                     A new verification link has been sent to your email address.
                 </div>
             </div>
 
-            <div class="flex items-center gap-4">
+            <div class="">
                 <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
 
                 <Transition
@@ -169,10 +166,7 @@ const form = useForm({
                     leave-active-class="transition ease-in-out"
                     leave-to-class="opacity-0"
                 >
-                    <p
-                        v-if="form.recentlySuccessful"
-                        class="text-sm text-gray-600"
-                    >
+                    <p v-if="form.recentlySuccessful" class="">
                         Saved.
                     </p>
                 </Transition>

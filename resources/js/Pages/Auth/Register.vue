@@ -27,151 +27,149 @@ const submit = () => {
 <template>
     <GuestLayout>
         <Head title="Register" />
+		<div class="row justify-content-center">
+			<form @submit.prevent="submit" class="col col-md-6 my-md-5">
+				<div class="mb-3">
+					<InputLabel class="form-label" for="firstname" value="First Name" />
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="firstname" value="First Name" />
+					<TextInput
+						id="firstname"
+						type="text"
+						class="form-control"
+						v-model="form.firstname"
+						required
+						autofocus
+						autocomplete="firstname"
+					/>
 
-                <TextInput
-                    id="firstname"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.firstname"
-                    required
-                    autofocus
-                    autocomplete="firstname"
-                />
+					<InputError class="mt-2" :message="form.errors.firstname" />
+				</div>
 
-                <InputError class="mt-2" :message="form.errors.firstname" />
-            </div>
+				<div class="mb-3">
+					<InputLabel class="form-label" for="patronymic" value="Patronymic" />
 
-            <div>
-                <InputLabel for="patronymic" value="Patronymic" />
+					<TextInput
+						id="patronymic"
+						type="text"
+						class="form-control"
+						v-model="form.patronymic"
+						autofocus
+						autocomplete="patronymic"
+					/>
 
-                <TextInput
-                    id="patronymic"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.patronymic"
-                    autofocus
-                    autocomplete="patronymic"
-                />
+					<InputError class="mt-2" :message="form.errors.patronymic" />
+				</div>
 
-                <InputError class="mt-2" :message="form.errors.patronymic" />
-            </div>
+				<div class="mb-3">
+					<InputLabel class="form-label" for="lastname" value="Last Name" />
 
-            <div>
-                <InputLabel for="lastname" value="Last Name" />
+					<TextInput
+						id="lastname"
+						type="text"
+						class="form-control"
+						v-model="form.lastname"
+						autofocus
+						autocomplete="lastname"
+					/>
 
-                <TextInput
-                    id="lastname"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.lastname"
-                    autofocus
-                    autocomplete="lastname"
-                />
+					<InputError class="mt-2" :message="form.errors.lastname" />
+				</div>
 
-                <InputError class="mt-2" :message="form.errors.lastname" />
-            </div>
+				<div class="mb-3">
+					<InputLabel class="form-label" for="address" value="Address" />
 
-            <div>
-                <InputLabel for="address" value="Address" />
+					<TextInput
+						id="address"
+						type="text"
+						class="form-control"
+						v-model="form.address"
+						autofocus
+						autocomplete="address"
+					/>
 
-                <TextInput
-                    id="address"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.address"
-                    autofocus
-                    autocomplete="address"
-                />
+					<InputError class="mt-2" :message="form.errors.address" />
+				</div>
 
-                <InputError class="mt-2" :message="form.errors.address" />
-            </div>
+				<div class="mb-3">
+					<InputLabel class="form-label" for="birthdate" value="Birth Date" />
 
-            <div>
-                <InputLabel for="birthdate" value="Birth Date" />
+					<TextInput
+						id="birthdate"
+						type="date"
+						class="form-control"
+						v-model="form.birthdate"
+						autofocus
+						autocomplete="birthdate"
+					/>
 
-                <TextInput
-                    id="birthdate"
-                    type="date"
-                    class="mt-1 block w-full"
-                    v-model="form.birthdate"
-                    autofocus
-                    autocomplete="birthdate"
-                />
+					<InputError class="mt-2" :message="form.errors.birthdate" />
+				</div>
 
-                <InputError class="mt-2" :message="form.errors.birthdate" />
-            </div>
+				<div class="mb-3">
+					<InputLabel class="form-label" for="email" value="Email" />
 
-            <div class="mt-4">
-                <InputLabel for="email" value="Email" />
+					<TextInput
+						id="email"
+						type="email"
+						class="form-control"
+						v-model="form.email"
+						required
+						autocomplete="username"
+					/>
 
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autocomplete="username"
-                />
+					<InputError class="mt-2" :message="form.errors.email" />
+				</div>
 
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
+				<div class="mb-3">
+					<InputLabel class="form-label" for="password" value="Password" />
 
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+					<TextInput
+						id="password"
+						type="password"
+						class="form-control"
+						v-model="form.password"
+						required
+						autocomplete="new-password"
+					/>
 
-                <TextInput
-                    id="password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password"
-                    required
-                    autocomplete="new-password"
-                />
+					<InputError class="mt-2" :message="form.errors.password" />
+				</div>
 
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
+				<div class="mb-3">
+					<InputLabel class="form-label" for="password_confirmation" value="Confirm Password" />
 
-            <div class="mt-4">
-                <InputLabel
-                    for="password_confirmation"
-                    value="Confirm Password"
-                />
+					<TextInput
+						id="password_confirmation"
+						type="password"
+						class="form-control"
+						v-model="form.password_confirmation"
+						required
+						autocomplete="new-password"
+					/>
 
-                <TextInput
-                    id="password_confirmation"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password_confirmation"
-                    required
-                    autocomplete="new-password"
-                />
+					<InputError
+						class="mt-2"
+						:message="form.errors.password_confirmation"
+					/>
+				</div>
 
-                <InputError
-                    class="mt-2"
-                    :message="form.errors.password_confirmation"
-                />
-            </div>
+				<div class="">
+					<Link
+						:href="route('login')"
+						class="float-end"
+					>
+						Already registered?
+					</Link>
 
-            <div class="mt-4 flex items-center justify-end">
-                <Link
-                    :href="route('login')"
-                    class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                >
-                    Already registered?
-                </Link>
-
-                <PrimaryButton
-                    class="ms-4"
-                    :class="{ 'opacity-25': form.processing }"
-                    :disabled="form.processing"
-                >
-                    Register
-                </PrimaryButton>
-            </div>
-        </form>
+					<PrimaryButton
+						class=""
+						:class="{ 'opacity-25': form.processing }"
+						:disabled="form.processing"
+					>
+						Register
+					</PrimaryButton>
+				</div>
+			</form>
+		</div>
     </GuestLayout>
 </template>
