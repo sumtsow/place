@@ -32,4 +32,26 @@ class Category extends Model
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function getParentLinks()
+    {
+		$links = [];
+		$parent = $this->parentCategory;
+		$links[] = [
+			'title' => $this->name,
+			'route' => false,
+		];
+		while ($parent) {
+			$links[] = [
+				'title' => $parent->name,
+				'route' => 'category',
+				'param' => [$parent->id],
+			];
+			$parent = $parent->parentCategory;
+		};
+		return array_reverse( $links );
+    }
 }
