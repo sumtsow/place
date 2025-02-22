@@ -10,7 +10,7 @@ defineProps({
 </script>
 
 <template>
-	<nav v-if="auth.canLogin" class="navbar navbar-expand-lg bg-body-tertiary">
+	<nav v-if="auth.canLogin" class="navbar navbar-expand-lg bg-body-tertiary mb-3">
 		<div class="container-fluid justify-content-end">
 			<div class="navbar-nav">
 				<div v-if="$page.props.auth.user" class="nav-item">

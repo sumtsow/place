@@ -9,13 +9,14 @@ defineProps({
 </script>
 
 <template>
-	<div class="row my-3 py-3 bg-light border border-primary-subtle rounded-4">
+	<div class="row">
 		<div class="col">
-			<h2 class="h4" >
+			<h5>{{ item.name }}</h5>
+			<p>
 				<Link :href="route('item', [item.id])">
-				{{ item.name }}
+					{{ item.description }}
 				</Link>
-			</h2>
+			</p>
 		</div>
 	</div>
 </template>
