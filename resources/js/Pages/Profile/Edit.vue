@@ -1,5 +1,6 @@
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import Page from '@/Layouts/PageLayout.vue';
+import Breadcrumbs from '@/Components/Breadcrumbs.vue';
 import DeleteUserForm from './Partials/DeleteUserForm.vue';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
@@ -12,18 +13,16 @@ defineProps({
     status: {
         type: String,
     },
+	title: {
+		type: String,
+		default: 'Profile',
+	}
 });
 </script>
 
 <template>
-    <AuthenticatedLayout>
-		<Head title="Profile" />
-		<template #header>
-			<h2 class="">
-				Profile
-			</h2>
-		</template>
-
+	<Page :title="title">
+		<Breadcrumbs :links="[ { title: title, route: false } ]" />
         <div class="row justify-content-center">
             <div class="col col-md-6 my-md-5">
                 <div class="mb-3">
@@ -43,5 +42,5 @@ defineProps({
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
+    </Page>
 </template>

@@ -15,7 +15,7 @@ defineProps({
 
 <template>
     <div class="container bg-body m-3">
-		<NavBar :auth="{ canLogin: false, canRegister: true }"/>
+		<NavBar />
         <slot />
 		<Footer />
     </div>

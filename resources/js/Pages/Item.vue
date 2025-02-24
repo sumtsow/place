@@ -6,15 +6,6 @@ import Breadcrumbs from '@/Components/Breadcrumbs.vue';
 import Item from '@/Components/Item.vue';
 
 defineProps({
-    canLogin: {
-        type: Boolean,
-    },
-    canRegister: {
-        type: Boolean,
-    },
-    category: {
-        type: Object,
-    },
 	item: {
         type: Object,
 	},
@@ -25,7 +16,7 @@ defineProps({
 </script>
 
 <template>
-	<Page :auth="{ canLogin: canLogin, canRegister: canRegister }" title="Item">
+	<Page title="Item">
 		<Breadcrumbs :links="links" />
 		<Item :item="item"/>
 	</Page>

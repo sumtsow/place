@@ -18,7 +18,7 @@ defineProps({
 </script>
 
 <template>
-	<Page :auth="{ canLogin: canLogin, canRegister: canRegister }" title="Home">
+	<Page title="Home">
 		<CategoriesList :categories="categories"/>
 	</Page>
 </template>

@@ -7,16 +7,13 @@ defineProps({
 	title: {
 		type: String,
 	},
-	auth: {
-		type: Object,
-	},
 });
 </script>
 
 <template>
     <Head :title="title" />
     <div class="container bg-body m-3">
-		<NavBar :auth="auth" />
+		<NavBar />
 		<main>
 			<slot />
 		</main>

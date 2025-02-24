@@ -40,8 +40,6 @@ class ItemController extends Controller
     {
 		$item = Item::findOrFail($id);
         return Inertia::render('Item', [
-			'canLogin' => Route::has('login'),
-			'canRegister' => Route::has('register'),
 			'item' => $item,
 			'links' => $item->getCategoryLinks(),
 		]);

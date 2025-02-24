@@ -1,20 +1,17 @@
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import Page from '@/Layouts/PageLayout.vue';
+import Breadcrumbs from '@/Components/Breadcrumbs.vue';
+defineProps({
+    title: {
+        type: String,
+		default: 'Dashboard',
+    },
+});
 </script>
 
 <template>
-    <Head title="Dashboard" />
-
-    <AuthenticatedLayout>
-        <div class="py-12">
-            <div class="">
-                <div class="">
-                    <div class="p-6 text-gray-900">
-                        You're logged in!
-                    </div>
-                </div>
-            </div>
-        </div>
-    </AuthenticatedLayout>
+	<Page :title="title">
+		<Breadcrumbs :links="[ { title: title, route: false } ]" />
+		You're logged in!
+	</Page>
 </template>
