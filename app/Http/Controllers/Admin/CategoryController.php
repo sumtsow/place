@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Models\Category;
 
@@ -14,7 +14,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-		return Inertia::render('Home', [
+        return Inertia::render('Admin/CategoriesList', [
 			'categories' => Category::where('category_id', NULL)->with('subcategories')->get(),
 		]);
     }
@@ -40,13 +40,7 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
-		$category = Category::findOrFail($id);
-        return Inertia::render('Category', [
-			'canLogin' => Route::has('login'),
-			'canRegister' => Route::has('register'),
-			'category' => $category->load(['subcategories', 'items']),
-			'links' => $category->getParentLinks(),
-		]);
+        //
     }
 
     /**
