@@ -17,10 +17,11 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified', 'can:admin, App\Models\User'])->name('dashboard');
 
-Route::prefix('admin')->group(function () {
-	Route::get('/category', [CategoryAdminController::class, 'index'])->name('categoryAdmin');
-	Route::get('/category/{id}', [CategoryAdminController::class, 'show'])->name('categoryShow');
-})->middleware(['can:admin, App\Models\User']);
+Route::middleware('auth')->group(function () {
+	Route::get('/categories', [CategoryAdminController::class, 'index'])->name('category.admin');
+	Route::get('/category/{id}', [CategoryAdminController::class, 'edit'])->name('category.edit');
+	Route::put('/category/{id}', [CategoryAdminController::class, 'update'])->name('category.update');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

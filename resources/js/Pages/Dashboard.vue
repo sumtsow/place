@@ -14,8 +14,9 @@ defineProps({
 <template>
 	<Page :title="title">
 		<Breadcrumbs :links="[ { title: title, route: false } ]" />
+		<h2>Possible opreations</h2>
 		<div class="list-group">
-			<Link class="list-group-item" :href="route('categoryAdmin')">Manage Categories</Link>
+			<Link class="list-group-item" :href="route('category.admin')">Manage Categories</Link>
 		</div>
 	</Page>
 </template>

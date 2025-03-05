@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Category;
+use App\Http\Requests\UpdateCategoryRequest;
 
 class CategoryController extends Controller
 {
@@ -15,7 +16,9 @@ class CategoryController extends Controller
     public function index()
     {
         return Inertia::render('Admin/CategoriesList', [
-			'categories' => Category::where('category_id', NULL)->with('subcategories')->get(),
+			'categories' => Category::getCatList(),
+			'category' => Category::all()->first(),
+			'modal' => config('app.modalMode'),
 		]);
     }
 
@@ -48,15 +51,22 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return Inertia::render('Admin/CategoryEdit', [
+			'category' => Category::findOrFail($id),
+		]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateCategoryRequest $request, string $id)
     {
-        //
+		$category = Category::findOrFail($id);
+		$category->category_id = $request->input('category_id') ?? null;
+		$category->name = $request->input('name');
+		$category->is_enabled = $request->input('is_enabled') ? 1 : 0;
+		$category->logo = $request->input('logo') ?? null;
+		$category->save();
     }
 
     /**

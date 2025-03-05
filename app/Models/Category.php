@@ -22,7 +22,7 @@ class Category extends Model
      */
     public function subcategories(): HasMany
     {
-        return $this->hasMany(Category::class, 'category_id');
+        return $this->hasMany(self::class, 'category_id');
     }
 
 	/**
@@ -30,7 +30,7 @@ class Category extends Model
      */
     public function parentCategory(): BelongsTo
     {
-        return $this->belongsTo(Category::class, 'category_id');
+        return $this->belongsTo(self::class, 'category_id');
     }
 
     /**
@@ -54,4 +54,27 @@ class Category extends Model
 		};
 		return array_reverse( $links );
     }
+
+	/**
+     * Return all categories with its subcategories.
+     */
+	public static function getCatList()
+	{
+		$cats = self::orderBy('name')->where('category_id', null)->get();
+		foreach ($cats as $cat) {
+			self::loadSubcategories($cat);
+		}
+		return $cats;
+	}
+
+	/**
+     * Return all subcategories list.
+     */
+	private static function loadSubcategories($cat) {
+		$cat->loadMissing('subcategories');
+		foreach ($cat->subcategories as $sub) {
+			self::loadSubcategories($sub);
+		}
+		return true;
+	}
 }
