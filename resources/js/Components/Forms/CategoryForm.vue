@@ -3,43 +3,45 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import { reactive, watch } from 'vue';
 import { Link, useForm, usePage } from '@inertiajs/vue3';
 
 const props = usePage().props;
-const categories = props.categories;
-const csrfToken = props.csrf_token;
 const modal = props.modal;
-
-let form = useForm(props.category);
+props.category.token = props.csrf_token;
+props.category.is_enabled = !!props.category.is_enabled;
+const form = useForm(props.category);
 
 defineProps({
 	category: {
         type: Object,
-		default: {
-			id: 0,
-			category_id: 0,
-			name: '',
-			is_enabled: false,
-			logo: '',
-			token: '',
-		},
 	},
+});
+
+watch(
+	() => props.category,
+	() => {
+		form.id = props.category.id;
+		form.name = props.category.name;
+		form.is_enabled = props.category.is_enabled;
+		form.category_id = props.category.category_id;
+		form.logo = props.category.logo;
 });
 
 let clearCategoryValids = () => {
 };
 let saveCategory = () => {
-	return form.put(route('category.update', [category.id]));
+	return form.put(route('category.update', [form.id]));
 };
 </script>
 
 <template>
-	<div :class="{ modal: !!modal }" tabindex="-1" id="categoryFormModal"  data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="modalLabel" aria-hidden="true">
+	<div v-if="category" :class="{ modal: modal }" tabindex="-1" id="categoryFormModal"  data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="modalLabel" aria-hidden="true">
 		<form name="categoryForm" id="category-form" class="p-3 needs-validation" @submit.prevent="saveCategory">
 			<div :class="{'modal-dialog modal-xl': modal}">
 				<div :class="{'modal-content': modal}">
 					<div :class="{'modal-header': modal}">
-						<div :class="{'modal-title h5': modal, 'h1 text-center': !modal}" id="modalLabel">{{ form.id > 0 ? 'Edit category ' + form.id : 'Add category' }}</div>
+						<div :class="{'modal-title h5': modal, 'h1 text-center': !modal}" id="modalLabel">{{ form && form.id > 0 ? 'Edit category ' + form.id : 'Add category' }}</div>
 						<button v-if="modal" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрити" v-on:click="clearCategoryValids"></button>
 					</div>
 					<div :class="{'modal-body': modal}">

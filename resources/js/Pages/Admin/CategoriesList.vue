@@ -15,23 +15,24 @@ defineProps({
 	categories: {
         type: Object,
 	},
-	selectedCategory: {
+	category: {
         type: Object,
+		default: {
+			id: 0,
+			category_id: 0,
+			name: '',
+			is_enabled: false,
+			logo: '',
+		},
 	},
 	modal: {
-		type: String,
+		type: Boolean,
 	},
 });
 
-if (props.categories.length) {
-	let cat = props.categories[0];
-	let clone = JSON.parse(JSON.stringify(cat));
-	props.selectedCategory = clone;
-}
-
-function selectCat(cat) {
-	props.selectedCategory = cat;
-	props.selectedCategory.is_enabled = !!props.selectedCategory.is_enabled;
+let selectCat = (cat) => {
+	props.category = cat;
+	props.category.is_enabled = !!props.category.is_enabled;
 	return true;
 };
 </script>
@@ -41,31 +42,31 @@ function selectCat(cat) {
 		<Breadcrumbs :links="[ { title: 'Dashboard', route: 'dashboard' }, { title: title, route: false } ]" />
 		<h2>Top level categories</h2>
 		<div class="accordion" id="accordionList">
-			<div v-for="category in categories" class="accordion-item">
+			<div v-for="cat in categories" class="accordion-item">
 				<h2 class="accordion-header">
-					<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" :data-bs-target="'#collapse-'+category.id" aria-expanded="false" :aria-controls="'collapse-'+category.id">
+					<button class="accordion-button collapsed" data-bs-toggle="collapse" :data-bs-target="'#collapse-'+cat.id" aria-expanded="false" :aria-controls="'collapse-'+cat.id">
 						<template v-if="modal">
-							<Link data-bs-toggle="modal" data-bs-target="#categoryFormModal" class="w-100 d-flex justify-content-between" @click.prevent.stop="selectCat(category)" href="#">
-							{{ category.name }}
+							<Link data-bs-toggle="modal" data-bs-target="#categoryFormModal" class="w-100 justify-content-between" @click.prevent.stop="selectCat(cat)" :href="route('category', [cat.id])">
+							{{ cat.name }}
 							</Link>
 						</template>
-						<Link v-else :href="route('category.edit', [category.id])" class="w-100 d-flex justify-content-between">
-						{{ category.name }}
+						<Link v-else :href="route('category.edit', [cat.id])" class="w-100 d-flex justify-content-between">
+							{{ cat.name }}
 						</Link>
 						<div class="badge text-bg-primary float-end me-3">
-							{{ category.subcategories.length }}
+							{{ cat.subcategories.length }}
 						</div>
 					</button>
 				</h2>
-				<div :id="'collapse-'+category.id" class="accordion-collapse collapse" data-bs-parent="#accordionList">
+				<div :id="'collapse-'+cat.id" class="accordion-collapse collapse" data-bs-parent="#accordionList">
 					<div class="accordion-body">
-						<div v-for="subcategory in category.subcategories">
-							<Category :category="subcategory" :modal="parseInt(modal, 10)"/>
+						<div v-for="subcategory in cat.subcategories">
+							<Category :category="subcategory" :modal="modal"/>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<CategoryForm v-if="modal" :category="selectedCategory" />
+		<CategoryForm v-if="modal" :category="category"/>
 	</Page>
 </template>

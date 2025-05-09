@@ -1,5 +1,7 @@
 <script setup>
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
+
+const props = usePage().props;
 
 defineProps({
 	category: {
@@ -13,16 +15,20 @@ defineProps({
 		default: false,
 	},
 });
-let editCategory = (id) => {
-	return parent.show != parent.show;
+let selectCat = (cat) => {
+	props.category = cat;
+	props.category.is_enabled = !!props.category.is_enabled;
+	return true;
 };
 </script>
 
 <template>
 	<div class="justify-content-between ms-3">
-		<Link v-if="modal" @click="editCategory" :data-id="category.id" href="#">
+		<template v-if="modal">
+			<Link data-bs-toggle="modal" data-bs-target="#categoryFormModal" class="w-100 justify-content-between" @click.prevent.stop="selectCat(category)" :href="route('category', [category.id])">
 			{{ category.name }}
-		</Link>
+			</Link>
+		</template>
 		<Link v-else :href="route('category.edit', [category.id])">
 			{{ category.name }}
 		</Link>
@@ -32,7 +38,7 @@ let editCategory = (id) => {
 			</div>
 			<div>
 				<template v-for="subcategory in category.subcategories">
-					<Category :category="subcategory" />
+					<Category :category="subcategory" :modal="modal" />
 				</template>
 			</div>
 		</template>
