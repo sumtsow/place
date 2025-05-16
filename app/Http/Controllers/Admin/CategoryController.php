@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Category;
+use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 
 class CategoryController extends Controller
@@ -27,15 +28,22 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Admin/CategoryEdit', [
+			'category' => new Category(),
+		]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
-        //
+        $category = new Category();
+		$category->category_id = $request->input('category_id') ? $request->input('category_id') : null;
+		$category->name = $request->input('name');
+		$category->is_enabled = $request->input('is_enabled') ? 1 : 0;
+		$category->logo = $request->input('logo') ?? null;
+		$category->save();
     }
 
     /**

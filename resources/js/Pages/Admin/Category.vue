@@ -29,7 +29,7 @@ let selectCat = (cat) => {
 			{{ category.name }}
 			</Link>
 		</template>
-		<Link v-else :href="route('category.edit', [category.id])">
+		<Link v-else @click.prevent.stop="selectCat(category)" :href="route('category.edit', [category.id])">
 			{{ category.name }}
 		</Link>
 		<template v-if="category.subcategories.length">

@@ -2,6 +2,9 @@
 import Page from '@/Layouts/PageLayout.vue';
 import Breadcrumbs from '@/Components/Breadcrumbs.vue';
 import CategoryForm from '@/Components/Forms/CategoryForm.vue';
+import { usePage } from '@inertiajs/vue3';
+
+const props = usePage().props;
 
 defineProps({
 	category: {
@@ -12,6 +15,14 @@ defineProps({
 		default: 'Category Edit',
 	},
 });
+if (!props.category.id) props.category = {
+	id: 0,
+	category_id: 0,
+	name: '',
+	is_enabled: false,
+	logo: '',
+	token: props.csrf_token,
+};
 </script>
 
 <template>

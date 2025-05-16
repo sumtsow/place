@@ -19,7 +19,9 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
 	Route::get('/categories', [CategoryAdminController::class, 'index'])->name('category.admin');
+	Route::get('/category/0', [CategoryAdminController::class, 'create'])->name('category.create');
 	Route::get('/category/{id}', [CategoryAdminController::class, 'edit'])->name('category.edit');
+	Route::put('/category/0', [CategoryAdminController::class, 'store'])->name('category.store');
 	Route::put('/category/{id}', [CategoryAdminController::class, 'update'])->name('category.update');
 });
 

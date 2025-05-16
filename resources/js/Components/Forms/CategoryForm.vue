@@ -3,7 +3,7 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
-import { reactive, watch } from 'vue';
+import { watch } from 'vue';
 import { Link, useForm, usePage } from '@inertiajs/vue3';
 
 const props = usePage().props;
@@ -31,7 +31,7 @@ watch(
 let clearCategoryValids = () => {
 };
 let saveCategory = () => {
-	return form.put(route('category.update', [form.id]));
+	return !!form.id ? form.put(route('category.update', [form.id])) : form.put(route('category.store'));
 };
 </script>
 
