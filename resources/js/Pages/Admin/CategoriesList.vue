@@ -44,8 +44,11 @@ let selectCat = (cat) => {
 			<div v-for="cat in categories" class="accordion-item">
 				<h2 class="accordion-header position-relative">
 					<button class="accordion-button collapsed" data-bs-toggle="collapse" :data-bs-target="'#collapse-'+cat.id" aria-expanded="false" :aria-controls="'collapse-'+cat.id">
+					<div class="badge text-bg-primary position-absolute me-3" style="right: 3em;">
+						{{ cat.subcategories.length }}
+					</div>
 					</button>
-					<div class="z-3 position-absolute w-100 d-inline-block top-0 start-0 m-3 pe-5 fs-5">
+					<div class="z-3 position-absolute top-0 start-0 m-3 pe-5 fs-5">
 						<template v-if="modal">
 							<Link data-bs-toggle="modal" data-bs-target="#categoryFormModal" class="" @click.prevent.stop="selectCat(cat)">
 							{{ cat.name }}
@@ -54,9 +57,6 @@ let selectCat = (cat) => {
 						<Link v-else :href="route('category.edit', [cat.id])" class="">
 							{{ cat.name }}
 						</Link>
-						<div class="badge text-bg-primary float-end me-3">
-							{{ cat.subcategories.length }}
-						</div>
 					</div>
 				</h2>
 				<div :id="'collapse-'+cat.id" class="accordion-collapse collapse" data-bs-parent="#accordionList">
