@@ -21,11 +21,12 @@ defineProps({
 watch(
 	() => props.category,
 	() => {
-		form.id = props.category.id;
-		form.name = props.category.name;
-		form.is_enabled = props.category.is_enabled;
-		form.category_id = props.category.category_id;
-		form.logo = props.category.logo;
+		form.id = props.category ? props.category.id : 0;
+		form.name = props.category ? props.category.name : '';
+		form.is_enabled = props.category ? props.category.is_enabled : false;
+		form.category_id = props.category ? props.category.category_id : 0;
+		form.logo = props.category ? props.category.logo : '';
+		form.token = props.csrf_token;
 });
 
 let clearCategoryValids = () => {

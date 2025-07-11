@@ -16,8 +16,10 @@ defineProps({
 	},
 });
 let selectCat = (cat) => {
-	props.category = cat;
-	props.category.is_enabled = !!props.category.is_enabled;
+	if (cat) {
+		props.category = cat;
+		props.category.is_enabled = !!props.category.is_enabled;
+	}
 	return true;
 };
 </script>
