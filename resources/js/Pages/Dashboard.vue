@@ -17,6 +17,7 @@ defineProps({
 		<h2>Possible opreations</h2>
 		<div class="list-group">
 			<Link class="list-group-item" :href="route('category.admin')">Manage Categories</Link>
+			<Link class="list-group-item" :href="route('item.admin')">Manage Items</Link>
 		</div>
 	</Page>
 </template>

@@ -57,7 +57,15 @@ class Item extends Model
         return $this->belongsToMany(Parameter::class)->withPivot('value');
     }
 
-	
+	/**
+     * Return all items.
+     */
+	public static function getList()
+	{
+		$items = self::orderBy('name')->with(['categories', 'unit'])->limit(100)->get();
+		return $items;
+	}
+
 	/**
      * Return all parent categories links.
      */
