@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Inertia\Inertia;
+use App\Models\Category;
 use App\Models\Item;
+use App\Models\Unit;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
 
@@ -18,6 +20,8 @@ class ItemController extends Controller
         return Inertia::render('Admin/ItemsList', [
 			'items' => Item::getList(),
 			'item' => Item::all()->first(),
+			'units' => Unit::all(),
+			'categories' => Category::getPlainCatList(),
 			'modal' => config('app.modalMode'),
 		]);
     }
@@ -43,6 +47,7 @@ class ItemController extends Controller
 		$item->is_enabled = $request->input('is_enabled') ? 1 : 0;
 		$item->description = $request->input('description') ?? null;
 		$item->save();
+		$item->updateCategories($request->input('categories'));
     }
 
     /**
@@ -74,6 +79,7 @@ class ItemController extends Controller
 		$item->is_enabled = $request->input('is_enabled') ? 1 : 0;
 		$item->description = $request->input('description') ?? null;
 		$item->save();
+		$item->updateCategories($request->input('categories'));
     }
 
     /**

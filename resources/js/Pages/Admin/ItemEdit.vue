@@ -21,6 +21,7 @@ if (!props.item.id) props.item = {
 	is_enabled: false,
 	unit_id: 0,
 	description: '',
+	category_id: 0,
 	token: props.csrf_token,
 };
 </script>

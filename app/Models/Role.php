@@ -12,7 +12,7 @@ class Role extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->withTimestamps();
     }
 
 	/**
@@ -20,7 +20,7 @@ class Role extends Model
      */
     public function distributor(): BelongsTo
     {
-        return ($this->name === 'manager') ? $this->belongsTo(Distributor::class) : null;
+        return ($this->name === 'manager') ? $this->belongsTo(Distributor::class)->withTimestamps() : null;
     }
 
 	/**
@@ -28,6 +28,6 @@ class Role extends Model
      */
     public function orders(): HasMany
     {
-        return ($this->name === 'customer') ? $this->belongsTo(Order::class) : null;
+        return ($this->name === 'customer') ? $this->belongsTo(Order::class)->withTimestamps() : null;
     }
 }

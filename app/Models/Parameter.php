@@ -12,6 +12,6 @@ class Parameter extends Model
      */
     public function items(): BelongsToMany
     {
-        return $this->belongsToMany(Item::class, 'item_has_parameter')->withPivot('value');
+        return $this->belongsToMany(Item::class, 'item_has_parameter')->withPivot('value')->withTimestamps();
     }
 }

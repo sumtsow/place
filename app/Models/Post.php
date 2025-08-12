@@ -13,7 +13,7 @@ class Post extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->withTimestamps();
     }
 
 	/**

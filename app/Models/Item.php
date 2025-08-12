@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Arr;
 
 class Item extends Model
 {
@@ -14,7 +15,7 @@ class Item extends Model
      */
     public function categories(): BelongsToMany
     {
-        return $this->belongsToMany(Category::class, 'category_has_item')->withPivot('is_main');
+        return $this->belongsToMany(Category::class, 'category_has_item')->withPivot('is_main')->withTimestamps();
     }
 
 	/**
@@ -46,7 +47,7 @@ class Item extends Model
      */
     public function distributors(): BelongsToMany
     {
-        return $this->belongsToMany(Distributor::class, 'distributor_has_item')->withPivot('count', 'price', 'discount', 'delivery', 'is_enabled');
+        return $this->belongsToMany(Distributor::class, 'distributor_has_item')->withPivot('count', 'price', 'discount', 'delivery', 'is_enabled')->withTimestamps();
     }
 
 	/**
@@ -54,7 +55,7 @@ class Item extends Model
      */
     public function parameters(): BelongsToMany
     {
-        return $this->belongsToMany(Parameter::class)->withPivot('value');
+        return $this->belongsToMany(Parameter::class)->withPivot('value')->withTimestamps();
     }
 
 	/**
@@ -62,8 +63,7 @@ class Item extends Model
      */
 	public static function getList()
 	{
-		$items = self::orderBy('name')->with(['categories', 'unit'])->limit(100)->get();
-		return $items;
+		return self::orderBy('name')->with(['categories', 'mainCategory', 'unit'])->limit(100)->get();
 	}
 
 	/**
@@ -84,5 +84,52 @@ class Item extends Model
 			];
 		}
 		return $links;
+    }
+
+	/**
+     * Check categories updates
+     */
+    public function updateCategories($postData)
+    {
+		if (!$postData) return false;
+		$new = array_unique(Arr::pluck($postData, 'id'));
+		$old = $this->categories->pluck('id')->all();
+		$changes = [
+			'updated' => [],
+			'added' => [],
+			'removed' => [],
+		];
+		$updated = array_diff($new, $old);
+		if ( count($new) > count($old) ) {
+			foreach ($new as $key => $cat) {
+				if ( isset( $old[$key] ) ) {
+					if ( $cat !== $old[$key] ) {
+						$changes['updated'][$key] = $cat;
+					}
+				} else {
+					$changes['added'][$key] = $cat;
+				};
+			};
+		} elseif ( count($new) < count($old) ) {
+			$changes['removed'] = array_diff( $old, $new );
+		} else {
+			$changes['updated'] = $updated;
+		}
+		foreach ($changes['updated'] as $key => $cat) {
+			$this->categories()->updateExistingPivot($old[$key], [
+				'category_id' => $cat,
+			]);
+		}
+		$this->categories()->attach($changes['added']);
+		$this->categories()->detach($changes['removed']);
+		foreach($postData as $cat) {
+			$this->categories()->updateExistingPivot($cat['id'], [ 'is_main' => $cat['pivot']['is_main'] ? 1 : 0 ]);
+		}
+		$main = $this->mainCategory->first();
+		if ( !$main ) {
+			$main = ( count($postData) === 1 ) ? $postData[0] : $this->categories()->first()->toArray();
+			$this->categories()->updateExistingPivot($main['id'], [ 'is_main' => 1 ]);
+		}
+		return $changes;
     }
 }

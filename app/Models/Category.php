@@ -14,7 +14,7 @@ class Category extends Model
      */
     public function items(): BelongsToMany
     {
-        return $this->belongsToMany(Item::class, 'category_has_item')->withPivot('is_main');
+        return $this->belongsToMany(Item::class, 'category_has_item')->withPivot('is_main')->withTimestamps();
     }
 
 	/**
@@ -68,10 +68,42 @@ class Category extends Model
 	}
 
 	/**
+     * Return plain list of categories and its subcategories.
+     */
+	public static function getPlainCatList()
+	{
+		$cats = self::getCatList();
+		$list = self::getSubcategories($cats, 0);
+		return $list;
+	}
+
+	/**
+     * Return subcategories plain array.
+     */
+	public static function getSubcategories($subArray, $level)
+	{
+		$list = [];
+		foreach ($subArray as $cat) {
+			$list[] = [
+				'id' => $cat->id,
+				'name' => $cat->name,
+				'level' => $level,
+			];
+			$sub = [];
+			if ($cat->subcategories->count()) {
+				$level++;
+				$sub = self::getSubcategories($cat->subcategories, $level);
+				$level--;
+			}
+			$list = array_merge($list, $sub);
+		}
+		return $list;
+	}
+	/**
      * Return all subcategories list.
      */
 	private static function loadSubcategories($cat) {
-		$cat->loadMissing('subcategories');
+		$cat->loadMissing(['subcategories', 'items']);
 		foreach ($cat->subcategories as $sub) {
 			self::loadSubcategories($sub);
 		}

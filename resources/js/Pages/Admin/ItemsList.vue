@@ -48,6 +48,7 @@ let selectItem = (item) => {
 					<th>Description</th>
 					<th>Unit</th>
 					<th>Enabled</th>
+					<th>Category</th>
 					<th>Created</th>
 					<th>Updated</th>
 				</tr>
@@ -67,7 +68,12 @@ let selectItem = (item) => {
 				</td>
 				<td>{{ item.description }}</td>
 				<td>{{ item.unit.name }}</td>
-				<td>{{ item.is_enabled }}</td>
+				<td>{{ +item.is_enabled }}</td>
+				<td>
+					<template v-for="cat in item.categories">
+					<p :class="{'text-secondary': ( !item.main_category[0] || cat.id !== item.main_category[0].id )}">{{ cat.name }}</p>
+					</template>
+				</td>
 				<td>{{ new Date(item.created_at).toLocaleString() }}</td>
 				<td>{{ new Date(item.updated_at).toLocaleString() }}</td>
 			</tr>

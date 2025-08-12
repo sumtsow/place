@@ -44,5 +44,8 @@ let selectCat = (cat) => {
 				</template>
 			</div>
 		</template>
+		<div v-if="category.items.length" class="badge text-bg-success float-end me-3">
+			{{ category.items.length }}
+		</div>
 	</div>
 </template>
