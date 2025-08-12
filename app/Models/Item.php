@@ -87,18 +87,17 @@ class Item extends Model
     }
 
 	/**
-     * Check categories updates
+     * Return prepared update changes.
      */
-    public function updateCategories($postData)
+    private function getUpdates( $data )
     {
-		if (!$postData) return false;
-		$new = array_unique(Arr::pluck($postData, 'id'));
-		$old = $this->categories->pluck('id')->all();
 		$changes = [
 			'updated' => [],
 			'added' => [],
 			'removed' => [],
 		];
+		$new = array_unique(Arr::pluck($data, 'id'));
+		$old = $this->categories->pluck('id')->all();
 		$updated = array_diff($new, $old);
 		if ( count($new) > count($old) ) {
 			foreach ($new as $key => $cat) {
@@ -115,21 +114,40 @@ class Item extends Model
 		} else {
 			$changes['updated'] = $updated;
 		}
-		foreach ($changes['updated'] as $key => $cat) {
-			$this->categories()->updateExistingPivot($old[$key], [
-				'category_id' => $cat,
-			]);
-		}
-		$this->categories()->attach($changes['added']);
-		$this->categories()->detach($changes['removed']);
-		foreach($postData as $cat) {
+		return $changes;
+    }
+
+	/**
+     * Update main Category of Item.
+     */
+    private function updateMainCategory( $data )
+    {
+		foreach($data as $cat) {
 			$this->categories()->updateExistingPivot($cat['id'], [ 'is_main' => $cat['pivot']['is_main'] ? 1 : 0 ]);
 		}
 		$main = $this->mainCategory->first();
 		if ( !$main ) {
-			$main = ( count($postData) === 1 ) ? $postData[0] : $this->categories()->first()->toArray();
+			$main = ( count($data) === 1 ) ? $data[0] : $this->categories()->first()->toArray();
 			$this->categories()->updateExistingPivot($main['id'], [ 'is_main' => 1 ]);
 		}
-		return $changes;
+		return $main;
+    }
+
+	/**
+     * Check categories updates
+     */
+    public function updateCategories($postData)
+    {
+		if (!$postData) return false;
+		$updates = $this->getUpdates( $postData );
+		foreach ($updates['updated'] as $key => $cat) {
+			$this->categories()->updateExistingPivot($old[$key], [
+				'category_id' => $cat,
+			]);
+		}
+		$this->categories()->attach($updates['added']);
+		$this->categories()->detach($updates['removed']);
+		$this->updateMainCategory( $postData );
+		return $updates;
     }
 }
