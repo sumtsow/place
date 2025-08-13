@@ -51,7 +51,7 @@ class Item extends Model
     }
 
 	/**
-     * Get the parameters that has the item
+     * Get the parameters that has the itemparentCategory
      */
     public function parameters(): BelongsToMany
     {
@@ -140,10 +140,14 @@ class Item extends Model
     {
 		if (!$postData) return false;
 		$updates = $this->getUpdates( $postData );
+		$old = $this->categories->pluck('id')->all();
+		$updatedCats = Category::whereIn('id', $updates['updated'])->with('subcategories')->get();
 		foreach ($updates['updated'] as $key => $cat) {
-			$this->categories()->updateExistingPivot($old[$key], [
-				'category_id' => $cat,
-			]);
+			if ( !$updatedCats->findOrFail($cat)->subcategories()->count() ) {
+				$this->categories()->updateExistingPivot($old[$key], [
+					'category_id' => $cat,
+				]);
+			}
 		}
 		$this->categories()->attach($updates['added']);
 		$this->categories()->detach($updates['removed']);

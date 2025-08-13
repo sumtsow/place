@@ -84,13 +84,15 @@ class Category extends Model
 	{
 		$list = [];
 		foreach ($subArray as $cat) {
+			$hasChildren = !!($cat->subcategories->count());
 			$list[] = [
 				'id' => $cat->id,
 				'name' => $cat->name,
 				'level' => $level,
+				'hasChildren' => $hasChildren,
 			];
 			$sub = [];
-			if ($cat->subcategories->count()) {
+			if ($hasChildren) {
 				$level++;
 				$sub = self::getSubcategories($cat->subcategories, $level);
 				$level--;

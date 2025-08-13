@@ -29,6 +29,7 @@ watch(
 		form.is_enabled = props.item ? props.item.is_enabled : false;
 		form.unit_id = props.item ? props.item.unit_id : 0;
 		form.description = props.item ? props.item.description : '';
+		form.errors = [];
 		if (props.item && props.item.categories) {
 			form.categories = props.item.categories;
 			props.item.categories.forEach( ( cat ) => {
@@ -41,6 +42,7 @@ watch(
 });
 
 let clearItemValids = () => {
+	form.errors = [];
 };
 
 let addCategory = () => {
@@ -48,12 +50,11 @@ let addCategory = () => {
 	let cat = findCategoryById( props.categories, newCategory );
 	cat.pivot = { category_id: newCategory, item_id: props.item.id, is_main: 0 };
 	props.item.categories.push( cat );
-	
 };
 
 let findCategoryById = ( categories, catId ) => {
 	return categories.find( ( cat ) => {
-		return catId === cat.id;
+		return +catId === cat.id;
 	});
 };
 
@@ -71,6 +72,17 @@ let removeCategory = (e) => {
 		props.item.categories.splice( index, 1);
 	}
 	return false;
+};
+
+let selectCategory = ( e ) => {
+	let hasChildren = findCategoryById( props.categories, e.target.dataset.id ).hasChildren;
+	//console.log(hasChildren);
+	if ( hasChildren ) {
+		form.errors.category_id = 'This Category coudn`t have items!';
+	} else {
+		clearItemValids();
+	}
+	return !hasChildren;
 };
 
 let toggleSwitch = (catId) => {
@@ -96,7 +108,7 @@ let saveItem = () => {
 				<div :class="{'modal-content': modal}">
 					<div :class="{'modal-header': modal}">
 						<div :class="{'modal-title h5': modal, 'h1 text-center': !modal}" id="modalLabel">{{ form && form.id > 0 ? 'Edit item ' + form.id : 'Add item' }}</div>
-						<button v-if="modal" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрити" v-on:click="clearItemValids"></button>
+						<button v-if="modal" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрити" @click="clearItemValids"></button>
 					</div>
 					<div :class="{'modal-body': modal}">
 						<div class="input-group mb-3 row text-md-left justify-content-start has-validation">
@@ -148,9 +160,11 @@ let saveItem = () => {
 											type="number"
 											class="col d-inline-block w-75"
 											v-model="cat.id"
+											:data-id="cat.id"
 											:data-key="key"
 											autofocus
 											autocomplete="category_id"
+											@change.prevent="selectCategory"
 										/>
 										<div class="form-check form-switch d-inline-block align-middle mx-2">
 										<input :id="'is_main_' + cat.id" :name="'is_main_' + cat.id" type="checkbox" class="form-check-input" @change="toggleSwitch(cat.pivot.category_id)" v-model="cat.pivot.is_main" />
@@ -172,7 +186,7 @@ let saveItem = () => {
 									</li>
 								</ul>
 							</div>
-							<InputError class="mt-2" :message="form.errors.category_id" />
+							<InputError class="ms-3 mt-2" :message="form.errors.category_id" />
 						</div>
 
 						<div class="input-group row mb-3">

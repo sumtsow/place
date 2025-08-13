@@ -36,8 +36,8 @@ let selectItem = (item) => {
 		<h2>Items</h2>
 		<div class="row justify-content-end">
 			<div class="col-auto">
-				<Link v-if="modal" data-bs-toggle="modal" data-bs-target="#itemFormModal" @click.prevent.stop="selectItem()" class="btn btn-primary m-3">Add new item</Link>
-				<Link v-else @click.prevent.stop="selectItem()" :href="route('item.create')" class="btn btn-primary m-3">Add new item</Link>
+				<Link v-if="modal" data-bs-toggle="modal" data-bs-target="#itemFormModal" @click.prevent.stop="selectItem" class="btn btn-primary m-3">Add new item</Link>
+				<Link v-else @click.prevent.stop="selectItem" :href="route('item.create')" class="btn btn-primary m-3">Add new item</Link>
 			</div>
 		</div>
 		<table class="table table-striped">
