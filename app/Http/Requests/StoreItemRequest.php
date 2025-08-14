@@ -27,6 +27,7 @@ class StoreItemRequest extends FormRequest
             'name' => 'string|nullable|max:255',
 			'is_enabled' => 'boolean',
 			'description' => 'string|nullable',
+			'images' => 'string|nullable',
 			'token' => 'required',
         ];
     }

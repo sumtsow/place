@@ -29,6 +29,7 @@ watch(
 		form.is_enabled = props.item ? props.item.is_enabled : false;
 		form.unit_id = props.item ? props.item.unit_id : 0;
 		form.description = props.item ? props.item.description : '';
+		form.images = props.item ? props.item.images : '';
 		form.errors = [];
 		if (props.item && props.item.categories) {
 			form.categories = props.item.categories;
@@ -199,6 +200,18 @@ let saveItem = () => {
 								autocomplete="description"
 							/>
 							<InputError class="mt-2" :message="form.errors.description" />
+						</div>
+
+						<div class="input-group row mb-3">
+							<InputLabel for="images" value="Images" class="col-3 text-end" />
+							<TextArea
+								id="images"
+								class="col"
+								v-model="form.images"
+								autofocus
+								autocomplete="images"
+							/>
+							<InputError class="mt-2" :message="form.errors.images" />
 						</div>
 					</div>
 					<div class="row justify-content-end">

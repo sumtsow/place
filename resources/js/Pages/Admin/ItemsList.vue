@@ -46,6 +46,7 @@ let selectItem = (item) => {
 					<th>Id</th>
 					<th>Name</th>
 					<th>Description</th>
+					<th>Images</th>
 					<th>Unit</th>
 					<th>Enabled</th>
 					<th>Category</th>
@@ -67,6 +68,11 @@ let selectItem = (item) => {
 					</Link>
 				</td>
 				<td>{{ item.description }}</td>
+				<td>
+					<p v-for="image in JSON.parse(item.images)">
+						<img :src="'/storage/img/' + image" :alt="item.name"/>
+					</p>
+				</td>
 				<td>{{ item.unit.name }}</td>
 				<td>{{ +item.is_enabled }}</td>
 				<td>

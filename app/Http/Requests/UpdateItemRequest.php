@@ -27,6 +27,7 @@ class UpdateItemRequest extends FormRequest
             'name' => 'string|required|max:255',
 			'is_enabled' => 'boolean',
 			'description' => 'string|nullable',
+			'images' => 'string|nullable',
 			'token' => 'required',
         ];
     }
