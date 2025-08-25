@@ -70,7 +70,7 @@ let selectItem = (item) => {
 				<td>{{ item.description }}</td>
 				<td>
 					<p v-for="image in JSON.parse(item.images)">
-						<img :src="'/storage/img/' + image" :alt="item.name"/>
+						<img :src="'/storage/img/' + image" :alt="item.name" style="width: 100px;"/>
 					</p>
 				</td>
 				<td>{{ item.unit.name }}</td>
