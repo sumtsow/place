@@ -9,16 +9,19 @@ use App\Models\Item;
 use App\Models\Unit;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
+use \Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
     /**
      * Display a listing of the resource.
+	 * @param \Illuminate\Http\Request $request
      */
-    public function index()
+    public function index(Request $request)
     {
+		$items = Item::getList();
         return Inertia::render('Admin/ItemsList', [
-			'items' => Item::getList(),
+			'items' => $items,
 			'item' => Item::all()->first(),
 			'units' => Unit::all(),
 			'categories' => Category::getPlainCatList(),

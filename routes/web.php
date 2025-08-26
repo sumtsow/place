@@ -24,7 +24,7 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 	Route::get('/category/{id}', [CategoryAdminController::class, 'edit'])->name('category.edit');
 	Route::put('/category/0', [CategoryAdminController::class, 'store'])->name('category.store');
 	Route::put('/category/{id}', [CategoryAdminController::class, 'update'])->name('category.update');
-	Route::get('/items', [ItemAdminController::class, 'index'])->name('item.admin');
+	Route::get('/items/{page?}', [ItemAdminController::class, 'index'])->name('item.admin');
 	Route::get('/item/0', [ItemAdminController::class, 'create'])->name('item.create');
 	Route::get('/item/{id}', [ItemAdminController::class, 'edit'])->name('item.edit');
 	Route::put('/item/0', [ItemAdminController::class, 'store'])->name('item.store');

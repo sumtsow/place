@@ -61,9 +61,9 @@ class Item extends Model
 	/**
      * Return all items.
      */
-	public static function getList()
+	public static function getList($page = null)
 	{
-		return self::orderBy('name')->with(['categories', 'mainCategory', 'unit'])->limit(100)->get();
+		return self::orderBy('name')->with(['categories', 'mainCategory', 'unit'])->paginate( env('ITEMS_PER_PAGE') )->withQueryString();
 	}
 
 	/**

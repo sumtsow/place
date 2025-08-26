@@ -40,6 +40,11 @@ let selectItem = (item) => {
 				<Link v-else @click.prevent.stop="selectItem" :href="route('item.create')" class="btn btn-primary m-3">Add new item</Link>
 			</div>
 		</div>
+		<div v-if="items.last_page > 1" class="row">
+			<div class="col w-100 text-center">
+				<Link v-for=" (link, index) in items.links" :key="index" :href="link.url" class="btn btn-outline-primary mx-1" :class="{ active: link.active }" v-html="link.label"/>
+			</div>
+		</div>
 		<table class="table table-striped">
 			<thead>
 				<tr>
@@ -55,11 +60,11 @@ let selectItem = (item) => {
 				</tr>
 			</thead>
 			<tbody>
-			<tr v-for="item in items">
+			<tr v-for="item in items.data">
 				<td>{{ item.id }}</td>
 				<td>
 					<template v-if="modal">
-						<Link data-bs-toggle="modal" data-bs-target="#itemFormModal" class="" @click.prevent.stop="selectItem(item)">
+						<Link data-bs-toggle="modal" data-bs-target="#itemFormModal" @click.prevent.stop="selectItem(item)">
 						{{ item.name }}
 						</Link>
 					</template>
@@ -85,6 +90,11 @@ let selectItem = (item) => {
 			</tr>
 			</tbody>
 		</table>
+		<div v-if="items.last_page > 1" class="row">
+			<div class="col w-100 text-center">
+				<Link v-for=" (link, index) in items.links" :key="index" :href="link.url" class="btn btn-outline-primary mx-1" :class="{ active: link.active }" v-html="link.label"/>
+			</div>
+		</div>
 		<ItemForm v-if="modal" :item="item"/>
 	</Page>
 </template>
