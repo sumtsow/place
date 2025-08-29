@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Arr;
 use App\Http\Controllers\Controller;
 use Inertia\Inertia;
 use App\Models\Unit;
@@ -21,9 +22,16 @@ class UnitController extends Controller
      */
     public function index()
     {
+		$unitTypes = config('app.unitType');
+		$types = Arr::map($unitTypes, function (string $type, int $key) {
+			return [ 'id' => $key, 'name' => $type, ];
+		});
+		//dd($types); die();
         return Inertia::render('Admin/UnitsList', [
 			'units' => Unit::paginate( env('ITEMS_PER_PAGE') )->withQueryString(),
 			'unit' => $this->emptyUnit,
+			'types' => $types,
+			'unitTypes' => $unitTypes,
 			'modal' => config('app.modalMode'),
 		]);
     }

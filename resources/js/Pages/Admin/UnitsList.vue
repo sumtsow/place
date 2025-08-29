@@ -18,6 +18,12 @@ defineProps({
 	unit: {
         type: Object,
 	},
+	types: {
+        type: Array,
+	},
+	unitTypes: {
+        type: Array,
+	},	
 	modal: {
 		type: Boolean,
 	},
@@ -77,7 +83,7 @@ let selectUnit = (unit) => {
 						{{ unit.name }}
 					</Link>
 				</td>
-				<td>{{ unit.type }}</td>
+				<td>{{ unitTypes[unit.type] }}</td>
 				<td>{{ +unit.is_enabled }}</td>
 				<td>{{ new Date(unit.created_at).toLocaleString() }}</td>
 				<td>{{ new Date(unit.updated_at).toLocaleString() }}</td>

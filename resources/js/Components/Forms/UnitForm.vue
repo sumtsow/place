@@ -1,6 +1,7 @@
 <script setup>
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
+import SelectList from '@/Components/SelectList.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextArea from '@/Components/TextArea.vue';
 import TextInput from '@/Components/TextInput.vue';
@@ -73,12 +74,12 @@ let saveUnit = () => {
 
 						<div class="input-group row mb-3">
 							<InputLabel for="type" value="Type" class="col-3 text-end" />
-							<TextInput
+							<SelectList
+								:options="props.types"
 								id="type"
 								type="number"
 								class="col"
 								v-model="form.type"
-								required
 								autofocus
 								autocomplete="type"
 							/>
