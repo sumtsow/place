@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Parameter extends Model
@@ -13,5 +14,13 @@ class Parameter extends Model
     public function items(): BelongsToMany
     {
         return $this->belongsToMany(Item::class, 'item_has_parameter')->withPivot('value')->withTimestamps();
+    }
+
+	/**
+     * Get the unit that use with this parameter
+     */
+    public function unit(): BelongsTo
+    {
+        return $this->belongsTo(Unit::class, 'unit_id');
     }
 }

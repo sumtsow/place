@@ -20,9 +20,16 @@ class ItemController extends Controller
     public function index(Request $request)
     {
 		$items = Item::getList();
+		$emptyItem = [
+			'unit_id' => 0,
+			'name' => '',
+			'is_enabled' => 0,
+			'description' => '',
+			'images' => '',
+		];
         return Inertia::render('Admin/ItemsList', [
 			'items' => $items,
-			'item' => Item::all()->first(),
+			'item' => $emptyItem,
 			'units' => Unit::all(),
 			'categories' => Category::getPlainCatList(),
 			'modal' => config('app.modalMode'),
@@ -68,7 +75,9 @@ class ItemController extends Controller
     public function edit(string $id)
     {
         return Inertia::render('Admin/ItemEdit', [
-			'item' => Item::findOrFail($id),
+			'item' => Item::with(['categories', 'mainCategory', 'unit'])->findOrFail($id),
+			'categories' => Category::getPlainCatList(),
+			'units' => Unit::all(),
 		]);
     }
 

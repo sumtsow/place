@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\Admin\CategoryController as CategoryAdminController;
 use App\Http\Controllers\Admin\ItemController as ItemAdminController;
+use App\Http\Controllers\Admin\ParameterController as ParameterAdminController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -24,11 +25,16 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 	Route::get('/category/{id}', [CategoryAdminController::class, 'edit'])->name('category.edit');
 	Route::put('/category/0', [CategoryAdminController::class, 'store'])->name('category.store');
 	Route::put('/category/{id}', [CategoryAdminController::class, 'update'])->name('category.update');
-	Route::get('/items/{page?}', [ItemAdminController::class, 'index'])->name('item.admin');
+	Route::get('/items', [ItemAdminController::class, 'index'])->name('item.admin');
 	Route::get('/item/0', [ItemAdminController::class, 'create'])->name('item.create');
 	Route::get('/item/{id}', [ItemAdminController::class, 'edit'])->name('item.edit');
 	Route::put('/item/0', [ItemAdminController::class, 'store'])->name('item.store');
 	Route::put('/item/{id}', [ItemAdminController::class, 'update'])->name('item.update');
+	Route::get('/parameters', [ParameterAdminController::class, 'index'])->name('parameter.admin');
+	Route::get('/parameter/0', [ParameterAdminController::class, 'create'])->name('parameter.create');
+	Route::get('/parameter/{id}', [ParameterAdminController::class, 'edit'])->name('parameter.edit');
+	Route::put('/parameter/0', [ParameterAdminController::class, 'store'])->name('parameter.store');
+	Route::put('/parameter/{id}', [ParameterAdminController::class, 'update'])->name('parameter.update');
 });
 
 Route::middleware('auth')->group(function () {

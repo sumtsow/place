@@ -12,7 +12,9 @@ const props = usePage().props;
 const modal = props.modal;
 props.item.token = props.csrf_token;
 props.item.is_enabled = !!props.item.is_enabled;
+
 let newCategory;
+
 const form = useForm(props.item);
 
 defineProps({
@@ -30,7 +32,7 @@ watch(
 		form.unit_id = props.item ? props.item.unit_id : 0;
 		form.description = props.item ? props.item.description : '';
 		form.images = props.item ? props.item.images : '';
-		form.errors = [];
+		form.token = props.csrf_token;
 		if (props.item && props.item.categories) {
 			form.categories = props.item.categories;
 			props.item.categories.forEach( ( cat ) => {
@@ -39,7 +41,6 @@ watch(
 		} else {
 			form.categories = [];
 		}
-		form.token = props.csrf_token;
 });
 
 let clearItemValids = () => {
@@ -77,20 +78,12 @@ let removeCategory = (e) => {
 
 let selectCategory = ( e ) => {
 	let hasChildren = findCategoryById( props.categories, e.target.dataset.id ).hasChildren;
-	//console.log(hasChildren);
 	if ( hasChildren ) {
 		form.errors.category_id = 'This Category coudn`t have items!';
 	} else {
 		clearItemValids();
 	}
 	return !hasChildren;
-};
-
-let toggleSwitch = (catId) => {
-	props.item.categories.forEach( ( cat ) => {
-		cat.pivot.is_main = ( catId === cat.pivot.category_id );
-	});
-	return catId;
 };
 
 let saveItem = () => {
@@ -100,6 +93,14 @@ let saveItem = () => {
 	}));
 	return !!form.id ? form.put( route('item.update', [form.id])) : form.put(route('item.store'));
 };
+
+let toggleSwitch = ( catId ) => {
+	props.item.categories.forEach( ( cat ) => {
+		cat.pivot.is_main = ( catId === cat.pivot.category_id );
+	});
+	return catId;
+};
+
 </script>
 
 <template>
@@ -109,7 +110,7 @@ let saveItem = () => {
 				<div :class="{'modal-content': modal}">
 					<div :class="{'modal-header': modal}">
 						<div :class="{'modal-title h5': modal, 'h1 text-center': !modal}" id="modalLabel">{{ form && form.id > 0 ? 'Edit item ' + form.id : 'Add item' }}</div>
-						<button v-if="modal" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрити" @click="clearItemValids"></button>
+						<button v-if="modal" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрити" @click="form.clearErrors"></button>
 					</div>
 					<div :class="{'modal-body': modal}">
 						<div class="input-group mb-3 row text-md-left justify-content-start has-validation">

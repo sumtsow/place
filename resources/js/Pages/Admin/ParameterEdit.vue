@@ -1,38 +1,36 @@
 <script setup>
 import Page from '@/Layouts/PageLayout.vue';
 import Breadcrumbs from '@/Components/Breadcrumbs.vue';
-import ItemForm from '@/Components/Forms/ItemForm.vue';
+import ParameterForm from '@/Components/Forms/ParameterForm.vue';
 import { usePage } from '@inertiajs/vue3';
 
 const props = usePage().props;
 
 defineProps({
-	item: {
+	parameter: {
         type: Object,
 	},
 	title: {
 		type: String,
-		default: 'Item Edit',
+		default: 'Parameter Edit',
 	},
 });
 
-if (!props.item.id) props.item = {
+if ( !props.parameter.id ) props.parameter = {
 	id: 0,
 	name: '',	
 	is_enabled: false,
 	unit_id: 0,
-	description: '',
-	categories: [],
 	token: props.csrf_token,
 };
 </script>
 
 <template>
 	<Page :title="title">
-		<Breadcrumbs :links="[ { title: 'Dashboard', route: 'dashboard' }, { title: 'Items', route: 'item.admin' }, { title: title, route: false } ]" />
+		<Breadcrumbs :links="[ { title: 'Dashboard', route: 'dashboard' }, { title: 'Parameters', route: 'parameter.admin' }, { title: title, route: false } ]" />
         <div class="row justify-content-center">
-            <div class="col col-lg-6 my-lg-5">
-                <ItemForm :item="item" />
+            <div class="col col-md-6 my-md-5">
+                <ParameterForm :parameter="parameter" />
             </div>
         </div>
     </Page>

@@ -24,9 +24,21 @@ defineProps({
 });
 
 let selectItem = (item) => {
-	props.item = item ? item : {};
-	if (props.item) props.item.is_enabled = !!props.item.is_enabled;
-	return true;
+	if ( !item ) {
+		item = {
+			id: 0,
+			name: '',
+			is_enabled: false,
+			unit_id: 0,
+			description: '',
+			images: '',
+			categories: [],
+		}
+	};
+	item.is_enabled = !!item.is_enabled;
+	props.item = item;
+	console.log(item);
+	return false;
 };
 </script>
 
@@ -36,8 +48,8 @@ let selectItem = (item) => {
 		<h2>Items</h2>
 		<div class="row justify-content-end">
 			<div class="col-auto">
-				<Link v-if="modal" data-bs-toggle="modal" data-bs-target="#itemFormModal" @click.prevent.stop="selectItem" class="btn btn-primary m-3">Add new item</Link>
-				<Link v-else @click.prevent.stop="selectItem" :href="route('item.create')" class="btn btn-primary m-3">Add new item</Link>
+				<Link v-if="modal" data-bs-toggle="modal" data-bs-target="#itemFormModal" @click.prevent.stop="selectItem(0)" class="btn btn-primary m-3">Add new item</Link>
+				<Link v-else @click.prevent.stop="selectItem(0)" :href="route('item.create')" class="btn btn-primary m-3">Add new item</Link>
 			</div>
 		</div>
 		<div v-if="items.last_page > 1" class="row">
@@ -68,7 +80,7 @@ let selectItem = (item) => {
 						{{ item.name }}
 						</Link>
 					</template>
-					<Link v-else :href="route('item.edit', [item.id])">
+					<Link v-else :href="route('item.edit', [item.id])" @click.prevent.stop="selectItem(item)">
 						{{ item.name }}
 					</Link>
 				</td>
