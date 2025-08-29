@@ -6,6 +6,7 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\Admin\CategoryController as CategoryAdminController;
 use App\Http\Controllers\Admin\ItemController as ItemAdminController;
 use App\Http\Controllers\Admin\ParameterController as ParameterAdminController;
+use App\Http\Controllers\Admin\UnitController as UnitAdminController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -35,6 +36,11 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 	Route::get('/parameter/{id}', [ParameterAdminController::class, 'edit'])->name('parameter.edit');
 	Route::put('/parameter/0', [ParameterAdminController::class, 'store'])->name('parameter.store');
 	Route::put('/parameter/{id}', [ParameterAdminController::class, 'update'])->name('parameter.update');
+	Route::get('/units', [UnitAdminController::class, 'index'])->name('unit.admin');
+	Route::get('/unit/0', [UnitAdminController::class, 'create'])->name('unit.create');
+	Route::get('/unit/{id}', [UnitAdminController::class, 'edit'])->name('unit.edit');
+	Route::put('/unit/0', [UnitAdminController::class, 'store'])->name('unit.store');
+	Route::put('/unit/{id}', [UnitAdminController::class, 'update'])->name('unit.update');
 });
 
 Route::middleware('auth')->group(function () {

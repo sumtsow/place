@@ -19,6 +19,7 @@ defineProps({
 			<Link class="list-group-item" :href="route('category.admin')">Manage Categories</Link>
 			<Link class="list-group-item" :href="route('item.admin')">Manage Items</Link>
 			<Link class="list-group-item" :href="route('parameter.admin')">Manage Parameters</Link>
+			<Link class="list-group-item" :href="route('unit.admin')">Manage Measuring Units</Link>
 		</div>
 	</Page>
 </template>

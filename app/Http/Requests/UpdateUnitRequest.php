@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class StoreParameterRequest extends FormRequest
+class UpdateUnitRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,8 +23,8 @@ class StoreParameterRequest extends FormRequest
     public function rules(): array
     {
         return [
-			'unit_id' => 'numeric|nullable|gt:0',
             'name' => 'string|required|max:255',
+			'type' => 'numeric',
 			'is_enabled' => 'boolean',
         ];
     }

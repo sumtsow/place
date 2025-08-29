@@ -7,7 +7,6 @@ use Inertia\Inertia;
 use App\Models\Category;
 use App\Models\Item;
 use App\Models\Unit;
-use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
 use \Illuminate\Http\Request;
 
@@ -49,7 +48,7 @@ class ItemController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreItemRequest $request)
+    public function store(UpdateItemRequest $request)
     {
         $item = new Item();
 		$item->unit_id = $request->input('unit_id') ? $request->input('unit_id') : null;

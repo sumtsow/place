@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Inertia\Inertia;
 use App\Models\Parameter;
 use App\Models\Unit;
-use App\Http\Requests\StoreParameterRequest;
 use App\Http\Requests\UpdateParameterRequest;
 
 class ParameterController extends Controller
@@ -44,7 +43,7 @@ class ParameterController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreParameterRequest $request)
+    public function store(UpdateParameterRequest $request)
     {
         $parameter = new Parameter();
 		$parameter->unit_id = $request->input('unit_id') ? $request->input('unit_id') : null;
