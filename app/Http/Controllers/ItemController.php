@@ -38,7 +38,7 @@ class ItemController extends Controller
      */
     public function show(string $id)
     {
-		$item = Item::findOrFail($id);
+		$item = Item::with(['parameters'])->findOrFail($id);
         return Inertia::render('Item', [
 			'item' => $item,
 			'links' => $item->getCategoryLinks(),

@@ -6,8 +6,11 @@ use App\Http\Controllers\Controller;
 use Inertia\Inertia;
 use App\Models\Category;
 use App\Models\Item;
+use App\Models\Parameter;
 use App\Models\Unit;
 use App\Http\Requests\UpdateItemRequest;
+use App\Http\Requests\UpdateItemParamRequest;
+use App\Http\Requests\UpdateValueRequest;
 use \Illuminate\Http\Request;
 
 class ItemController extends Controller
@@ -56,16 +59,22 @@ class ItemController extends Controller
 		$item->is_enabled = $request->input('is_enabled') ? 1 : 0;
 		$item->description = $request->input('description') ?? null;
 		$item->images = $request->input('images') ?? null;
-		$item->save();
+		$result = $item->save();
 		$item->updateCategories($request->input('categories'));
+		return $result;
     }
 
     /**
-     * Display the specified resource.
+     * Show the specified Item with it`s Parameters.
      */
     public function show(string $id)
     {
-        //
+		//dd($id); die();
+        return Inertia::render('Admin/ItemShow', [
+			'item' => Item::with(['parameters'])->findOrFail($id),
+			'parameters' => Parameter::all(),
+			'modal' => config('app.modalMode'),
+		]);
     }
 
     /**
@@ -81,6 +90,16 @@ class ItemController extends Controller
     }
 
     /**
+     * Show the form for editing the value of specified resource.
+     */
+    public function editValue(string $id, string $pid)
+    {
+        return Inertia::render('Admin/ValueEdit', [
+			'value' => Item::findOrFail($id)->parameters()->wherePivot('parameter_id', $pid)->get()->first()->pivot,
+		]);
+    }
+
+    /**
      * Update the specified resource in storage.
      */
     public function update(UpdateItemRequest $request, string $id)
@@ -91,8 +110,27 @@ class ItemController extends Controller
 		$item->is_enabled = $request->input('is_enabled') ? 1 : 0;
 		$item->description = $request->input('description') ?? null;
 		$item->images = $request->input('images') ?? null;
-		$item->save();
+		$result = $item->save();
 		$item->updateCategories($request->input('categories'));
+		return $result;
+    }
+
+    /**
+     * Update the item parameters in storage.
+     */
+    public function updateParams(UpdateItemParamRequest $request, string $id)
+    {
+		return Item::with(['parameters'])->findOrFail($id)->updateParameters($request->input('parameters'));
+    }
+
+    /**
+     * Update the specified parameter value in storage.
+     */
+    public function updateValue(UpdateValueRequest $request)
+    {
+		Item::findOrFail($request->input('item_id'))->parameters()->updateExistingPivot($request->input('parameter_id'), [
+			'value' => $request->input('value') ?? null,
+		]);
     }
 
     /**

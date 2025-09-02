@@ -37,7 +37,7 @@ let selectItem = (item) => {
 	};
 	item.is_enabled = !!item.is_enabled;
 	props.item = item;
-	console.log(item);
+
 	return false;
 };
 </script>
@@ -67,6 +67,7 @@ let selectItem = (item) => {
 					<th>Unit</th>
 					<th>Enabled</th>
 					<th>Category</th>
+					<th>Parameters</th>
 					<th>Created</th>
 					<th>Updated</th>
 				</tr>
@@ -96,6 +97,11 @@ let selectItem = (item) => {
 					<template v-for="cat in item.categories">
 					<p :class="{'text-secondary': ( !item.main_category[0] || cat.id !== item.main_category[0].id )}">{{ cat.name }}</p>
 					</template>
+				</td>
+				<td>
+					<Link :href="route('item.show', [item.id])" class="btn":class="{'btn-primary': item.parameters.length, 'btn-outline-primary': !item.parameters.length }">
+					{{ item.parameters ? item.parameters.length : 0 }}
+					</Link>
 				</td>
 				<td>{{ new Date(item.created_at).toLocaleString() }}</td>
 				<td>{{ new Date(item.updated_at).toLocaleString() }}</td>

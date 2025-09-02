@@ -43,25 +43,11 @@ watch(
 		}
 });
 
-let clearItemValids = () => {
-	form.errors = [];
-};
-
 let addCategory = () => {
-	if ( !newCategory || hasCategory( newCategory ) ) return;
-	let cat = findCategoryById( props.categories, newCategory );
+	if ( !newCategory || collectionHasModel( props.item.categories, newCategory ) ) return;
+	let cat = findModelById( props.categories, newCategory );
 	cat.pivot = { category_id: newCategory, item_id: props.item.id, is_main: 0 };
 	props.item.categories.push( cat );
-};
-
-let findCategoryById = ( categories, catId ) => {
-	return categories.find( ( cat ) => {
-		return +catId === cat.id;
-	});
-};
-
-let hasCategory = ( catId ) => {
-	return !!findCategoryById( props.item.categories, catId );
 };
 
 let removeCategory = (e) => {
@@ -77,11 +63,11 @@ let removeCategory = (e) => {
 };
 
 let selectCategory = ( e ) => {
-	let hasChildren = findCategoryById( props.categories, e.target.dataset.id ).hasChildren;
+	let hasChildren = findModelById( props.categories, e.target.dataset.id ).hasChildren;
 	if ( hasChildren ) {
 		form.errors.category_id = 'This Category coudn`t have items!';
 	} else {
-		clearItemValids();
+		form.clearErrors();
 	}
 	return !hasChildren;
 };

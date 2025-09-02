@@ -55,7 +55,7 @@ class Item extends Model
      */
     public function parameters(): BelongsToMany
     {
-        return $this->belongsToMany(Parameter::class)->withPivot('value')->withTimestamps();
+        return $this->belongsToMany(Parameter::class, 'item_has_parameter')->with(['unit'])->withPivot('value')->withTimestamps();
     }
 
 	/**
@@ -63,7 +63,7 @@ class Item extends Model
      */
 	public static function getList($page = null)
 	{
-		return self::orderBy('name')->with(['categories', 'mainCategory', 'unit'])->paginate( env('ITEMS_PER_PAGE') )->withQueryString();
+		return self::orderBy('name')->with(['categories', 'mainCategory', 'unit', 'parameters'])->paginate( env('ITEMS_PER_PAGE') )->withQueryString();
 	}
 
 	/**
@@ -89,7 +89,7 @@ class Item extends Model
 	/**
      * Return prepared update changes.
      */
-    private function getUpdates( $data )
+    private function getCategoryUpdates( $data )
     {
 		$changes = [
 			'updated' => [],
@@ -134,12 +134,12 @@ class Item extends Model
     }
 
 	/**
-     * Check categories updates
+     * Apply categories updates
      */
     public function updateCategories($postData)
     {
 		if (!$postData) return false;
-		$updates = $this->getUpdates( $postData );
+		$updates = $this->getCategoryUpdates( $postData );
 		$old = $this->categories->pluck('id')->all();
 		$updatedCats = Category::whereIn('id', $updates['updated'])->with('subcategories')->get();
 		foreach ($updates['updated'] as $key => $cat) {
@@ -153,5 +153,46 @@ class Item extends Model
 		$this->categories()->detach($updates['removed']);
 		$this->updateMainCategory( $postData );
 		return $updates;
+    }
+
+	
+	/**
+     * Apply Parameter`s updates
+     */
+    public function updateParameters($data)
+    {
+		if (!$data) return false;
+		$changes = [
+			'updated' => [],
+			'added' => [],
+			'removed' => [],
+		];
+		$new = array_unique(Arr::pluck($data, 'id'));
+		$old = $this->parameters->pluck('id')->all();
+		$updated = array_diff($new, $old);
+		if ( count($new) > count($old) ) {
+			foreach ($new as $key => $param) {
+				if ( isset( $old[$key] ) ) {
+					if ( $param !== $old[$key] ) {
+						$changes['updated'][$key] = $param;
+					}
+				} else {
+					$changes['added'][$key] = $param;
+				};
+			};
+		} elseif ( count($new) < count($old) ) {
+			$changes['removed'] = array_diff( $old, $new );
+		} else {
+			$changes['updated'] = $updated;
+		}
+		//dd($data, $changes); die();
+		foreach ($changes['updated'] as $key => $param) {
+			$this->parameters()->updateExistingPivot($old[$key], [
+				'parameter_id' => $param,
+			]);
+		}
+		$this->parameters()->attach($changes['added']);
+		$this->parameters()->detach($changes['removed']);
+		return $changes;
     }
 }

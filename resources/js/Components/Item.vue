@@ -23,6 +23,22 @@ defineProps({
 					<p class="card-text">
 						{{ item.description }}
 					</p>
+					<table v-if="item.parameters && item.parameters.length > 1" class="table table-striped">
+						<thead class="table-dark">
+							<tr>
+								<th>Parameter</th>
+								<th class="text-end">Value</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for="parameter in item.parameters">
+								<template v-if="parameter.pivot && parameter.pivot.value">
+								<td>{{ parameter.name }}</td>
+								<td class="text-end">{{ parameter.pivot.value }} {{ parameter.unit ? parameter.unit.name : ''}}</td>
+								</template>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>

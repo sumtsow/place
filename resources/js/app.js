@@ -25,3 +25,13 @@ createInertiaApp({
         color: '#4B5563',
     },
 });
+
+window.findModelById = ( collection, id ) => {
+	return collection.find( ( model ) => {
+		return +id === model.id;
+	});
+};
+
+window.collectionHasModel = ( collection, id ) => {
+	return !!findModelById( collection, id );
+};

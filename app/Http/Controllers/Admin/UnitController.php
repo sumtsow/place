@@ -26,7 +26,6 @@ class UnitController extends Controller
 		$types = Arr::map($unitTypes, function (string $type, int $key) {
 			return [ 'id' => $key, 'name' => $type, ];
 		});
-		//dd($types); die();
         return Inertia::render('Admin/UnitsList', [
 			'units' => Unit::paginate( env('ITEMS_PER_PAGE') )->withQueryString(),
 			'unit' => $this->emptyUnit,
@@ -41,8 +40,13 @@ class UnitController extends Controller
      */
     public function create()
     {
+		$unitTypes = config('app.unitType');
+		$types = Arr::map($unitTypes, function (string $type, int $key) {
+			return [ 'id' => $key, 'name' => $type, ];
+		});
         return Inertia::render('Admin/UnitEdit', [
 			'unit' => $this->emptyUnit,
+			'types' => $types,
 		]);
     }
 
@@ -71,8 +75,13 @@ class UnitController extends Controller
      */
     public function edit(string $id)
     {
+		$unitTypes = config('app.unitType');
+		$types = Arr::map($unitTypes, function (string $type, int $key) {
+			return [ 'id' => $key, 'name' => $type, ];
+		});
         return Inertia::render('Admin/UnitEdit', [
 			'unit' => Unit::findOrFail($id),
+			'types' => $types,
 		]);
     }
 

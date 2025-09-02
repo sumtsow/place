@@ -27,6 +27,10 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 	Route::put('/category/0', [CategoryAdminController::class, 'store'])->name('category.store');
 	Route::put('/category/{id}', [CategoryAdminController::class, 'update'])->name('category.update');
 	Route::get('/items', [ItemAdminController::class, 'index'])->name('item.admin');
+	Route::get('/item/parameters/{id}', [ItemAdminController::class, 'show'])->name('item.show');
+	Route::put('/item/parameters/{id}', [ItemAdminController::class, 'updateParams'])->name('item-param.update');
+	Route::get('/item/value/{id}/{pid}', [ItemAdminController::class, 'editValue'])->name('value.edit');
+	Route::put('/item/value/', [ItemAdminController::class, 'updateValue'])->name('value.update');
 	Route::get('/item/0', [ItemAdminController::class, 'create'])->name('item.create');
 	Route::get('/item/{id}', [ItemAdminController::class, 'edit'])->name('item.edit');
 	Route::put('/item/0', [ItemAdminController::class, 'store'])->name('item.store');

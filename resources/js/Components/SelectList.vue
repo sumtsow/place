@@ -19,6 +19,10 @@ defineProps({
 	options: {
         type: Object,
 	},
+	defaultOption: {
+        type: String,
+		default: '',
+	},
 });
 
 defineExpose({ focus: () => input.value.focus() });
@@ -30,6 +34,7 @@ defineExpose({ focus: () => input.value.focus() });
         v-model="model"
         ref="input"
     >
+	<option v-if="defaultOption" value="0">{{ defaultOption }}</option>
 	<template v-for="option in options">
 		<option :value="option.id">{{ '&nbsp;&nbsp;'.repeat(option.level) + option.name }}</option>
 	</template>
