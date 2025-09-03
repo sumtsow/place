@@ -45,6 +45,7 @@ let addParameter = () => {
 
 let selectValue = (pivot) => {
 	value.value = pivot ? pivot : {};
+	props.value = value.value;
 	return false;
 };
 
@@ -64,6 +65,7 @@ let saveParameters = () => {
 					{{ parameter.name }}
 					<Link v-if="modal" data-bs-toggle="modal" data-bs-target="#parameterValueFormModal" @click.prevent.stop="selectValue(parameter.pivot)" class="btn text-decoration-none":class="{'btn-outline-danger': (parameter.pivot && !parameter.pivot.value), 'btn-outline-primary': (parameter.pivot && parameter.pivot.value) }">
 					{{ parameter.pivot ? (parameter.pivot.value ? parameter.pivot.value : 'not set') : '' }}
+					{{ parameter.unit ? parameter.unit.name : '' }}
 					</Link>
 					<Link v-else @click.prevent.stop="selectValue(parameter.pivot)" :href="route('value.edit', [ item.id, parameter.id ])" class="btn text-decoration-none" :class="{'btn-outline-danger': (parameter.pivot && !parameter.pivot.value), 'btn-outline-primary': (parameter.pivot && parameter.pivot.value) }">
 					{{ parameter.pivot ? (parameter.pivot.value ? parameter.pivot.value : 'not set') : '' }}

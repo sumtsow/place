@@ -40,13 +40,11 @@ class UnitController extends Controller
      */
     public function create()
     {
-		$unitTypes = config('app.unitType');
-		$types = Arr::map($unitTypes, function (string $type, int $key) {
-			return [ 'id' => $key, 'name' => $type, ];
-		});
         return Inertia::render('Admin/UnitEdit', [
 			'unit' => $this->emptyUnit,
-			'types' => $types,
+			'types' => $types = Arr::map(config('app.unitType'), function (string $type, int $key) {
+				return [ 'id' => $key, 'name' => $type, ];
+			}),
 		]);
     }
 
@@ -75,13 +73,11 @@ class UnitController extends Controller
      */
     public function edit(string $id)
     {
-		$unitTypes = config('app.unitType');
-		$types = Arr::map($unitTypes, function (string $type, int $key) {
-			return [ 'id' => $key, 'name' => $type, ];
-		});
         return Inertia::render('Admin/UnitEdit', [
 			'unit' => Unit::findOrFail($id),
-			'types' => $types,
+			'types' => Arr::map(config('app.unitType'), function (string $type, int $key) {
+				return [ 'id' => $key, 'name' => $type, ];
+			}),
 		]);
     }
 

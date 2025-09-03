@@ -18,6 +18,9 @@ defineProps({
 	parameter: {
         type: Object,
 	},
+	empty: {
+        type: String,
+    },
 	modal: {
 		type: Boolean,
 	},
@@ -77,7 +80,7 @@ let selectParameter = (parameter) => {
 						{{ parameter.name }}
 					</Link>
 				</td>
-				<td>{{ parameter.unit.name }}</td>
+				<td :class="{ 'text-danger': !parameter.unit }">{{ parameter.unit ? parameter.unit.name : empty }}</td>
 				<td>{{ +parameter.is_enabled }}</td>
 				<td>{{ new Date(parameter.created_at).toLocaleString() }}</td>
 				<td>{{ new Date(parameter.updated_at).toLocaleString() }}</td>

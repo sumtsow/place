@@ -69,7 +69,6 @@ class ItemController extends Controller
      */
     public function show(string $id)
     {
-		//dd($id); die();
         return Inertia::render('Admin/ItemShow', [
 			'item' => Item::with(['parameters'])->findOrFail($id),
 			'parameters' => Parameter::all(),
@@ -128,6 +127,7 @@ class ItemController extends Controller
      */
     public function updateValue(UpdateValueRequest $request)
     {
+		//dd($request->input('value')); die();
 		Item::findOrFail($request->input('item_id'))->parameters()->updateExistingPivot($request->input('parameter_id'), [
 			'value' => $request->input('value') ?? null,
 		]);

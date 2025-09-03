@@ -19,11 +19,12 @@ class ParameterController extends Controller
 		$emptyParameter = [
 			'unit_id' => 0,
 			'name' => '',
-			'is_enabled' => 0,
+			'is_enabled' => '0',
 		];
         return Inertia::render('Admin/ParametersList', [
 			'parameters' => Parameter::with(['unit'])->paginate( env('ITEMS_PER_PAGE') )->withQueryString(),
 			'parameter' => $emptyParameter,
+			'empty' => config('app.emptyParameter'),
 			'units' => Unit::all(),
 			'modal' => config('app.modalMode'),
 		]);

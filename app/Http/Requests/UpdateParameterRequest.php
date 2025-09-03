@@ -23,7 +23,7 @@ class UpdateParameterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'unit_id' => 'numeric|nullable|gt:0',
+            'unit_id' => 'numeric|nullable',
             'name' => 'string|required|max:255',
 			'is_enabled' => 'boolean',
         ];
