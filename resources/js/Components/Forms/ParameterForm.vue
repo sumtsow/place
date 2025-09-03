@@ -79,6 +79,7 @@ let saveParameter = () => {
 								:options="props.units"
 								id="unit_id"
 								type="number"
+								defaultOption="None"
 								class="col"
 								v-model="form.unit_id"
 								autofocus
