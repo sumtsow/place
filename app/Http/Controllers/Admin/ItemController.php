@@ -61,7 +61,6 @@ class ItemController extends Controller
 		$item->images = $request->input('images') ?? null;
 		$result = $item->save();
 		$item->updateCategories($request->input('categories'));
-		return $result;
     }
 
     /**

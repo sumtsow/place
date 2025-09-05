@@ -8,12 +8,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Post extends Model
 {
+	protected $with = ['comments'];
+
 	/**
      * Get the user that owns the post
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class)->withTimestamps();
+        return $this->belongsTo(User::class);
     }
 
 	/**

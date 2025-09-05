@@ -11,15 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('comments', function (Blueprint $table) {
-            $table->id();
-			$table->foreignId('post_id')->constrained(
-				table: 'posts', indexName: 'comment_post_id'
+         Schema::table('comments', function (Blueprint $table) {
+			$table->foreignId('user_id')->after('post_id')->constrained(
+				table: 'users', indexName: 'comments_user_id_foreign'
 			)->onUpdate('cascade')->onDelete('cascade');
-			$table->tinyInteger('is_enabled')->length(1);
-			$table->text('text');
-            $table->timestamps();
-        });
+		});
     }
 
     /**
@@ -27,6 +23,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('comments');
+         Schema::table('comments', function (Blueprint $table) {
+			$table->dropForeign( ['user_id'] );
+			$table->dropColumn( 'user_id' );
+		});
     }
 };

@@ -12,12 +12,15 @@ defineProps({
 	links: {
 		type: Array,
 	},
+	auth: {
+		type: Object,
+	},
 });
 </script>
 
 <template>
 	<Page title="Item">
 		<Breadcrumbs :links="links" />
-		<Item :item="item"/>
+		<Item :item="item" :auth="auth"/>
 	</Page>
 </template>

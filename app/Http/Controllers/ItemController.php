@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Models\Item;
 
@@ -38,7 +37,13 @@ class ItemController extends Controller
      */
     public function show(string $id)
     {
-		$item = Item::with(['parameters'])->findOrFail($id);
+		$item = Item::with(['parameters', 'posts'])->findOrFail($id);
+		foreach($item->posts as $post) {
+			$post->load([ 'user' => fn ($query) => $query->select(['id', 'firstname', 'lastname', 'patronymic']) ]);
+			foreach($post->comments as $comment) {
+				$comment->load([ 'user' => fn ($query) => $query->select(['id', 'firstname', 'lastname', 'patronymic']) ]);
+			};
+		};
         return Inertia::render('Item', [
 			'item' => $item,
 			'links' => $item->getCategoryLinks(),

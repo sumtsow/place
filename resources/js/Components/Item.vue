@@ -1,10 +1,14 @@
 <script setup>
 import Carousel from '@/Components/Carousel.vue';
+import ItemPostList from '@/Components/ItemPostList.vue';
 import { Link } from '@inertiajs/vue3';
 
 defineProps({
 	item: {
         type: Object,
+	},
+	auth: {
+		type: Object,
 	},
 });
 </script>
@@ -41,6 +45,11 @@ defineProps({
 					</table>
 				</div>
 			</div>
+		</div>
+	</div>
+	<div class="row my-4">
+		<div class="col">
+			<ItemPostList :item="item" :auth="auth" />
 		</div>
 	</div>
 </template>

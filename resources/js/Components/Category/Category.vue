@@ -22,7 +22,7 @@ defineProps({
 		<div class="row">
 			<div class="col">
 				<p v-for="subcategory in category.subcategories" class="ms-3 mt-3">
-						<Link :href="route('category', [subcategory.id])">
+					<Link :href="route('category', [subcategory.id])">
 					{{ subcategory.name }}
 					</Link>
 				</p>

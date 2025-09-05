@@ -1,5 +1,5 @@
 <template>
-	<footer class="mt-5">
+	<footer class="fixed-bottom bg-white">
 		&copy; {{ new Date().getFullYear() }} All rights reserved
 	</footer>
 </template>

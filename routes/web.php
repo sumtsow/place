@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\Admin\CategoryController as CategoryAdminController;
 use App\Http\Controllers\Admin\ItemController as ItemAdminController;
 use App\Http\Controllers\Admin\ParameterController as ParameterAdminController;
@@ -51,6 +53,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+	Route::put('/post/0', [PostController::class, 'store'])->name('post.store');
+	Route::put('/post/{id}', [PostController::class, 'update'])->name('post.update');
+	Route::put('/comment/0', [CommentController::class, 'store'])->name('comment.store');
+	Route::put('/comment/{id}', [CommentController::class, 'update'])->name('comment.update');
 });
 
 require __DIR__.'/auth.php';
