@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use App\Models\Item;
+use App\Models\User;
 
 class ItemController extends Controller
 {
@@ -37,7 +40,19 @@ class ItemController extends Controller
      */
     public function show(string $id)
     {
-		$item = Item::with(['parameters', 'posts'])->findOrFail($id);
+		$isAdmin = Auth::id() ? User::findOrFail(Auth::id())->can('admin', User::class) : false;
+		if ( $isAdmin ) {
+			$item = Item::with(['parameters', 'posts'])->findOrFail($id);
+		} else {
+			$item = Item::with([
+				'parameters',
+				'posts' => function (Builder $query) {
+					$query->where('is_enabled', 1);
+				},
+				'posts.comments' => function (Builder $query) {
+					$query->where('is_enabled', 1);
+				}])->findOrFail($id);
+		}
 		foreach($item->posts as $post) {
 			$post->load([ 'user' => fn ($query) => $query->select(['id', 'firstname', 'lastname', 'patronymic']) ]);
 			foreach($post->comments as $comment) {

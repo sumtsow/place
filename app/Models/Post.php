@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Post extends Model
 {
-	protected $with = ['comments'];
+	//protected $with = ['comments'];
 
 	/**
      * Get the user that owns the post

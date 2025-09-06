@@ -33,7 +33,7 @@ let addPost = () => {
 
 <template>
 	<div class="row row-cols-1 mx-0">
-		<template v-if="item.posts.length">
+		<template v-if="item.posts && item.posts.length">
 			<PostCard v-for="post in item.posts" :post="post" :auth="auth" @addComment="addComment(post.id)" />
 		</template>
 		<template v-else>

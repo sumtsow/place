@@ -54,9 +54,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 	Route::put('/post/0', [PostController::class, 'store'])->name('post.store');
-	Route::put('/post/{id}', [PostController::class, 'update'])->name('post.update');
+	Route::put('/post/{id}', [PostController::class, 'update'])->name('post.update')->middleware('can:admin, App\User');
 	Route::put('/comment/0', [CommentController::class, 'store'])->name('comment.store');
-	Route::put('/comment/{id}', [CommentController::class, 'update'])->name('comment.update');
+	Route::put('/comment/{id}', [CommentController::class, 'update'])->name('comment.update')->middleware('can:admin, App\User');
 });
 
 require __DIR__.'/auth.php';

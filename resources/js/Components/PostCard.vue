@@ -18,11 +18,11 @@ watch(
 </script>
 
 <template>
-	<div class="card h-100 justify-content-center mt-3 p-0">
+	<div class="card h-100 justify-content-centermt-3 p-0 my-3" :class="{'text-secondary': !post.is_enabled}">
 		<div v-if="post.id" class="card-header">
 			{{ post.user.firstname }} {{ post.user.lastname }} | {{ new Date(post.created_at).toLocaleString() }}
 		</div>
-		<div class="card-body">
+		<div class="card-body fs-6">
 			<div class="p-3">
 				<h5 class="card-title">
 					<template v-if="!post.id">There are not posts yet!</template>
