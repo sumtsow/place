@@ -13,7 +13,7 @@ defineProps({
         type: String,
 		default: 'Comment edit',
     },
-	comment: {
+	editedPost: {
         type: Object,
 	},
 	modal: {
@@ -35,19 +35,15 @@ if ( !props.comment ) {
 };
 
 let selectComment = (comment) => {
-	if (comment) {
-		props.comment = comment;
-		props.comment.is_enabled = !!props.comment.is_enabled;
-	}
-	return true;
+	if (comment) props.editedPost = comment;
 };
 </script>
 
 <template>
 	<Page :title="title">
-		<Breadcrumbs :links="[ { title: 'Dashboard', route: 'dashboard' }, { title: 'Posts', route: 'post.admin', param: [comment.post.item_id] }, { title: title, route: false } ]" />
+		<Breadcrumbs :links="[ { title: 'Dashboard', route: 'dashboard' }, { title: 'Posts', route: 'post.admin', param: [editedPost.post.item_id] }, { title: title, route: false } ]" />
 		<div class="justify-content-between ms-3">
-			<PostForm :item="comment.post.item_id" :auth="auth" :post="comment" :isComment="isComment"/>
+			<PostForm :item="editedPost.post.item_id" :auth="auth" :editedPost="editedPost" :isComment="isComment"/>
 		</div>
 	</Page>
 </template>

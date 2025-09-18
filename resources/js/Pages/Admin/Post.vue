@@ -13,8 +13,17 @@ defineProps({
         type: String,
 		default: 'Post edit',
     },
-	post: {
+	editedPost: {
         type: Object,
+	},
+	editedComment: {
+        type: Object,
+	},
+	emptyComment: {
+		type: Object,
+	},
+	emptyPost: {
+		type: Object,
 	},
 	modal: {
 		type: Number,
@@ -24,30 +33,21 @@ defineProps({
 	},
 });
 
-if ( !props.post ) {
-	props.post = {
-		id: 0,
-		text: '',
-		is_enabled: false,
-		user_id: null,
-		item_id: null,
-	}
+if ( !props.editedPost ) {
+	props.editedPost = props.emptyPost;
 };
 
-let selectPost = (selectedPost) => {
-	if (selectedPost) {
-		props.post = selectedPost;
-		props.post.is_enabled = !!props.post.is_enabled;
-	}
-	return true;
+if ( !props.editedComment ) {
+	props.editedComment = props.emptyComment;
 };
+
 </script>
 
 <template>
 	<Page :title="title">
-		<Breadcrumbs :links="[ { title: 'Dashboard', route: 'dashboard' }, { title: 'Posts', route: 'post.admin', param: [post.item_id] }, { title: title, route: false } ]" />
+		<Breadcrumbs :links="[ { title: 'Dashboard', route: 'dashboard' }, { title: 'Posts', route: 'post.admin', param: [editedPost.item_id] }, { title: title, route: false } ]" />
 		<div class="justify-content-between ms-3">
-			<PostForm :item="post.item_id" :auth="auth" :post="post" :isComment="isComment"/>
+			<PostForm :item="editedPost.item_id" :auth="auth" :editedPost="editedPost" :isComment="isComment" :emptyComment="emptyComment" :emptyPost="emptyPost"/>
 		</div>
 	</Page>
 </template>

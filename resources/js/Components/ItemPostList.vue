@@ -6,9 +6,10 @@ import PostCard from '@/Components/PostCard.vue';
 import { ref } from 'vue';
 import { router, usePage } from '@inertiajs/vue3';
 
-const currentPost = ref( { id: 0, text: '' } );
-const isComment = ref(false);
 const props = usePage().props;
+const currentPost = props.emptyPost;
+currentPost.item_id = props.item.id;
+const isComment = ref(false);
 
 defineProps({
 	item: {
@@ -25,13 +26,15 @@ defineProps({
 	},
 });
 
-let addComment = () => {
-	currentPost.value = props.emptyPost;
+let addComment = (postId) => {
+	currentPost.value = props.emptyComment;
+	currentPost.post_id = postId;
 	isComment.value = true;
 };
 
 let addPost = () => {
-	currentPost.value = props.emptyComment;
+	currentPost.value = props.emptyPost;
+	currentPost.item_id = props.item.id;
 	isComment.value = false;
 };
 
@@ -40,7 +43,7 @@ let addPost = () => {
 <template>
 	<div class="row row-cols-1 mx-0">
 		<template v-if="item.posts && item.posts.length">
-			<PostCard v-for="post in item.posts" :post="post" :auth="auth" @addComment="addComment(post)" />
+			<PostCard v-for="post in item.posts" :post="post" :auth="auth" @addComment="addComment(post.id)" />
 		</template>
 		<template v-else>
 			<PostCard :post="currentPost" :auth="false"/>
@@ -50,6 +53,6 @@ let addPost = () => {
 		<div class="col text-end">
 			<PrimaryButton data-bs-toggle="modal" data-bs-target="#postFormModal" :disabled="!auth || !auth.user" @click="addPost">Add new Post</PrimaryButton>
 		</div>
-		<PostForm modal="true" :item="item" :post="currentPost" :comment="0" :isComment="isComment"/>
+		<PostForm :modal="true" :item="item" :post="currentPost" :comment="0" :isComment="isComment"/>
 	</div>
 </template>

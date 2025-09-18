@@ -47,11 +47,12 @@ class CommentController extends Controller
     public function show(string $id)
     {
 		return Inertia::render('Admin/Comment', [
-			'comment' => Comment::with([
+			'editedPost' => Comment::with([
 				'post',
 				'user' => fn ($query) => $query->select(['id', 'firstname', 'lastname', 'patronymic']),
 			])->findOrFail($id),
 			'isComment' => true,
+			'emptyComment' => Comment::getEmptyModel(),
 		]);
     }
 

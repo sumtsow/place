@@ -16,6 +16,9 @@ defineProps({
 	auth: {
 		type: Object,
 	},
+	editedPost: {
+		type: Object,
+	},
 	emptyComment: {
 		type: Object,
 	},
@@ -30,7 +33,7 @@ defineProps({
 	},
 });
 
-const form = useForm(props.emptyPost);
+const form = useForm(props.editedPost);
 
 watch(
 	() => props.editedPost,

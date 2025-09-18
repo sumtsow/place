@@ -58,12 +58,13 @@ class PostController extends Controller
     public function show(string $id)
     {
         return Inertia::render('Admin/Post', [
-			'post' => Post::with([
+			'editedPost' => Post::with([
 				'comments',
 				'user' => fn ($query) => $query->select(['id', 'firstname', 'lastname', 'patronymic']),
 				'comments.user' => fn ($query) => $query->select(['id', 'firstname', 'lastname', 'patronymic']),
 			])->findOrFail($id),
 			'isComment' => false,
+			'emptyPost' => Post::getEmptyModel(),
 		]);
     }
 
