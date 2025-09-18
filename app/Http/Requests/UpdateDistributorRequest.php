@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class UpdatePostRequest extends FormRequest
+class UpdateDistributorRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,10 +23,14 @@ class UpdatePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'text' => 'string',
-			'item_id' => 'numeric|filled',
-			'post_id' => 'numeric|filled',
+			'name' => 'string|filled|max:255',
 			'is_enabled' => 'boolean|filled',
+			'url' => 'string|nullable|max:255',
+			'email' => 'string|nullable|max:255',
+			'phone' => 'string|nullable|max:255',
+			'like' => 'numeric',
+			'dislike' => 'numeric',
+			'sales' => 'numeric',
         ];
     }
 }

@@ -7,15 +7,25 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Comment extends Model
 {
+	protected $casts = [
+		'is_enabled' => 'boolean',
+	];
 
-	//protected $with = ['user'];
+	private static $emptyModel = [
+		'id' => 0,
+		'text' => '',
+		'item_id' => 0,
+		'post_id' => 0,
+		'user_id' => 0,
+		'is_enabled' => false,
+	];
 
 	/**
      * Get the post that contains the comment
      */
     public function post(): BelongsTo
     {
-        return $this->belongsTo(Post::class)->withTimestamps();
+        return $this->belongsTo(Post::class);
     }
 
 	/**
@@ -25,4 +35,8 @@ class Comment extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+	public static function getEmptyModel() {
+		return self::$emptyModel;
+	}
 }

@@ -37,7 +37,6 @@ let selectItem = (item) => {
 	};
 	item.is_enabled = !!item.is_enabled;
 	props.item = item;
-
 	return false;
 };
 </script>
@@ -68,6 +67,7 @@ let selectItem = (item) => {
 					<th>Enabled</th>
 					<th>Category</th>
 					<th>Parameters</th>
+					<th>Posts</th>
 					<th>Created</th>
 					<th>Updated</th>
 				</tr>
@@ -101,6 +101,11 @@ let selectItem = (item) => {
 				<td>
 					<Link :href="route('item.show', [item.id])" class="btn":class="{'btn-primary': item.parameters.length, 'btn-outline-primary': !item.parameters.length }">
 					{{ item.parameters ? item.parameters.length : 0 }}
+					</Link>
+				</td>
+				<td>
+					<Link :href="route('post.admin', [item.id])" class="btn":class="{'btn-success': item.posts, 'btn-outline-success': !item.posts }">
+					{{ item.posts ? item.posts.length : 0 }}
 					</Link>
 				</td>
 				<td>{{ new Date(item.created_at).toLocaleString() }}</td>

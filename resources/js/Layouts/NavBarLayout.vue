@@ -14,7 +14,7 @@ import { Link } from '@inertiajs/vue3';
 				</button>
 				<div class="collapse navbar-collapse" id="navbarNavDropdown">
 					<ul class="navbar-nav">
-						<li class="nav-item">
+						<li v-if="$page.props.auth.isAdmin" class="nav-item">
 							<Link class="nav-link" :href="route('dashboard')" :active="route().current('dashboard')">Dashboard</Link>
 						</li>
 						<li class="nav-item dropdown">

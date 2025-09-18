@@ -6,58 +6,83 @@ import TextArea from '@/Components/TextArea.vue';
 import { ref, watch, useAttrs } from 'vue';
 import { Link, useForm, usePage } from '@inertiajs/vue3';
 
-const page = usePage();
-const props = page.props;
-const attrs = useAttrs();
+const props = usePage().props;
+const auth = useAttrs().auth;
+const modal = props.modal;
+
 const comments = ref([]);
 
-const form = useForm({
-	id: 0,
-	text: '',
-	item_id: attrs.item ? attrs.item.id : 0,
-	post_id: attrs.post ? attrs.post: 0,
-	comment_id: attrs.comment ? attrs.comment: 0,
+defineProps({
+	auth: {
+		type: Object,
+	},
+	emptyComment: {
+		type: Object,
+	},
+	emptyPost: {
+		type: Object,
+	},
+	modal: {
+		type: Boolean,
+	},
+	isComment: {
+		type: Boolean,
+	},
+});
+
+const form = useForm(props.emptyPost);
+
+watch(
+	() => props.editedPost,
+	() => {
+		props.isComment = false;
+		form.id = props.editedPost ? props.editedPost.id : 0;
+		form.item_id = props.editedPost ? props.editedPost.item_id : 0;
+		form.post_id = 0;
+		form.user_id = props.editedPost ? props.editedPost.user_id : 0;
+		form.comment_id = props.editedPost ? props.editedPost.id : 0;
+		form.is_enabled = props.editedPost ? props.editedPost.is_enabled : false;
+		form.text = props.editedPost ? props.editedPost.text : '';
 });
 
 watch(
-	() => attrs.post,
+	() => props.editedComment,
 	() => {
-		form.id = attrs.isComment ? attrs.comment : attrs.post;
-		form.item_id = attrs.item ? attrs.item.id : 0;
-		form.post_id = attrs.post ? attrs.post : 0;
+		props.isComment = true;
+		form.id = props.editedComment ? props.editedComment.id : 0;
+		form.item_id = 0;
+		form.post_id = props.editedComment ? props.editedComment.post_id : 0;
+		form.user_id = props.editedComment ? props.editedComment.user_id : 0;
+		form.comment_id = props.editedComment ? props.editedComment.id : 0;
+		form.is_enabled = props.editedComment ? props.editedComment.is_enabled : false;
+		form.text = props.editedComment ? props.editedComment.text : '';
 });
 
-let updatePost = () =>  {
-	let editedPost = findModelById( attrs.item.posts, attrs.post );
-	comments.value = editedPost && editedPost.comments ? editedPost.comments : [];
-	findModelById( props.item.posts, attrs.post ).comments = comments;
-};
-
 let savePost = () => {
-	if (form.post_id) {
-		!!form.id ? form.put( route('comment.update', [form.id])) : form.put( route('comment.store'), { onSuccess: updatePost } );
+	if (props.isComment) {
+		return !!form.id ? form.put( route('comment.update', [form.id])) : form.put( route('comment.store') );
 	} else {
-		!!form.id ? form.put( route('post.update', [form.id])) : form.put( route('post.store') );
+		return !!form.id ? form.put( route('post.update', [form.id])) : form.put( route('post.store') );
 	};
 };
 </script>
 
 <template>
-	<div class="modal" tabindex="-1" id="postFormModal"  data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="modalLabel" aria-hidden="true">
+	<div :class="{ modal: modal }" tabindex="-1" id="postFormModal"  data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="modalLabel" aria-hidden="true">
 		<form name="postForm" id="post-form" class="p-3 needs-validation" @submit.prevent.stop="savePost">
-			<div class="modal-dialog modal-xl">
-				<div class="modal-content">
-					<div class="modal-header">
-						<div class="modal-title h5" id="modalLabel">{{ form && form.id > 0 ? 'Edit ' + form.id : 'Add new ' }} {{ attrs.post ? 'comment' : 'post' }}</div>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрити" @click="form.clearErrors"></button>
+			<div :class="{'modal-dialog modal-xl': modal}">
+				<div :class="{'modal-content': modal}">
+					<div :class="{'modal-header': modal}">
+						<div :class="{'modal-title h5': modal, 'h1 text-center': !modal}" id="modalLabel">{{ form && form.id > 0 ? 'Edit ' + form.id : 'Add new ' }} {{ isComment ? 'comment' : 'post' }}</div>
+						<button v-if="modal" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрити" @click="form.clearErrors"></button>
 					</div>
-					<div class="modal-body">
+					<div :class="{'modal-body': modal}">
 						<div v-if="auth && auth.user" class="input-group mb-3 row text-md-left justify-content-start has-validation">
-							<div class="col-3"></div>
+							<div class="col-3"><InputError :message="form.errors.is_enabled" /></div>
 							<div class="col">
 								<div class="form-check form-switch">
 									<input id="is_enabled" name="is_enabled" type="checkbox" class="form-check-input" v-model="form.is_enabled"/>
-									<label class="form-check-label" for="visible">Enabled</label>
+									<label class="form-check-label" for="is_enabled">Enabled</label>
 								</div>
 							</div>
 						</div>
@@ -77,9 +102,7 @@ let savePost = () => {
 					<div class="row justify-content-end">
 						<div class="col-2 m-4">
 						<PrimaryButton :disabled="form.processing">Save</PrimaryButton>
-							<p v-if="form.recentlySuccessful" class="">
-								Saved.
-							</p>
+							<p v-if="form.recentlySuccessful">Saved.</p>
 						</div>
 					</div>
 				</div>

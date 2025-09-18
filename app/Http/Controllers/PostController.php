@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 use App\Http\Requests\UpdatePostRequest;
-
+use App\Models\Comment;
+use App\Models\Item;
 use App\Models\Post;
 
 class PostController extends Controller
@@ -14,9 +16,18 @@ class PostController extends Controller
      */
     public function index(string $itemId)
     {
-        /*return Inertia::render('Home', [
-			'categories' => Category::where('category_id', NULL)->with('subcategories')->get(),
-		]);*/
+		$posts = Post::where('item_id', $itemId)->with([
+			'comments',
+			'comments.post',
+			'user' => fn ($query) => $query->select(['id', 'firstname', 'lastname', 'patronymic']),
+			'comments.user' => fn ($query) => $query->select(['id', 'firstname', 'lastname', 'patronymic']),
+		])->get();
+        return Inertia::render('Admin/PostsList', [
+			'posts' => $posts,
+			'emptyPost' => Post::getEmptyModel(),
+			'emptyComment' => Comment::getEmptyModel(),
+			'links' => Item::findOrFail($itemId)->getCategoryLinks(),
+		]);
     }
 
     /**
@@ -36,7 +47,7 @@ class PostController extends Controller
 		$post->text = $request->input('text') ? $request->input('text') : null;
 		$post->item_id = intval($request->input('item_id'));
 		$post->user_id = Auth::id();
-		$post->is_enabled = 0;
+		$post->is_enabled = Auth::user()->can('admin', User::class) ? 1 : 0;
 		$post->id = null;
 		if ($post->text && $post->item_id && $post->user_id) $post->save();
     }
@@ -46,7 +57,14 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-		//
+        return Inertia::render('Admin/Post', [
+			'post' => Post::with([
+				'comments',
+				'user' => fn ($query) => $query->select(['id', 'firstname', 'lastname', 'patronymic']),
+				'comments.user' => fn ($query) => $query->select(['id', 'firstname', 'lastname', 'patronymic']),
+			])->findOrFail($id),
+			'isComment' => false,
+		]);
     }
 
     /**
@@ -54,7 +72,7 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
-        //
+       //
     }
 
     /**
@@ -63,12 +81,13 @@ class PostController extends Controller
     public function update(UpdatePostRequest $request, string $id)
     {
         $post = Post::findOrFail( intval($id) );
-		$post->text = $request->input('text') ? $request->input('text') : null;
-		$post->item_id = intval($request->input('item_id'));
-		$post->user_id = Auth::id();
-		$post->is_enabled = 0;
-		$post->id = $id;
-		if ($post->id && $post->text && $post->item_id && $post->user_id) $post->save();
+		$post->text = $request->input('text') ? $request->input('text') : $post->text;
+		$item_id = intval($request->input('item_id'));
+		if ($item_id) $post->item_id = $item_id;
+		$post->is_enabled = $request->input('is_enabled') ? 1 : 0;
+		if ($id && $post->text && $post->item_id && $post->user_id) {
+			$post->save();
+		}
     }
 
     /**

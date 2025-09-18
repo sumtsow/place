@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 use App\Http\Requests\UpdateCommentRequest;
-
 use App\Models\Comment;
+use App\Models\Post;
 
 class CommentController extends Controller
 {
@@ -36,7 +37,7 @@ class CommentController extends Controller
 		$comment->text = $request->input('text') ? $request->input('text') : null;
 		$comment->post_id = intval($request->input('post_id'));
 		$comment->user_id = Auth::id();
-		$comment->is_enabled = 0;
+		$comment->is_enabled  = Auth::user()->can('admin', User::class) ? 1 : 0;
 		if ($comment->text && $comment->post_id && $comment->user_id) $comment->save();
     }
 
@@ -45,7 +46,13 @@ class CommentController extends Controller
      */
     public function show(string $id)
     {
-		//
+		return Inertia::render('Admin/Comment', [
+			'comment' => Comment::with([
+				'post',
+				'user' => fn ($query) => $query->select(['id', 'firstname', 'lastname', 'patronymic']),
+			])->findOrFail($id),
+			'isComment' => true,
+		]);
     }
 
     /**
@@ -62,10 +69,11 @@ class CommentController extends Controller
     public function update(UpdateCommentRequest $request, string $id)
     {
         $comment = Comment::findOrFail( intval($id) );
-		$comment->text = $request->input('text') ? $request->input('text') : null;
-		$comment->post_id = intval($request->input('post_id'));
-		$comment->is_enabled = 0;
-		if ($comment->id && $comment->text && $comment->post_id && $comment->user_id) $comment->save();
+		$comment->text = $request->input('text') ? $request->input('text') : $comment->text;
+		$post_id = intval($request->input('post_id'));
+		if ($post_id) $comment->post_id = $post_id;
+		$comment->is_enabled = $request->input('is_enabled') ? 1 : 0;
+		if ($id && $comment->text && $comment->post_id && $comment->user_id) $comment->save();
     }
 
     /**

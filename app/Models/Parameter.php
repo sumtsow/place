@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Parameter extends Model
 {
+	protected $casts = [
+		'is_enabled' => 'boolean',
+	];
 
 	/**
      * Get the items that use with this parameter

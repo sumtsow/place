@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use App\Models\User;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -33,8 +34,11 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'auth' => [
                 'user' => $request->user(),
+				'isAdmin' => $request->user() ? $request->user()->can('admin', User::class) : false,
+				'isOperator' => $request->user() ? $request->user()->can('operator', User::class) : false,
             ],
 			'csrf_token' => csrf_token(),
+			'modal' => config('app.modalMode'),
         ];
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\Admin\CategoryController as CategoryAdminController;
+use App\Http\Controllers\Admin\DistributorController as DistributorAdminController;
 use App\Http\Controllers\Admin\ItemController as ItemAdminController;
 use App\Http\Controllers\Admin\ParameterController as ParameterAdminController;
 use App\Http\Controllers\Admin\UnitController as UnitAdminController;
@@ -28,6 +29,14 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 	Route::get('/category/{id}', [CategoryAdminController::class, 'edit'])->name('category.edit');
 	Route::put('/category/0', [CategoryAdminController::class, 'store'])->name('category.store');
 	Route::put('/category/{id}', [CategoryAdminController::class, 'update'])->name('category.update');
+	Route::get('/distributors', [DistributorAdminController::class, 'index'])->name('distributor.admin');
+	Route::get('/distributor/0', [DistributorAdminController::class, 'create'])->name('distributor.create');
+	Route::get('/distributor/{id}', [DistributorAdminController::class, 'edit'])->name('distributor.edit');
+	Route::put('/distributor/0', [DistributorAdminController::class, 'store'])->name('distributor.store');
+	Route::put('/distributor/{id}', [DistributorAdminController::class, 'update'])->name('distributor.update');
+	Route::get('/posts/{id}', [PostController::class, 'index'])->name('post.admin');
+	Route::get('/post/{id}', [PostController::class, 'show'])->name('post.show');
+	Route::get('/comment/{id}', [CommentController::class, 'show'])->name('comment.show');
 	Route::get('/items', [ItemAdminController::class, 'index'])->name('item.admin');
 	Route::get('/item/parameters/{id}', [ItemAdminController::class, 'show'])->name('item.show');
 	Route::put('/item/parameters/{id}', [ItemAdminController::class, 'updateParams'])->name('item-param.update');
@@ -54,9 +63,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 	Route::put('/post/0', [PostController::class, 'store'])->name('post.store');
-	Route::put('/post/{id}', [PostController::class, 'update'])->name('post.update')->middleware('can:admin, App\User');
+	Route::put('/post/{id}', [PostController::class, 'update'])->name('post.update');
 	Route::put('/comment/0', [CommentController::class, 'store'])->name('comment.store');
-	Route::put('/comment/{id}', [CommentController::class, 'update'])->name('comment.update')->middleware('can:admin, App\User');
+	Route::put('/comment/{id}', [CommentController::class, 'update'])->name('comment.update');
 });
 
 require __DIR__.'/auth.php';

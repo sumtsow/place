@@ -6,7 +6,9 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use App\Models\Comment;
 use App\Models\Item;
+use App\Models\Post;
 use App\Models\User;
 
 class ItemController extends Controller
@@ -40,7 +42,7 @@ class ItemController extends Controller
      */
     public function show(string $id)
     {
-		$isAdmin = Auth::id() ? User::findOrFail(Auth::id())->can('admin', User::class) : false;
+		$isAdmin = Auth::id() ? Auth::user()->can('admin', User::class) : false;
 		if ( $isAdmin ) {
 			$item = Item::with(['parameters', 'posts'])->findOrFail($id);
 		} else {
@@ -61,6 +63,8 @@ class ItemController extends Controller
 		};
         return Inertia::render('Item', [
 			'item' => $item,
+			'emptyPost' => Post::getEmptyModel(),
+			'emptyComment' => Comment::getEmptyModel(),
 			'links' => $item->getCategoryLinks(),
 		]);
     }

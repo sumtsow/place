@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends Model
 {
+	protected $casts = [
+		'is_enabled' => 'boolean',
+	];
 	/**
      * Get the items for the category.
      */

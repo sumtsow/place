@@ -9,6 +9,18 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Post extends Model
 {
 	//protected $with = ['comments'];
+	protected $casts = [
+		'is_enabled' => 'boolean',
+	];
+
+	private static $emptyModel = [
+		'id' => 0,
+		'text' => '',
+		'item_id' => 0,
+		'post_id' => 0,
+		'user_id' => 0,
+		'is_enabled' => false,
+	];
 
 	/**
      * Get the user that owns the post
@@ -33,4 +45,8 @@ class Post extends Model
     {
         return $this->hasMany(Comment::class);
     }
+
+	public static function getEmptyModel() {
+		return self::$emptyModel;
+	}
 }

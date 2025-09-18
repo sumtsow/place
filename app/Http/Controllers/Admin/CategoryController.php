@@ -18,7 +18,6 @@ class CategoryController extends Controller
         return Inertia::render('Admin/CategoriesList', [
 			'categories' => Category::getCatList(),
 			'category' => Category::all()->first(),
-			'modal' => config('app.modalMode'),
 		]);
     }
 

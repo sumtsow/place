@@ -26,7 +26,6 @@ class ParameterController extends Controller
 			'parameter' => $emptyParameter,
 			'empty' => config('app.emptyParameter'),
 			'units' => Unit::all(),
-			'modal' => config('app.modalMode'),
 		]);
     }
 

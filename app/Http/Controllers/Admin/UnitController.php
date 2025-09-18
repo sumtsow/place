@@ -31,7 +31,6 @@ class UnitController extends Controller
 			'unit' => $this->emptyUnit,
 			'types' => $types,
 			'unitTypes' => $unitTypes,
-			'modal' => config('app.modalMode'),
 		]);
     }
 

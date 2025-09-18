@@ -29,8 +29,6 @@ watch(
 		form.token = props.csrf_token;
 });
 
-let clearCategoryValids = () => {
-};
 let saveCategory = () => {
 	return !!form.id ? form.put(route('category.update', [form.id])) : form.put(route('category.store'));
 };

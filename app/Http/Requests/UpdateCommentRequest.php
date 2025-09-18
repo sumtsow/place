@@ -23,7 +23,9 @@ class UpdateCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'text' => 'string|required',
+            'text' => 'string',
+			'post_id' => 'numeric|filled',
+			'is_enabled' => 'boolean|filled',
         ];
     }
 }

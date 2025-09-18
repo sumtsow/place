@@ -21,20 +21,11 @@ class ItemController extends Controller
      */
     public function index(Request $request)
     {
-		$items = Item::getList();
-		$emptyItem = [
-			'unit_id' => 0,
-			'name' => '',
-			'is_enabled' => 0,
-			'description' => '',
-			'images' => '',
-		];
         return Inertia::render('Admin/ItemsList', [
-			'items' => $items,
-			'item' => $emptyItem,
+			'items' => Item::getList(),
+			'item' => Item::getEmptyModel(),
 			'units' => Unit::all(),
 			'categories' => Category::getPlainCatList(),
-			'modal' => config('app.modalMode'),
 		]);
     }
 
@@ -71,7 +62,6 @@ class ItemController extends Controller
         return Inertia::render('Admin/ItemShow', [
 			'item' => Item::with(['parameters'])->findOrFail($id),
 			'parameters' => Parameter::all(),
-			'modal' => config('app.modalMode'),
 		]);
     }
 
@@ -126,7 +116,6 @@ class ItemController extends Controller
      */
     public function updateValue(UpdateValueRequest $request)
     {
-		//dd($request->input('value')); die();
 		Item::findOrFail($request->input('item_id'))->parameters()->updateExistingPivot($request->input('parameter_id'), [
 			'value' => $request->input('value') ?? null,
 		]);

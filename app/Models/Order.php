@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Order extends Model
 {
+	protected $casts = [
+		'is_enabled' => 'boolean',
+	];
+
 	/**
      * Get the cusomer for the order.
      */

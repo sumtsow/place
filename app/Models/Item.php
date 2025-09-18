@@ -10,6 +10,18 @@ use Illuminate\Support\Arr;
 
 class Item extends Model
 {
+	protected $casts = [
+		'is_enabled' => 'boolean',
+	];
+
+	private static $emptyModel = [
+		'unit_id' => 0,
+		'name' => '',
+		'is_enabled' => 0,
+		'description' => '',
+		'images' => '',
+	];
+
 	/**
      * Get the categories that contains the item
      */
@@ -63,7 +75,7 @@ class Item extends Model
      */
 	public static function getList($page = null)
 	{
-		return self::orderBy('name')->with(['categories', 'mainCategory', 'unit', 'parameters'])->paginate( env('ITEMS_PER_PAGE') )->withQueryString();
+		return self::orderBy('name')->with(['categories', 'mainCategory', 'unit', 'parameters', 'posts'])->paginate( env('ITEMS_PER_PAGE') )->withQueryString();
 	}
 
 	/**
@@ -116,6 +128,10 @@ class Item extends Model
 		}
 		return $changes;
     }
+
+	public static function getEmptyModel() {
+		return self::$emptyModel;
+	}
 
 	/**
      * Update main Category of Item.

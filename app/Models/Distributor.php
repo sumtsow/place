@@ -8,6 +8,20 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Distributor extends Model
 {
+	protected $casts = [
+		'is_enabled' => 'boolean',
+	];
+	private static $emptyModel = [
+		'name' => '',
+		'is_enabled' => 0,
+		'url' => '',
+		'email' => '',
+		'phone' => '',
+		'like' => 0,
+		'dislike' => 0,
+		'sales' => 0,
+	];
+
 	/**
      * Get the managers for the distributor.
      */
@@ -23,4 +37,8 @@ class Distributor extends Model
     {
         return $this->belongsToMany(Item::class, 'distributor_has_item')->withPivot('count', 'price', 'discount', 'delivery', 'is_enabled')->withTimestamps();
     }
+
+	public static function getEmptyModel() {
+		return self::$emptyModel;
+	}
 }
