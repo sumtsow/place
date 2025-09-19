@@ -38,8 +38,8 @@ let selectComment = (com) => {
 </script>
 
 <template>
-	<div class="card h-100 justify-content-centermt-3 p-0 my-3" :class="{'text-body-tertiary': !post.is_enabled}">
-		<div v-if="post.id" class="card-header">
+	<div class="card h-100 justify-content-centermt-3 p-0 my-3" :class="{'text-body-tertiary': post && !post.is_enabled}">
+		<div v-if="post && post.id" class="card-header">
 			<template v-if="auth.isAdmin">
 				<template v-if="modal">
 					<Link data-bs-toggle="modal" data-bs-target="#postFormModal" class="w-100 justify-content-between" :class="{'link-secondary': !post.is_enabled}" @click.stop.prevent="$emit('selectPost')" :href="route('post.update', [post.id])">
@@ -60,16 +60,18 @@ let selectComment = (com) => {
 		<div class="card-body fs-6">
 			<div class="p-3">
 				<h5 class="card-title">
-					<template v-if="!post.id">There are not posts yet!</template>
+					<template v-if="!post || !post.id">There are not posts yet!</template>
 				</h5>
 				<p class="card-text">
-					<template v-if="post.id">{{ post.text }}</template>
-					<template v-else>Your post can be first</template>
+					<template v-if="!post || !post.id">Your post can be first</template>
+					<template v-else>{{ post.text }}</template>
 				</p>
 			</div>
+			<template v-if="post && post.id">
 			<CommentCard v-for="comm in post.comments" :comment="comm" :post="post" @selectComment="selectComment(comm)"/>
+			</template>
 		</div>
-		<div v-if="post.id" class="card-footer text-end">
+		<div v-if="post && post.id" class="card-footer text-end">
 			<PrimaryButton data-bs-toggle="modal" data-bs-target="#postFormModal" :disabled="!auth || !auth.user" @click="$emit('addComment')">Add Comment</PrimaryButton>
 		</div>
 	</div>

@@ -18,6 +18,12 @@ defineProps({
 	auth: {
 		type: Object,
 	},
+	editedComment: {
+		type: Object,
+	},
+	editedPost: {
+		type: Object,
+	},
 	emptyPost: {
 		type: Object,
 	},
@@ -27,14 +33,17 @@ defineProps({
 });
 
 let addComment = (postId) => {
-	currentPost.value = props.emptyComment;
-	currentPost.post_id = postId;
+	props.editedComment = props.emptyComment;
+	props.editedComment.id = 0;
+	props.editedComment.post_id = postId;
 	isComment.value = true;
 };
 
 let addPost = () => {
-	currentPost.value = props.emptyPost;
-	currentPost.item_id = props.item.id;
+	props.editedPost = props.emptyPost;
+	props.editedPost.id = 0;
+	props.editedPost.post_id = 0;
+	props.editedPost.item_id = props.item.id;
 	isComment.value = false;
 };
 
@@ -46,13 +55,13 @@ let addPost = () => {
 			<PostCard v-for="post in item.posts" :post="post" :auth="auth" @addComment="addComment(post.id)" />
 		</template>
 		<template v-else>
-			<PostCard :post="currentPost" :auth="false"/>
+			<PostCard :post="editedPost" :auth="false"/>
 		</template>
 	</div>
 	<div class="row my-3">
 		<div class="col text-end">
 			<PrimaryButton data-bs-toggle="modal" data-bs-target="#postFormModal" :disabled="!auth || !auth.user" @click="addPost">Add new Post</PrimaryButton>
 		</div>
-		<PostForm :modal="true" :item="item" :post="currentPost" :comment="0" :isComment="isComment"/>
+		<PostForm :modal="true" :item="item" :editedPost="editedPost" :comment="0" :isComment="isComment"/>
 	</div>
 </template>

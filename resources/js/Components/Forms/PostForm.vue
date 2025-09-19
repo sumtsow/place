@@ -8,7 +8,6 @@ import { Link, useForm, usePage } from '@inertiajs/vue3';
 
 const props = usePage().props;
 const auth = useAttrs().auth;
-const modal = props.modal;
 
 const comments = ref([]);
 
@@ -33,7 +32,9 @@ defineProps({
 	},
 });
 
-const form = useForm(props.editedPost);
+let formTpl = props.modal ? props.emptyPost : props.editedPost;
+
+const form = useForm(formTpl);
 
 watch(
 	() => props.editedPost,
