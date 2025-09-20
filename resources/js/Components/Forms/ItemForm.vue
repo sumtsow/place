@@ -145,7 +145,6 @@ let toggleSwitch = ( catId ) => {
 										<SelectList
 											:options="props.categories"
 											id="category_id"
-											type="number"
 											class="col d-inline-block w-75"
 											v-model="cat.id"
 											:data-id="cat.id"

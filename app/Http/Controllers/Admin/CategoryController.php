@@ -18,6 +18,7 @@ class CategoryController extends Controller
         return Inertia::render('Admin/CategoriesList', [
 			'categories' => Category::getCatList(),
 			'category' => Category::all()->first(),
+			'catList' => Category::getPlainCatList(),
 		]);
     }
 
@@ -59,6 +60,7 @@ class CategoryController extends Controller
     {
         return Inertia::render('Admin/CategoryEdit', [
 			'category' => Category::findOrFail($id),
+			'catList' => Category::getPlainCatList(),
 		]);
     }
 

@@ -10,6 +10,9 @@ defineProps({
 	category: {
         type: Object,
 	},
+	catList: {
+        type: Object,
+	},
 	title: {
 		type: String,
 		default: 'Category Edit',
@@ -30,7 +33,7 @@ if (!props.category.id) props.category = {
 		<Breadcrumbs :links="[ { title: 'Dashboard', route: 'dashboard' }, { title: 'Categories', route: 'category.admin' }, { title: title, route: false } ]" />
         <div class="row justify-content-center">
             <div class="col col-md-6 my-md-5">
-                <CategoryForm :category="category" />
+                <CategoryForm :category="category" :catList="catList"/>
             </div>
         </div>
     </Page>

@@ -2,6 +2,7 @@
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
+import SelectList from '@/Components/SelectList.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { watch } from 'vue';
 import { Link, useForm, usePage } from '@inertiajs/vue3';
@@ -14,6 +15,9 @@ const form = useForm(props.category);
 
 defineProps({
 	category: {
+        type: Object,
+	},
+	catList: {
         type: Object,
 	},
 });
@@ -69,16 +73,16 @@ let saveCategory = () => {
 						</div>
 
 						<div class="input-group row mb-3">
-							<InputLabel for="category_id" value="CategoryId" class="col-3 text-end" />
-							<TextInput
+							<InputLabel for="category_id" value="Category" class="col-3 text-end" />
+							<SelectList
+								:options="props.catList"
 								id="category_id"
-								type="number"
-								class="col"
+								class="col d-inline-block w-75"
 								v-model="form.category_id"
 								autofocus
 								autocomplete="category_id"
 							/>
-							<InputError class="mt-2" :message="form.errors.name" />
+							<InputError class="mt-2" :message="form.errors.category_id" />
 						</div>
 
 						<div class="input-group row mb-3">

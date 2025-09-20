@@ -18,6 +18,9 @@ defineProps({
 	category: {
         type: Object,
 	},
+	catList: {
+        type: Object,
+	},
 	modal: {
 		type: Boolean,
 	},
@@ -68,6 +71,6 @@ let selectCat = (cat) => {
 				</div>
 			</div>
 		</div>
-		<CategoryForm v-if="modal" :category="category"/>
+		<CategoryForm v-if="modal" :category="category" :catList="catList"/>
 	</Page>
 </template>
