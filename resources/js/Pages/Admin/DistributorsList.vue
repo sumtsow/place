@@ -24,12 +24,13 @@ defineProps({
 	},
 });
 
-let selectDistributor = (distr) => {
+const selectDistributor = (distr) => {
 	if (distr) {
 		props.distributor = distr;
 	};
 	return true;
 };
+
 </script>
 
 <template>
@@ -50,6 +51,7 @@ let selectDistributor = (distr) => {
 							<th>URL</th>
 							<th>Email</th>
 							<th>Phone</th>
+							<th>Items</th>
 							<th>Likes</th>
 							<th>Dislikes</th>
 							<th>Sales</th>
@@ -73,9 +75,18 @@ let selectDistributor = (distr) => {
 							<td :class="{ 'text-body-tertiary': !distributor.is_enabled }">{{ distributor.url }}</td>
 							<td :class="{ 'text-body-tertiary': !distributor.is_enabled }">{{ distributor.email }}</td>
 							<td :class="{ 'text-body-tertiary': !distributor.is_enabled }">{{ distributor.phone }}</td>
-							<td :class="{ 'text-body-tertiary': !distributor.is_enabled }">{{ +distributor.like }}</td>
-							<td :class="{ 'text-body-tertiary': !distributor.is_enabled }">{{ +distributor.dislike }}</td>
-							<td :class="{ 'text-body-tertiary': !distributor.is_enabled }">{{ +distributor.sales }}</td>
+							<td :class="{ 'text-body-tertiary': !distributor.is_enabled }">
+								<Link class="btn btn-primary py-0 px-2" :href="route('distributor.show', [distributor.id])">{{ distributor.items.length }}</Link>
+							</td>
+							<td :class="{ 'text-body-tertiary': !distributor.is_enabled }">
+								<span class="badge text-bg-success fs-6 fw-normal">{{ +distributor.like }}</span>
+							</td>
+							<td :class="{ 'text-body-tertiary': !distributor.is_enabled }">
+								<span class="badge text-bg-danger fs-6 fw-normal">{{ +distributor.dislike }}</span>
+							</td>
+							<td :class="{ 'text-body-tertiary': !distributor.is_enabled }">
+								<span class="badge text-bg-info fs-6 fw-normal">{{ +distributor.sales }}</span>
+							</td>
 							<td :class="{ 'text-body-tertiary': !distributor.is_enabled }">{{ new Date(distributor.created_at).toLocaleString() }}</td>
 							<td :class="{ 'text-body-tertiary': !distributor.is_enabled }">{{ new Date(distributor.updated_at).toLocaleString() }}</td>
 						</tr>

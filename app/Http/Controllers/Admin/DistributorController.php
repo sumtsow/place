@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use App\Http\Requests\UpdateDistributorRequest;
+use App\Http\Requests\UpdateDistributorItemRequest;
+use App\Http\Requests\UpdateDistributorItemStateRequest;
 use App\Models\Distributor;
+use App\Models\Item;
 
 class DistributorController
 {
@@ -25,17 +27,8 @@ class DistributorController
      */
     public function create()
     {
-		$distributor = new Distributor();
-		$distributor->name = '';
-		$distributor->is_enabled = 0;
-		$distributor->url = '';
-		$distributor->email = '';
-		$distributor->phone = '';
-		$distributor->like = 0;
-		$distributor->dislike = 0;
-		$distributor->sales = 0;
         return Inertia::render('Admin/Distributor', [
-			'distributor' => $distributor,
+			'distributor' => new Distributor(),
 		]);
     }
 
@@ -61,7 +54,14 @@ class DistributorController
      */
     public function show(string $id)
     {
-		//
+		$distributor = Distributor::findOrFail($id);
+		foreach($distributor->items as $item) {
+			$item->pivot->is_enabled = !!$item->pivot->is_enabled;
+		}
+		return Inertia::render('Admin/DistributorItems', [
+			'distributor' => $distributor,
+			'items' => Item::orderBy('name')->get(),
+		]);
     }
 
     /**
@@ -90,8 +90,32 @@ class DistributorController
 		$distributor->dislike = $request->input('dislike') ? intval($request->input('dislike')) : 0;
 		$distributor->sales = $request->input('sales') ? intval($request->input('sales')) : 0;
 		$distributor->save();
+	}
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function updateItems(UpdateDistributorItemRequest $request)
+    {
+		$items = $request->input('items');
+		$distributor_id = $request->input('distributor_id');
+        $distributor = Distributor::findOrFail( $distributor_id );
+		$distributor->items()->sync( $items );
     }
 
+    /**
+     * Update the specified resource`s pivot in storage.
+     */
+    public function updateItemState(UpdateDistributorItemStateRequest $request)
+    {
+		$item_id = $request->input('item_id');
+		$distributor_id = $request->input('distributor_id');
+		$is_enabled = $request->input('is_enabled');
+        $distributor = Distributor::findOrFail( $distributor_id );
+		$distributor->items()->updateExistingPivot($item_id, [
+			'is_enabled' => $is_enabled ? 1 : 0,
+		]);
+    }
     /**
      * Remove the specified resource from storage.
      */

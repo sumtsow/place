@@ -1,7 +1,7 @@
 <script setup>
 
 import CheckInput from '@/Components/CheckInput.vue';
-import { Link, usePage } from '@inertiajs/vue3';
+import { Link, usePage, useForm } from '@inertiajs/vue3';
 
 const props = usePage().props;
 
@@ -21,6 +21,13 @@ defineProps({
 	},
 });
 
+const toggleState = (comment) => {
+	if (!comment) return;
+	useForm({
+		id: comment.id,
+		is_enabled: !!comment.is_enabled,
+	}).put( route('comment.update', [comment.id]) );
+};
 </script>
 
 <template>
@@ -36,7 +43,7 @@ defineProps({
 					{{ comment.user.firstname }} {{ comment.user.lastname }} | {{ new Date(comment.created_at).toLocaleString() }}
 				</Link>
 				<div class="d-inline-block float-end form-check form-switch">
-					<CheckInput :name="'is_enabled'" v-model="comment.is_enabled" :label="'Enabled'" :post="comment" :isComment="true"></CheckInput>
+					<CheckInput :name="'is_enabled'" v-model="comment.is_enabled" :label="'Enabled'" :post="comment" :isComment="true" @toggleState="toggleState(comment)"></CheckInput>
 				</div>	
 			</template>
 			<template v-else>

@@ -66,8 +66,8 @@ let saveValue = () => {
 					<div class="row justify-content-end">
 						<div class="col-2 m-4">
 						<PrimaryButton :disabled="valueForm.processing">Save</PrimaryButton>
-							<p v-if="valueForm.recentlySuccessful" class="">
-								Saved.
+							<p v-if="valueForm.recentlySuccessful" class="text-success">
+								Saved
 							</p>
 						</div>
 					</div>

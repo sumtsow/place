@@ -4,7 +4,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import CommentCard from '@/Components/CommentCard.vue';
 import CheckInput from '@/Components/CheckInput.vue';
 import { watch, useAttrs } from 'vue';
-import { Link, usePage } from '@inertiajs/vue3';
+import { Link, usePage, useForm } from '@inertiajs/vue3';
 
 const auth = useAttrs().auth;
 const props = usePage().props;
@@ -26,14 +26,22 @@ defineProps({
 	},
 });
 
-let selectPost = (post) => {
+const selectPost = (post) => {
 	if (post) props.post = post;
 	props.isComment = false;
 };
 
-let selectComment = (com) => {
+const selectComment = (com) => {
 	if (com) props.editedComment = com;
 	props.isComment = true;
+};
+
+const toggleState = (post) => {
+	if (!post) return;
+	useForm({
+		id: post.id,
+		is_enabled: !!post.is_enabled,
+	}).put( route('post.update', [post.id]) );
 };
 </script>
 
@@ -50,7 +58,7 @@ let selectComment = (com) => {
 					{{ post.user.firstname }} {{ post.user.lastname }} | {{ new Date(post.created_at).toLocaleString() }}
 				</Link>
 				<div class="d-inline-block float-end form-check form-switch">
-					<CheckInput :name="'is_enabled'" v-model="post.is_enabled" :label="'Enabled'" :post="post" isComment="false"></CheckInput>
+					<CheckInput :name="'is_enabled'" v-model="post.is_enabled" :label="'Enabled'" :post="post" isComment="false" @toggleState="toggleState(post)"></CheckInput>
 				</div>
 			</template>
 			<template v-else>

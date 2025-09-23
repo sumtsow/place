@@ -11,9 +11,10 @@ class Distributor extends Model
 	protected $casts = [
 		'is_enabled' => 'boolean',
 	];
+
 	private static $emptyModel = [
 		'name' => '',
-		'is_enabled' => 0,
+		'is_enabled' => false,
 		'url' => '',
 		'email' => '',
 		'phone' => '',

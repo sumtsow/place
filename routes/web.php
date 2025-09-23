@@ -31,6 +31,9 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 	Route::put('/category/{id}', [CategoryAdminController::class, 'update'])->name('category.update');
 	Route::get('/distributors', [DistributorAdminController::class, 'index'])->name('distributor.admin');
 	Route::get('/distributor/0', [DistributorAdminController::class, 'create'])->name('distributor.create');
+	Route::get('/distributor/items/{id}', [DistributorAdminController::class, 'show'])->name('distributor.show');
+	Route::put('/distributor/items', [DistributorAdminController::class, 'updateItems'])->name('distributor.items');
+	Route::put('/distributor/item/state', [DistributorAdminController::class, 'updateItemState'])->name('distributor.updateItemState');
 	Route::get('/distributor/{id}', [DistributorAdminController::class, 'edit'])->name('distributor.edit');
 	Route::put('/distributor/0', [DistributorAdminController::class, 'store'])->name('distributor.store');
 	Route::put('/distributor/{id}', [DistributorAdminController::class, 'update'])->name('distributor.update');

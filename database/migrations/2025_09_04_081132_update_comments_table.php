@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-         Schema::table('comments', function (Blueprint $table) {
+        Schema::table('comments', function (Blueprint $table) {
 			$table->foreignId('user_id')->after('post_id')->constrained(
 				table: 'users', indexName: 'comments_user_id_foreign'
 			)->onUpdate('cascade')->onDelete('cascade');
@@ -23,7 +23,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-         Schema::table('comments', function (Blueprint $table) {
+        Schema::table('comments', function (Blueprint $table) {
 			$table->dropForeign( ['user_id'] );
 			$table->dropColumn( 'user_id' );
 		});

@@ -4,7 +4,6 @@ import Page from '@/Layouts/PageLayout.vue';
 import Breadcrumbs from '@/Components/Breadcrumbs.vue';
 import DistributorForm from '@/Components/Forms/DistributorForm.vue';
 import { Link, usePage } from '@inertiajs/vue3';
-import { onMounted, useAttrs } from 'vue';
 
 const props = usePage().props;
 const modal = props.modal;
@@ -28,10 +27,6 @@ let selectDistributor = (distr) => {
 	};
 	return true;
 };
-
-/*onMounted(() => {
-	if(!modal) selectDistributor(props.distributor);
-});*/
 </script>
 
 <template>

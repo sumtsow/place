@@ -13,11 +13,9 @@ class CommentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(string $itemId)
+    public function index()
     {
-        /*return Inertia::render('Home', [
-			'categories' => Category::where('category_id', NULL)->with('subcategories')->get(),
-		]);*/
+        //
     }
 
     /**

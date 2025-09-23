@@ -106,7 +106,7 @@ let savePost = () => {
 					<div class="row justify-content-end">
 						<div class="col-2 m-4">
 						<PrimaryButton :disabled="form.processing">Save</PrimaryButton>
-							<p v-if="form.recentlySuccessful">Saved.</p>
+							<p class="text-success" v-if="form.recentlySuccessful">Saved</p>
 						</div>
 					</div>
 				</div>
