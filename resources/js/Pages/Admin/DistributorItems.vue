@@ -100,11 +100,11 @@ const toggleState = (item) => {
 						<td :class="{ 'text-secondary': item.pivot && !item.pivot.is_enabled }">{{ item.pivot ? item.pivot.delivery : '' }}</td>
 						<td :class="{ 'text-secondary': item.pivot && !item.pivot.is_enabled }">
 							<div class="d-inline-block form-check form-switch">
-							<template v-if="!item.pivot">
-								<CheckInput name="is_enabled" value="false" label="Enabled"/>
+							<template v-if="item.pivot">
+								<CheckInput name="is_enabled" v-model="item.pivot.is_enabled" label="Enabled" @toggleState="toggleState(item.pivot)"/>
 							</template>
 							<template v-else>
-								<CheckInput name="is_enabled" v-model="item.pivot.is_enabled" label="Enabled" @toggleState="toggleState(item.pivot)"/>
+								<CheckInput name="is_enabled" value="false" label="Enabled"/>
 							</template>
 							</div>
 						</td>

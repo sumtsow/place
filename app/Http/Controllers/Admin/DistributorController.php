@@ -55,9 +55,7 @@ class DistributorController
     public function show(string $id)
     {
 		$distributor = Distributor::findOrFail($id);
-		foreach($distributor->items as $item) {
-			$item->pivot->is_enabled = !!$item->pivot->is_enabled;
-		}
+		$distributor->items->map(fn ($item) => $item->pivot->is_enabled = !!$item->pivot->is_enabled );
 		return Inertia::render('Admin/DistributorItems', [
 			'distributor' => $distributor,
 			'items' => Item::orderBy('name')->get(),
@@ -108,12 +106,9 @@ class DistributorController
      */
     public function updateItemState(UpdateDistributorItemStateRequest $request)
     {
-		$item_id = $request->input('item_id');
-		$distributor_id = $request->input('distributor_id');
-		$is_enabled = $request->input('is_enabled');
-        $distributor = Distributor::findOrFail( $distributor_id );
-		$distributor->items()->updateExistingPivot($item_id, [
-			'is_enabled' => $is_enabled ? 1 : 0,
+        $distributor = Distributor::findOrFail( $request->input('distributor_id') );
+		$distributor->items()->updateExistingPivot( $request->input('item_id'), [
+			'is_enabled' => $request->input('is_enabled') ? 1 : 0,
 		]);
     }
     /**

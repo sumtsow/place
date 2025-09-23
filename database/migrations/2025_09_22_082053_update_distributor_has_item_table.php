@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('distributor_has_item', function (Blueprint $table) {
 			$table->decimal('price', total: 8, places: 2)->default('0.00')->change();
+			$table->tinyInteger('is_enabled')->default(0)->length(1)->change();
 		});
     }
 
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('distributor_has_item', function (Blueprint $table) {
 			$table->decimal('price', total: 8, places: 2)->change();
+			$table->tinyInteger('is_enabled')->length(1)->change();
 		});
     }
 };
