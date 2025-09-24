@@ -3,7 +3,6 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\Role;
 
 class UserPolicy
 {
@@ -22,4 +21,21 @@ class UserPolicy
     {
         return $user->roles->contains('name', 'operator');
     }
+
+	/**
+     * Determine if the logged user is manager.
+     */
+    public function manager(User $user)
+    {
+        return $user->roles->contains('name', 'manager');
+    }
+
+	/**
+     * Determine if the logged user is customer.
+     */
+    public function customer(User $user)
+    {
+        return $user->roles->contains('name', 'customer');
+    }
+	
 }

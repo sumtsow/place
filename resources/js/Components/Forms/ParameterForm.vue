@@ -12,8 +12,6 @@ const props = usePage().props;
 const modal = props.modal;
 
 props.parameter.token = props.csrf_token;
-props.parameter.is_enabled = !!props.parameter.is_enabled;
-
 
 defineProps({
 	parameter: {
@@ -34,7 +32,7 @@ watch(
 		form.clearErrors();
 });
 
-let saveParameter = () => {
+const saveParameter = () => {
 	return !!form.id ? form.put( route('parameter.update', [form.id])) : form.put(route('parameter.store'));
 };
 </script>

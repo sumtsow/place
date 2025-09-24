@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Arr;
 
 class Item extends Model
@@ -211,4 +212,11 @@ class Item extends Model
 		$this->parameters()->detach($changes['removed']);
 		return $changes;
     }
+
+	public static function getEnumValues($tablename, $fieldname)
+	{
+		$values = DB::select("DESCRIBE `$tablename` `$fieldname`");
+        $values = explode(',',str_replace("'","",substr($values[0]->Type,5,-1)));
+		return $values;
+	}
 }

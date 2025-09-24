@@ -69,8 +69,8 @@ let selectParameter = (parameter) => {
 			</thead>
 			<tbody>
 			<tr v-for="parameter in parameters.data">
-				<td>{{ parameter.id }}</td>
-				<td>
+				<td :class="{ 'text-body-tertiary': !parameter.is_enabled }">{{ parameter.id }}</td>
+				<td :class="{ 'text-body-tertiary': !parameter.is_enabled }">
 					<template v-if="modal">
 						<Link data-bs-toggle="modal" data-bs-target="#parameterFormModal" @click.prevent.stop="selectParameter(parameter)">
 						{{ parameter.name }}
@@ -80,10 +80,10 @@ let selectParameter = (parameter) => {
 						{{ parameter.name }}
 					</Link>
 				</td>
-				<td :class="{ 'text-danger': !parameter.unit }">{{ parameter.unit ? parameter.unit.name : empty }}</td>
-				<td>{{ +parameter.is_enabled }}</td>
-				<td>{{ new Date(parameter.created_at).toLocaleString() }}</td>
-				<td>{{ new Date(parameter.updated_at).toLocaleString() }}</td>
+				<td :class="{ 'text-danger': !parameter.unit, 'text-body-tertiary': !parameter.is_enabled }">{{ parameter.unit ? parameter.unit.name : empty }}</td>
+				<td :class="{ 'text-body-tertiary': !parameter.is_enabled }">{{ +parameter.is_enabled }}</td>
+				<td :class="{ 'text-body-tertiary': !parameter.is_enabled }">{{ new Date(parameter.created_at).toLocaleString() }}</td>
+				<td :class="{ 'text-body-tertiary': !parameter.is_enabled }">{{ new Date(parameter.updated_at).toLocaleString() }}</td>
 			</tr>
 			</tbody>
 		</table>

@@ -128,7 +128,6 @@ let toggleSwitch = ( catId ) => {
 							<SelectList
 								:options="props.units"
 								id="unit_id"
-								type="number"
 								class="col"
 								v-model="form.unit_id"
 								autofocus

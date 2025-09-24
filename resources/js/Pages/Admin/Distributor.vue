@@ -25,7 +25,6 @@ let selectDistributor = (distr) => {
 	if (distr) {
 		props.distributor = distr;
 	};
-	return true;
 };
 </script>
 

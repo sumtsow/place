@@ -4,10 +4,9 @@ import Breadcrumbs from '@/Components/Breadcrumbs.vue';
 import Post from '@/Pages/Admin/Post.vue';
 import PostForm from '@/Components/Forms/PostForm.vue';
 import PostCard from '@/Components/PostCard.vue';
-import { ref, useAttrs } from 'vue';
+import { ref } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
 
-const auth = useAttrs().auth;
 const props = usePage().props;
 const isComment = ref(false);
 
@@ -58,13 +57,13 @@ let selectPost = (post) => {
 			</div>
 		</div>
 		<template v-if="posts && posts.length">
-			<PostCard v-for="post in posts" :post="post" :auth="auth" @selectPost="selectPost(post)" @addComment="addComment(post.id)"/>
+			<PostCard v-for="post in posts" :post="post" :auth="props.auth" @selectPost="selectPost(post)" @addComment="addComment(post.id)"/>
 		</template>
 		<div v-if="posts.last_page > 1" class="row">
 			<div class="col w-100 text-center">
 				<Link v-for=" (link, index) in posts.links" :key="index" :href="link.url" class="btn btn-outline-primary mx-1" :class="{ active: link.active }" v-html="link.label"/>
 			</div>
 		</div>
-		<PostForm v-if="modal" :modal="modal" :auth="auth" :emptyPost="emptyPost" :emptyComment="emptyComment" :isComment="isComment" :post="editedPost" :comment="editedComment"/>
+		<PostForm v-if="modal" :modal="modal" :auth="props.auth" :emptyPost="emptyPost" :emptyComment="emptyComment" :isComment="isComment" :post="editedPost" :comment="editedComment"/>
 	</Page>
 </template>

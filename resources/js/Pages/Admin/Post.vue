@@ -3,9 +3,8 @@ import Page from '@/Layouts/PageLayout.vue';
 import Breadcrumbs from '@/Components/Breadcrumbs.vue';
 import PostForm from '@/Components/Forms/PostForm.vue';
 import { Link, usePage } from '@inertiajs/vue3';
-import { watch, useAttrs } from 'vue';
+import { watch } from 'vue';
 
-const auth = useAttrs().auth;
 const props = usePage().props;
 
 defineProps({
@@ -47,7 +46,7 @@ if ( !props.editedComment ) {
 	<Page :title="title">
 		<Breadcrumbs :links="[ { title: 'Dashboard', route: 'dashboard' }, { title: 'Posts', route: 'post.admin', param: [editedPost.item_id] }, { title: title, route: false } ]" />
 		<div class="justify-content-between ms-3">
-			<PostForm :item="editedPost.item_id" :auth="auth" :editedPost="editedPost" :isComment="isComment" :emptyComment="emptyComment" :emptyPost="emptyPost"/>
+			<PostForm :item="editedPost.item_id" :auth="props.auth" :editedPost="editedPost" :isComment="isComment" :emptyComment="emptyComment" :emptyPost="emptyPost"/>
 		</div>
 	</Page>
 </template>
