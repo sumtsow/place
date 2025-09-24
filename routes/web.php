@@ -24,7 +24,7 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified', 'can:admin, App\Models\User'])->name('dashboard');
 
-Route::middleware('auth')->prefix('admin')->group(function () {
+Route::middleware(['auth', 'can:admin, App\Models\User'])->prefix('admin')->group(function () {
 	Route::get('/categories', [CategoryAdminController::class, 'index'])->name('category.admin');
 	Route::get('/category/0', [CategoryAdminController::class, 'create'])->name('category.create');
 	Route::get('/category/{id}', [CategoryAdminController::class, 'edit'])->name('category.edit');
