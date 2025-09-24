@@ -57,9 +57,7 @@ class OrderController
      */
     public function show(string $id)
     {
-		/*return Inertia::render('Admin/OrderShow', [
-			'order' => Order::findOrFail($id),
-		]);*/
+		//
     }
 
     /**
@@ -67,8 +65,13 @@ class OrderController
      */
     public function edit(string $id)
     {
-        return Inertia::render('Admin/OrderEdit', [
+        return Inertia::render('Admin/Order', [
 			'order' => Order::findOrFail($id),
+			'customers' => User::select('id', DB::raw("CONCAT(firstname, ' ', lastname) AS name"))
+				->whereHas('roles', function (Builder $query) {
+					$query->where('name', '=', 'customer');
+				})->get(),
+			'statuses' => Arr::map( Item::getEnumValues('orders', 'status'), fn ($item) => [ 'id' => $item, 'name' => $item ] ),
 		]);
     }
 
