@@ -3,13 +3,15 @@
 import Page from '@/Layouts/PageLayout.vue';
 import Breadcrumbs from '@/Components/Breadcrumbs.vue';
 import CheckInput from '@/Components/CheckInput.vue';
+import DistributorItemForm from '@/Components/Forms/DistributorItemForm.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SelectList from '@/Components/SelectList.vue';
 import { Link, usePage, useForm  } from '@inertiajs/vue3';
 import { ref, watch } from 'vue';
 
 const props = usePage().props;
-const form = useForm({items: [], distributor_id: 0});
+const formItems = useForm({ items: [], distributor_id: 0 });
+const modal = props.modal;
 
 defineProps({
     title: {
@@ -22,34 +24,45 @@ defineProps({
 	items: {
         type: Array,
 	},
+	currentDistributorItem: {
+        type: Object,
+	},
+	modal: {
+        type: Boolean,
+	},
 });
 
-let currentItem = {id: 0, name: ''};
+const id = ref(0);
 
 const addItem = () => {
-	if ( currentItem.id == 0 ) return;
-	if ( !collectionHasModel( props.distributor.items, currentItem.id ) ) {
-		props.distributor.items.push( findModelById(props.items, currentItem.id ) );
+	if ( id == 0 ) return;
+	if ( !collectionHasModel( props.distributor.distributor_items, id ) ) {
+		let model = JSON.parse( JSON.stringify( props.emptyDistributorItem ) );
+		if (model) {
+			model.item = findModelById( props.items, id.value );
+			model.item_id = model.item.id;
+			props.distributor.distributor_items.push( model );
+		}
 	}
 };
 
-const getItemIds = () => {
-	return props.distributor.items.flatMap( (item) => item.id ).sort();
-};
-
 const saveItems = () => {
-	form.distributor_id = props.distributor.id;
-	form.items = getItemIds();
-	return form.put( route('distributor.items') );
+	formItems.distributor_id = props.distributor.id;
+	formItems.items = props.distributor.distributor_items.filter( (prop) => !prop.id );
+	return formItems.put( route('distributor-items.update') );
 };
 
-const toggleState = (item) => {
-	if (!item) return;
+const selectDistributorItem = (di) => {
+	if (di) props.currentDistributorItem = di;
+};
+
+const toggleState = (di) => {
+	if (!di) return;
 	useForm({
-		item_id: item.item_id,
-		distributor_id: item.distributor_id,
-		is_enabled: !!item.is_enabled,
-	}).put( route('distributor.updateItemState') );
+		item_id: di.item_id,
+		distributor_id: di.distributor_id,
+		is_enabled: !!di.is_enabled,
+	}).put( route('distributor-item.updateState') );
 };
 </script>
 
@@ -68,12 +81,12 @@ const toggleState = (item) => {
 					:defaultOption="'Select item'"
 					id="items"
 					class="col"
-					v-model="currentItem.id"
+					v-model="id"
 					autofocus
 					autocomplete="items"
 				/>
 				<PrimaryButton @click="addItem">Add&nbsp;item</PrimaryButton>
-				<InputError class="mt-2" :message="form.errors.items" />
+				<InputError class="mt-2" :message="formItems.errors.items" />
 			</div>
 
 			<table class="table table-striped">
@@ -91,37 +104,40 @@ const toggleState = (item) => {
 					</tr>
 				</thead>
 				<tbody>
-					<tr v-for="item in props.distributor.items">
-						<td :class="{ 'text-secondary': item.pivot && !item.pivot.is_enabled }">{{ item.id }}</td>
-						<td :class="{ 'text-secondary': item.pivot && !item.pivot.is_enabled }">{{ item.name }}</td>
-						<td :class="{ 'text-secondary': item.pivot && !item.pivot.is_enabled }">{{ item.pivot ? item.pivot.count : 0 }}</td>
-						<td :class="{ 'text-secondary': item.pivot && !item.pivot.is_enabled }">{{ item.pivot ? item.pivot.price : '0.00' }}</td>
-						<td :class="{ 'text-secondary': item.pivot && !item.pivot.is_enabled }">{{ item.pivot ? item.pivot.discount : 0 }} %</td>
-						<td :class="{ 'text-secondary': item.pivot && !item.pivot.is_enabled }">{{ item.pivot ? item.pivot.delivery : '' }}</td>
-						<td :class="{ 'text-secondary': item.pivot && !item.pivot.is_enabled }">
+					<tr v-for="distributorItem in distributor.distributor_items">
+						<td :class="{ 'text-body-tertiary': !distributorItem.is_enabled }">{{ distributorItem.id }}</td>
+						<td :class="{ 'text-body-tertiary': !distributorItem.is_enabled }">
+							<Link v-if="modal" data-bs-toggle="modal" data-bs-target="#distributorItemFormModal" @click.prevent.stop="selectDistributorItem(distributorItem)" :class="{ 'text-body-tertiary': !distributorItem.is_enabled }">
+								{{ distributorItem.item ? distributorItem.item.name : '' }}
+							</Link>
+							<Link v-else :href="route('distributor-item.edit', [distributorItem.id])" :class="{ 'text-body-tertiary': !distributorItem.is_enabled }">
+								{{ distributorItem.item ? distributorItem.item.name : '' }}
+							</Link>
+						</td>
+						<td :class="{ 'text-body-tertiary': !distributorItem.is_enabled }">{{ distributorItem.count }}</td>
+						<td :class="{ 'text-body-tertiary': !distributorItem.is_enabled }">{{ distributorItem.price }}</td>
+						<td :class="{ 'text-body-tertiary': !distributorItem.is_enabled }">{{ distributorItem.discount }} %</td>
+						<td :class="{ 'text-body-tertiary': !distributorItem.is_enabled }">{{ distributorItem.delivery }}</td>
+						<td :class="{ 'text-body-tertiary': !distributorItem.is_enabled }">
 							<div class="d-inline-block form-check form-switch">
-							<template v-if="item.pivot">
-								<CheckInput name="is_enabled" v-model="item.pivot.is_enabled" label="Enabled" @toggleState="toggleState(item.pivot)"/>
-							</template>
-							<template v-else>
-								<CheckInput name="is_enabled" value="false" label="Enabled"/>
-							</template>
+								<CheckInput name="is_enabled" v-model="distributorItem.is_enabled" label="Enabled" @toggleState="toggleState(distributorItem)"/>
 							</div>
 						</td>
-						<td :class="{ 'text-secondary': item.pivot && !item.pivot.is_enabled }">{{ new Date(item.pivot ? item.pivot.created_at : null).toLocaleString() }}</td>
-						<td :class="{ 'text-secondary': item.pivot && !item.pivot.is_enabled }">{{ new Date(item.pivot ? item.pivot.updated_at : null).toLocaleString() }}</td>
+						<td :class="{ 'text-body-tertiary': !distributorItem.is_enabled }">{{ distributorItem.created_at ? new Date(distributorItem.created_at).toLocaleString() : null }}</td>
+						<td :class="{ 'text-body-tertiary': !distributorItem.is_enabled }">{{ distributorItem.updated_at ? new Date(distributorItem.updated_at).toLocaleString() : null }}</td>
 					</tr>
 				</tbody>
 			</table>
 
 			<div class="row">
 			<div class="col">
-				<PrimaryButton form="distributor-item-form" :disabled="form.processing">Save</PrimaryButton>
+				<PrimaryButton form="distributor-item-form" :disabled="formItems.processing">Save</PrimaryButton>
 			</div>
 			<div class="col text-success">
-				<template v-if="form.recentlySuccessful">Saved.</template>
+				<template v-if="formItems.recentlySuccessful">Saved.</template>
 			</div>
 			</div>
 		</div>
+		<DistributorItemForm v-if="modal" :currentDistributorItem="currentDistributorItem"/>
 	</Page>
 </template>

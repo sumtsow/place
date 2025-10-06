@@ -35,6 +35,7 @@ watch(
 		form.is_enabled = props.order ? props.order.is_enabled : false;
 		form.status = props.order ? props.order.status : 'undefined';
 		form.address = props.order ? props.order.address : '';
+		form.expired = props.order ? props.order.expired : null;
 		form.token = props.csrf_token;
 		form.clearErrors();
 });
@@ -102,6 +103,19 @@ const saveOrder = () => {
 								autocomplete="address"
 							/>
 							<InputError class="mt-2" :message="form.errors.address" />
+						</div>
+					
+						<div class="input-group row mb-3">
+							<InputLabel for="expired" value="Expired" class="col-3 text-end" />
+							<TextInput
+								id="expired"
+								type="datetime-local"
+								class="col"
+								v-model="form.expired"
+								autofocus
+								autocomplete="expired"
+							/>
+							<InputError class="mt-2" :message="form.errors.expired" />
 						</div>
 					</div>
 					<div class="row justify-content-end">

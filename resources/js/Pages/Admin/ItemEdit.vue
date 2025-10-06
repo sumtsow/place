@@ -10,21 +10,17 @@ defineProps({
 	item: {
         type: Object,
 	},
+	emptyItem: {
+        type: Object,
+	},
 	title: {
 		type: String,
 		default: 'Item Edit',
 	},
 });
 
-if (!props.item.id) props.item = {
-	id: 0,
-	name: '',	
-	is_enabled: false,
-	unit_id: 0,
-	description: '',
-	categories: [],
-	token: props.csrf_token,
-};
+if (!props.item.id) props.item = { ...props.emptyItem };
+
 </script>
 
 <template>

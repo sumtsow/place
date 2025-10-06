@@ -72,6 +72,7 @@ class ItemController extends Controller
     {
         return Inertia::render('Admin/ItemEdit', [
 			'item' => Item::with(['categories', 'mainCategory', 'unit'])->findOrFail($id),
+			'emptyItem' => Item::getEmptyModel(),
 			'categories' => Category::getPlainCatList(),
 			'units' => Unit::all(),
 		]);

@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class UpdateDistributorItemRequest extends FormRequest
+class UpdateDistributorItemsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,13 +23,8 @@ class UpdateDistributorItemRequest extends FormRequest
     public function rules(): array
     {
         return [
-			'id' => 'numeric|required',
-			'count' => 'numeric|required',
-			'delivery' => 'string|max:255|nullable',
-			'discount' => 'numeric|nullable',
-			'is_enabled' => 'boolean',
-			'price' => 'decimal:2,8',
-
+			'items' => 'array|nullable|required',
+			'distributor_id' => 'numeric|required',
         ];
     }
 }

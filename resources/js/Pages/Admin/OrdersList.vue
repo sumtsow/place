@@ -8,7 +8,7 @@ import { ref } from 'vue';
 
 const props = usePage().props;
 const modal = props.modal;
-const findModelById = ref(window.findModelById);
+const emptyOrder = {...props.order};
 
 defineProps({
     title: {
@@ -27,14 +27,13 @@ defineProps({
 	statuses: {
 		type: Array,
 	},
-	modal: {
-		type: Boolean,
-	},
 });
 
 const selectOrder = (ord) => {
 	if (ord) {
 		props.order = ord;
+	} else {
+		props.order = emptyOrder;
 	};
 };
 
@@ -68,7 +67,10 @@ const toggleState = (order) => {
 							<th>Customer</th>
 							<th>Enabled</th>
 							<th>Status</th>
+							<th>Total</th>
+							<th>Propositions</th>
 							<th>Address</th>
+							<th>Expired</th>
 							<th>Created</th>
 							<th>Updated</th>
 						</tr>
@@ -76,23 +78,26 @@ const toggleState = (order) => {
 					<tbody>
 						<tr v-for="order in orders">
 							<td>{{ order.id }}</td>
-							<td>{{ findModelById(customers, order.customer_id).name }}</td>
+							<td>{{ order.customer.user.lastname }} {{ order.customer.user.firstname }}</td>
 							<td>
 								<div class="d-inline-block form-check form-switch">
 								<CheckInput name="is_enabled" v-model="order.is_enabled" label="Enabled" @toggleState="toggleState(order)"/>
 								</div>
 							</td>
 							<td>
-								<template v-if="modal">
-									<Link data-bs-toggle="modal" data-bs-target="#orderFormModal" @click.prevent.stop="selectOrder(order)" :class="{ 'link-secondary': !order.is_enabled }">
-									{{ order.status }}
-									</Link>
-								</template>
+								<Link v-if="modal" data-bs-toggle="modal" data-bs-target="#orderFormModal" @click.prevent.stop="selectOrder(order)" :class="{ 'link-secondary': !order.is_enabled }">
+								{{ order.status }}
+								</Link>
 								<Link v-else :href="route('order.edit', [order.id])" :class="{ 'link-secondary': !order.is_enabled }">
 									{{ order.status }}
 								</Link>
 							</td>
+							<td :class="{ 'text-body-tertiary': !order.is_enabled }">{{ order.total }}</td>
+							<td :class="{ 'text-body-tertiary': !order.is_enabled }">
+								<Link class="btn btn-primary py-0 px-2" :href="route('proposition.admin', [order.id])">{{ order.propositions.length }}</Link>
+							</td>
 							<td :class="{ 'text-body-tertiary': !order.is_enabled }">{{ order.address }}</td>
+							<td :class="{ 'text-body-tertiary': !order.is_enabled, 'text-danger': order.is_enabled && ( new Date(order.expired) < new Date() ) }">{{ order.expired ? new Date(order.expired).toLocaleString() : null }}</td>
 							<td :class="{ 'text-body-tertiary': !order.is_enabled }">{{ new Date(order.created_at).toLocaleString() }}</td>
 							<td :class="{ 'text-body-tertiary': !order.is_enabled }">{{ new Date(order.updated_at).toLocaleString() }}</td>
 						</tr>

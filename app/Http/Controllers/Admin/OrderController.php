@@ -7,8 +7,13 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\UpdateOrderRequest;
+use App\Http\Requests\UpdateOrderItemRequest;
+use App\Http\Requests\UpdateOrderItemsRequest;
+use App\Http\Requests\UpdateOrderItemStateRequest;
+use App\Models\Distributor;
 use App\Models\Item;
 use App\Models\Order;
+use App\Models\Proposition;
 use App\Models\User;
 
 class OrderController
@@ -18,8 +23,10 @@ class OrderController
      */
     public function index()
     {
+		$orders = Order::with(['customer', 'customer.user'])->get();
+		Order::setTotals($orders);
         return Inertia::render('Admin/OrdersList', [
-			'orders' => Order::all(),
+			'orders' => $orders,
 			'order' => Order::getEmptyModel(),
 			'customers' => User::select('id', DB::raw("CONCAT(firstname, ' ', lastname) AS name"))
 				->whereHas('roles', function (Builder $query) {
@@ -49,6 +56,7 @@ class OrderController
 		$order->customer_id = $request->input('customer_id') ? $request->input('customer_id') : 0;
 		$order->is_enabled = $request->input('is_enabled') ? 1 : 0;
 		$order->status = $request->input('status') ? $request->input('status') : 'undefined';
+		$order->expired = $request->input('expired') ? $request->input('expired') : null;
 		$order->save();
     }
 
@@ -86,6 +94,7 @@ class OrderController
 		$order->customer_id = $request->input('customer_id') ? $request->input('customer_id') : $order->customer_id;
 		$order->is_enabled = $request->input('is_enabled') ? 1 : 0;
 		$order->status = $request->input('status') ? $request->input('status') : $order->status;
+		$order->expired = $request->input('expired') ? $request->input('expired') : $order->expired;
 		$order->save();
 	}
 

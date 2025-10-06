@@ -4,10 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Inertia\Inertia;
 use App\Http\Requests\UpdateDistributorRequest;
-use App\Http\Requests\UpdateDistributorItemRequest;
-use App\Http\Requests\UpdateDistributorItemStateRequest;
 use App\Models\Distributor;
-use App\Models\Item;
 
 class DistributorController
 {
@@ -17,7 +14,7 @@ class DistributorController
     public function index()
     {
         return Inertia::render('Admin/DistributorsList', [
-			'distributors' => Distributor::with(['items'])->get(),
+			'distributors' => Distributor::with(['distributorItems', 'distributorItems.item' ])->get(),
 			'distributor' => Distributor::getEmptyModel(),
 		]);
     }
@@ -54,12 +51,7 @@ class DistributorController
      */
     public function show(string $id)
     {
-		$distributor = Distributor::findOrFail($id);
-		$distributor->items->map(fn ($item) => $item->pivot->is_enabled = !!$item->pivot->is_enabled );
-		return Inertia::render('Admin/DistributorItems', [
-			'distributor' => $distributor,
-			'items' => Item::orderBy('name')->get(),
-		]);
+		//
     }
 
     /**
@@ -90,27 +82,6 @@ class DistributorController
 		$distributor->save();
 	}
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function updateItems(UpdateDistributorItemRequest $request)
-    {
-		$items = $request->input('items');
-		$distributor_id = $request->input('distributor_id');
-        $distributor = Distributor::findOrFail( $distributor_id );
-		$distributor->items()->sync( $items );
-    }
-
-    /**
-     * Update the specified resource`s pivot in storage.
-     */
-    public function updateItemState(UpdateDistributorItemStateRequest $request)
-    {
-        $distributor = Distributor::findOrFail( $request->input('distributor_id') );
-		$distributor->items()->updateExistingPivot( $request->input('item_id'), [
-			'is_enabled' => $request->input('is_enabled') ? 1 : 0,
-		]);
-    }
     /**
      * Remove the specified resource from storage.
      */

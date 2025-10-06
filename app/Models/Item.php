@@ -60,7 +60,7 @@ class Item extends Model
      */
     public function distributors(): BelongsToMany
     {
-        return $this->belongsToMany(Distributor::class, 'distributor_has_item')->withPivot('count', 'price', 'discount', 'delivery', 'is_enabled')->withTimestamps();
+		return $this->belongsToMany(Distributor::class, 'distributor_has_item')->using(DistributorItem::class)->withPivot('count', 'price', 'discount', 'delivery', 'is_enabled')->withTimestamps();
     }
 
 	/**

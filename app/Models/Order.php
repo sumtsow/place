@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+//use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Order extends Model
 {
@@ -12,11 +13,14 @@ class Order extends Model
 		'is_enabled' => 'boolean',
 	];
 
+	protected $with = ['propositions'];
+
 	private static $emptyModel = [
 		'id' => 0,
 		'customer_id' => 0,
 		'is_enabled' => false,
 		'status' => 'undefined',
+		'expired' => null,
 		'address' => '',
 	];
 
@@ -25,18 +29,36 @@ class Order extends Model
      */
     public function customer(): BelongsTo
     {
-        return $this->belongsTo(Role::class, 'customer_id')->withTimestamps();
+        return $this->belongsTo(Role::class, 'customer_id');
     }
 
 	/**
-     * Get the items contained in order
+     * Get the propositions contained in order
      */
-    public function items(): BelongsToMany
-    {
-        return $this->belongsToMany(Item::class, 'order_has_distributor_item')->withPivot('order_id', 'distributor_item_id', 'count', 'expired', 'is_enabled')->withTimestamps();
-    }
-
+	public function propositions(): HasMany
+	{
+		return $this->hasMany(Proposition::class);
+	}
+	
 	public static function getEmptyModel() {
 		return self::$emptyModel;
+	}
+
+	public function total() {
+		$total = 0;
+		$prop = [];
+		foreach($this->propositions as $proposition) {
+			if ( $proposition->is_enabled ) {
+				$total += $proposition->distributorItem->price * $proposition->count;
+				$prop[] = $proposition->distributorItem->id . ' - ' . $proposition->distributorItem->item->name . ' - ' . $proposition->distributorItem->price . ' x ' . $proposition->count;
+			}
+		}
+		return $total;
+	}
+
+	public static function setTotals($orders) {
+		foreach($orders as $order) {
+			$order->total = $order->total();
+		}
 	}
 }

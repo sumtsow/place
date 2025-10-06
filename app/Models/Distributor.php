@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+//use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Distributor extends Model
@@ -32,11 +32,20 @@ class Distributor extends Model
     }
 
 	/**
-     * Get the items selled by
+     * Get the items proposed by
      */
-    public function items(): BelongsToMany
+    /*public function items(): BelongsToMany
     {
-        return $this->belongsToMany(Item::class, 'distributor_has_item')->withPivot('count', 'price', 'discount', 'delivery', 'is_enabled')->withTimestamps();
+		return $this->belongsToMany(Item::class, 'distributor_has_item')->using(DistributorItem::class)->withPivot('count', 'price', 'discount', 'delivery', 'is_enabled')->withTimestamps();
+    }*/
+
+	/**
+     * Get the propositions selled by
+     */
+    public function distributorItems(): HasMany
+    {
+		return $this->hasMany(DistributorItem::class);
+		//return $this->belongsToMany(Proposition::class, 'distributor_has_item')->using(DistributorItem::class)->withPivot('count', 'price', 'discount', 'delivery', 'is_enabled');
     }
 
 	public static function getEmptyModel() {

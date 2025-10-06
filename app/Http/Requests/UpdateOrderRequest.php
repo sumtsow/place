@@ -28,6 +28,7 @@ class UpdateOrderRequest extends FormRequest
 			'address' => 'string|required',
 			'customer_id' => 'numeric|required',
 			'is_enabled' => 'boolean|required',
+			'expired' => 'date|nullable',
 			'status' => 'required|in:' . $statuses,
         ];
     }

@@ -28,7 +28,6 @@ const selectDistributor = (distr) => {
 	if (distr) {
 		props.distributor = distr;
 	};
-	return true;
 };
 
 </script>
@@ -76,7 +75,7 @@ const selectDistributor = (distr) => {
 							<td :class="{ 'text-body-tertiary': !distributor.is_enabled }">{{ distributor.email }}</td>
 							<td :class="{ 'text-body-tertiary': !distributor.is_enabled }">{{ distributor.phone }}</td>
 							<td :class="{ 'text-body-tertiary': !distributor.is_enabled }">
-								<Link class="btn btn-primary py-0 px-2" :href="route('distributor.show', [distributor.id])">{{ distributor.items.length }}</Link>
+								<Link class="btn btn-primary py-0 px-2" :href="route('distributor-item.admin', [distributor.id])">{{ distributor.distributor_items.length }}</Link>
 							</td>
 							<td :class="{ 'text-body-tertiary': !distributor.is_enabled }">
 								<span class="badge text-bg-success fs-6 fw-normal">{{ +distributor.like }}</span>
