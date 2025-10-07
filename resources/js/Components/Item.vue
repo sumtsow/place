@@ -62,9 +62,9 @@ defineProps({
 					<p>{{ item.description }}</p>
 				</div>
 				<div class="tab-pane fade" id="params-tab-pane" role="tabpanel" aria-labelledby="params-tab" tabindex="0">
-					<h6>Parameters</h6>
+					<h4>Parameters</h4>
 					<p>
-						<table v-if="item.parameters && item.parameters.length > 1" class="table table-striped">
+						<table v-if="item.parameters && item.parameters.length > 0" class="table table-striped">
 							<thead class="table-dark">
 								<tr>
 									<th>Parameter</th>
