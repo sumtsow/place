@@ -101,7 +101,6 @@ class ItemController extends Controller
 		$item->images = $request->input('images') ?? null;
 		$result = $item->save();
 		$item->updateCategories($request->input('categories'));
-		return false;
     }
 
     /**
@@ -109,7 +108,7 @@ class ItemController extends Controller
      */
     public function updateParams(UpdateItemParamRequest $request, string $id)
     {
-		return Item::with(['parameters'])->findOrFail($id)->updateParameters($request->input('parameters'));
+		Item::with(['parameters'])->findOrFail($id)->updateParameters($request->input('parameters'));
     }
 
     /**
