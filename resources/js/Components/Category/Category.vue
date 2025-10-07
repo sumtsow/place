@@ -36,8 +36,8 @@ defineProps({
 					<img :src="JSON.parse(item.images) ? '/storage/img/' + JSON.parse(item.images)[0] : '/storage/img/no-image.png'" class="card-img-top" :alt="'image-' + item.id" style="height: 128px; width: auto; margin: 30px auto;">
 					<div class="card-body">
 						<h5 class="card-title">{{ item.name }}</h5>
-						<p class="card-text">
-							<Link :href="route('item', [item.id])" class="stretched-link">
+						<p class="card-text text-truncate">
+							<Link :href="route('item', [item.id])" class="stretched-link text-decoration-none link-dark">
 								{{ item.description }}
 							</Link>
 						</p>

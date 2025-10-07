@@ -32,6 +32,14 @@ class Item extends Model
     }
 
 	/**
+     * Get the distributors who sell this item
+     */
+    public function distributorItems(): HasMany
+    {
+		return $this->hasMany(DistributorItem::class);
+    }
+
+	/**
      * Get the main category that contains the item
      */
     public function mainCategory(): BelongsToMany
@@ -60,7 +68,7 @@ class Item extends Model
      */
     public function distributors(): BelongsToMany
     {
-		return $this->belongsToMany(Distributor::class, 'distributor_has_item')->using(DistributorItem::class)->withPivot('count', 'price', 'discount', 'delivery', 'is_enabled')->withTimestamps();
+		return $this->belongsToMany(Distributor::class, 'distributor_has_item')->withPivot('count', 'price', 'discount', 'delivery', 'is_enabled');
     }
 
 	/**

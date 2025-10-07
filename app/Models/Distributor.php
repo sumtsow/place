@@ -32,20 +32,19 @@ class Distributor extends Model
     }
 
 	/**
-     * Get the items proposed by
+     * Get the items selled by
      */
-    /*public function items(): BelongsToMany
+    public function items(): BelongsToMany
     {
-		return $this->belongsToMany(Item::class, 'distributor_has_item')->using(DistributorItem::class)->withPivot('count', 'price', 'discount', 'delivery', 'is_enabled')->withTimestamps();
-    }*/
+        return $this->belongsToMany(Item::class, 'distributor_has_item')->withPivot('count', 'price', 'discount', 'delivery', 'is_enabled')->withTimestamps();
+    }
 
 	/**
-     * Get the propositions selled by
+     * Get the items selled by distributor
      */
     public function distributorItems(): HasMany
     {
 		return $this->hasMany(DistributorItem::class);
-		//return $this->belongsToMany(Proposition::class, 'distributor_has_item')->using(DistributorItem::class)->withPivot('count', 'price', 'discount', 'delivery', 'is_enabled');
     }
 
 	public static function getEmptyModel() {

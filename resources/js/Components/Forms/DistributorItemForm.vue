@@ -80,7 +80,7 @@ const saveDistributorItem = () => {
 						</div>
 
 						<div class="input-group row mb-3">
-							<InputLabel for="price" value="Price" class="col-3 text-end" />
+							<InputLabel for="price" :value="'Price, ' + props.currency" class="col-3 text-end" />
 							<TextInput
 								id="price"
 								type="text"
@@ -94,7 +94,7 @@ const saveDistributorItem = () => {
 						</div>
 
 						<div class="input-group row mb-3">
-							<InputLabel for="discount" value="Discount" class="col-3 text-end" />
+							<InputLabel for="discount" value="Discount, %" class="col-3 text-end" />
 							<TextInput
 								id="discount"
 								type="text"
@@ -108,7 +108,7 @@ const saveDistributorItem = () => {
 						</div>
 
 						<div class="input-group row mb-3">
-							<InputLabel for="delivery" value="Delivery" class="col-3 text-end" />
+							<InputLabel for="delivery" value="Delivery, days" class="col-3 text-end" />
 							<TextInput
 								id="delivery"
 								type="text"

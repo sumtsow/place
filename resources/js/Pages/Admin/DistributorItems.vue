@@ -33,11 +33,12 @@ defineProps({
 });
 
 const id = ref(0);
+const emptyDistributorItem = JSON.parse( JSON.stringify( props.currentDistributorItem ) );
 
 const addItem = () => {
 	if ( id == 0 ) return;
 	if ( !collectionHasModel( props.distributor.distributor_items, id ) ) {
-		let model = JSON.parse( JSON.stringify( props.emptyDistributorItem ) );
+		let model = JSON.parse( JSON.stringify( emptyDistributorItem ) );
 		if (model) {
 			model.item = findModelById( props.items, id.value );
 			model.item_id = model.item.id;
@@ -115,7 +116,7 @@ const toggleState = (di) => {
 							</Link>
 						</td>
 						<td :class="{ 'text-body-tertiary': !distributorItem.is_enabled }">{{ distributorItem.count }}</td>
-						<td :class="{ 'text-body-tertiary': !distributorItem.is_enabled }">{{ distributorItem.price }}</td>
+						<td :class="{ 'text-body-tertiary': !distributorItem.is_enabled }">{{ distributorItem.price }}&nbsp;{{ props.currency }}</td>
 						<td :class="{ 'text-body-tertiary': !distributorItem.is_enabled }">{{ distributorItem.discount }} %</td>
 						<td :class="{ 'text-body-tertiary': !distributorItem.is_enabled }">{{ distributorItem.delivery }}</td>
 						<td :class="{ 'text-body-tertiary': !distributorItem.is_enabled }">

@@ -44,7 +44,13 @@ class ItemController extends Controller
     {
 		$isAdmin = Auth::id() ? Auth::user()->can('admin', User::class) : false;
 		if ( $isAdmin ) {
-			$item = Item::with(['parameters', 'posts'])->findOrFail($id);
+			$item = Item::with([
+				'parameters',
+				'posts',
+				'distributors' => function (Builder $query) {
+					$query->orderBy('name');
+				},
+			])->findOrFail($id);
 		} else {
 			$item = Item::with([
 				'parameters',
@@ -53,7 +59,11 @@ class ItemController extends Controller
 				},
 				'posts.comments' => function (Builder $query) {
 					$query->where('is_enabled', 1);
-				}])->findOrFail($id);
+				},
+				'distributors' => function (Builder $query) {
+					$query->where('distributors.is_enabled', 1)->wherePivot('is_enabled', 1);
+				},
+				])->findOrFail($id);
 		}
 		foreach($item->posts as $post) {
 			$post->load([ 'user' => fn ($query) => $query->select(['id', 'firstname', 'lastname', 'patronymic']) ]);
