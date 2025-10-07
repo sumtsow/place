@@ -12,7 +12,7 @@ defineProps({
 
 <template>
     <Head :title="title" />
-    <div class="container-fluid bg-body m-3">
+    <div class="container-fluid bg-body">
 		<NavBar />
 		<main>
 			<slot />
