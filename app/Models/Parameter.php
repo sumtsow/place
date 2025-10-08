@@ -25,6 +25,14 @@ class Parameter extends Model
      */
     public function unit(): BelongsTo
     {
-        return $this->belongsTo(Unit::class, 'unit_id');
+        return $this->belongsTo(Unit::class);
+    }
+
+	/**
+     * Get the group that contains this parameter
+     */
+    public function group(): BelongsTo
+    {
+        return $this->belongsTo(Paramgroup::class, 'paramgroup_id');
     }
 }

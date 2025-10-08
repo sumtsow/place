@@ -45,7 +45,9 @@ class ItemController extends Controller
 		$isAdmin = Auth::id() ? Auth::user()->can('admin', User::class) : false;
 		if ( $isAdmin ) {
 			$item = Item::with([
-				'parameters',
+				'parameters.group' => function (Builder $query) {
+					$query->orderBy('order');
+				},
 				'posts',
 				'distributors' => function (Builder $query) {
 					$query->orderBy('name');
@@ -53,7 +55,9 @@ class ItemController extends Controller
 			])->findOrFail($id);
 		} else {
 			$item = Item::with([
-				'parameters',
+				'parameters.group' => function (Builder $query) {
+					$query->orderBy('order');
+				},
 				'posts' => function (Builder $query) {
 					$query->where('is_enabled', 1);
 				},

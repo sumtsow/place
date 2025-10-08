@@ -14,6 +14,9 @@ defineProps({
 		type: Object,
 	},
 });
+
+let groupId = 0;
+let isNew;
 </script>
 
 <template>
@@ -62,26 +65,37 @@ defineProps({
 					<p>{{ item.description }}</p>
 				</div>
 				<div class="tab-pane fade" id="params-tab-pane" role="tabpanel" aria-labelledby="params-tab" tabindex="0">
-				<template v-if="item.parameters && item.parameters.length > 0">
-					<h4 v-if="item.distributors.length">Parameters</h4>
-					<p>
+					<template v-if="item.parameters && item.parameters.length > 0">
+						<h4>Parameters</h4>
+						<span class="d-none">{{ isNew = true }}</span>
 						<table class="table table-striped">
-							<thead class="table-dark">
-								<tr>
-									<th>Parameter</th>
-									<th class="text-end">Value</th>
-								</tr>
-							</thead>
 							<tbody>
-								<tr v-for="parameter in item.parameters">
-									<template v-if="parameter.pivot && parameter.pivot.value">
+							<template v-for="parameter in item.parameters">
+								<template v-if="parameter.group">
+									<tr v-if="isNew">
+										<th class="table-dark" colspan="2">
+											{{ parameter.group ? parameter.group.name : '' }}
+										</th>
+										
+									</tr>
+									<span class="d-none">{{ groupId = isNew ? parameter.group.id : groupId }}
+										{{ isNew = ( groupId != parameter.group.id ) }}</span>
+								</template>
+								<template v-else>
+									<tr v-if="!isNew">
+										<th class="table-dark" colspan="2">Other</th>
+									</tr>
+									<span class="d-none">{{ isNew = true }}</span>
+								</template>
+								<template v-if="parameter.pivot && parameter.pivot.value">
+								<tr>
 									<td>{{ parameter.name }}</td>
 									<td class="text-end">{{ parameter.pivot.value }} {{ parameter.unit ? parameter.unit.name : ''}}</td>
-									</template>
 								</tr>
+								</template>
+							</template>
 							</tbody>
 						</table>
-					</p>
 					</template>
 				</div>
 				<div class="tab-pane fade" id="posts-tab-pane" role="tabpanel" aria-labelledby="posts-tab" tabindex="0">
