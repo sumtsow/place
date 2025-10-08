@@ -52,7 +52,7 @@ let addPost = () => {
 <template>
 	<div class="row">
 		<div class="col">
-			<h4>Posts:</h4>
+			<h4>Posts</h4>
 		</div>
 		<PostForm :modal="true" :item="item" :editedPost="editedPost" :comment="0" :isComment="isComment"/>
 	</div>

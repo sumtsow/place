@@ -33,7 +33,7 @@ defineProps({
 			</div>
 		</div>
 		<div class="col">
-			<h4>Prices:</h4>
+			<h4 v-if="item.distributors.length">Prices</h4>
 			<div v-for="distributor in item.distributors" class="row fs-5" :class="{ 'text-body-tertiary': !distributor.is_enabled || !distributor.pivot.is_enabled }">
 				<div class="col">
 					{{( (1 - 0.01 * distributor.pivot.discount) * distributor.pivot.price ).toFixed(2) }} {{ props.currency }}
@@ -43,7 +43,7 @@ defineProps({
 			</div>
 		</div>
 	</div>
-	<div class="row">
+	<div class="row my-3">
 		<div class="col">
 			<ul class="nav nav-tabs mb-3" id="itemTab" role="tablist">
 				<li class="nav-item" role="presentation">
@@ -58,13 +58,14 @@ defineProps({
 			</ul>
 			<div class="tab-content" id="itemTabContent">
 				<div class="tab-pane fade show active" id="desc-tab-pane" role="tabpanel" aria-labelledby="desc-tab" tabindex="0">
-					<h4>Description</h4>
+					<h4 v-if="item.description">Description</h4>
 					<p>{{ item.description }}</p>
 				</div>
 				<div class="tab-pane fade" id="params-tab-pane" role="tabpanel" aria-labelledby="params-tab" tabindex="0">
-					<h4>Parameters</h4>
+				<template v-if="item.parameters && item.parameters.length > 0">
+					<h4 v-if="item.distributors.length">Parameters</h4>
 					<p>
-						<table v-if="item.parameters && item.parameters.length > 0" class="table table-striped">
+						<table class="table table-striped">
 							<thead class="table-dark">
 								<tr>
 									<th>Parameter</th>
@@ -81,6 +82,7 @@ defineProps({
 							</tbody>
 						</table>
 					</p>
+					</template>
 				</div>
 				<div class="tab-pane fade" id="posts-tab-pane" role="tabpanel" aria-labelledby="posts-tab" tabindex="0">
 					<ItemPostList :item="item" :auth="auth" />
