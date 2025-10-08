@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -82,9 +83,23 @@ class Item extends Model
 	/**
      * Return all items.
      */
-	public static function getList($page = null)
+	public static function getList($category_id = null)
 	{
-		return self::orderBy('name')->with(['categories', 'mainCategory', 'unit', 'parameters', 'posts'])->paginate( env('ITEMS_PER_PAGE') )->withQueryString();
+		$items = [];
+		if ($category_id) {
+			$ids = 0;
+			$items = self::whereHas('categories', function (Builder $query) use ($category_id) {
+					$query->where('categories.id', '=', $category_id);
+				})
+				->orderBy('name')
+				->with([ 'categories', 'mainCategory', 'unit', 'parameters', 'posts' ])
+				->paginate( env('ITEMS_PER_PAGE') )
+				->withQueryString();
+		} else {
+			$items = self::orderBy('name')->with([ 'categories', 'mainCategory', 'unit', 'parameters', 'posts' ])->paginate( env('ITEMS_PER_PAGE') )->withQueryString();
+		}
+		//dd($items); die();
+		return $items;
 	}
 
 	/**

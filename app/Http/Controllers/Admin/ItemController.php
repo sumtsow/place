@@ -11,7 +11,6 @@ use App\Models\Unit;
 use App\Http\Requests\UpdateItemRequest;
 use App\Http\Requests\UpdateItemParamRequest;
 use App\Http\Requests\UpdateValueRequest;
-use \Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
@@ -19,10 +18,10 @@ class ItemController extends Controller
      * Display a listing of the resource.
 	 * @param \Illuminate\Http\Request $request
      */
-    public function index(Request $request)
+    public function index(string $category_id = '0')
     {
         return Inertia::render('Admin/ItemsList', [
-			'items' => Item::getList(),
+			'items' => Item::getList($category_id),
 			'item' => Item::getEmptyModel(),
 			'units' => Unit::all(),
 			'categories' => Category::getPlainCatList(),

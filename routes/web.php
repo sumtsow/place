@@ -42,7 +42,7 @@ Route::middleware(['auth', 'can:admin, App\Models\User'])->prefix('admin')->grou
 	Route::put('/distributor-item', [DistributorItemAdminController::class, 'update'])->name('distributor-item.update');
 	Route::put('/distributor-items', [DistributorItemAdminController::class, 'updateItems'])->name('distributor-items.update');
 	Route::put('/distributor-item/state', [DistributorItemAdminController::class, 'updateState'])->name('distributor-item.updateState');
-	Route::get('/items', [ItemAdminController::class, 'index'])->name('item.admin');
+	Route::get('/items/{category_id?}', [ItemAdminController::class, 'index'])->name('item.admin');
 	Route::get('/item/parameters/{id}', [ItemAdminController::class, 'show'])->name('item.show');
 	Route::put('/item/parameters/{id}', [ItemAdminController::class, 'updateParams'])->name('item-param.update');
 	Route::get('/item/value/{id}/{pid}', [ItemAdminController::class, 'editValue'])->name('value.edit');

@@ -75,9 +75,7 @@ class Category extends Model
      */
 	public static function getPlainCatList()
 	{
-		$cats = self::getCatList();
-		$list = self::getSubcategories($cats, 0);
-		return $list;
+		return self::getSubcategories(self::getCatList(), 0);
 	}
 
 	/**
@@ -93,6 +91,7 @@ class Category extends Model
 				'name' => $cat->name,
 				'level' => $level,
 				'hasChildren' => $hasChildren,
+				'itemCount' => $cat->items()->count(),
 			];
 			$sub = [];
 			if ($hasChildren) {

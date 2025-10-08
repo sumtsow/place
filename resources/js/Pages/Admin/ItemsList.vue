@@ -1,19 +1,26 @@
 <script setup>
 import Page from '@/Layouts/PageLayout.vue';
 import Breadcrumbs from '@/Components/Breadcrumbs.vue';
+import InputLabel from '@/Components/InputLabel.vue';
 import Item from '@/Pages/Admin/Item.vue';
 import ItemForm from '@/Components/Forms/ItemForm.vue';
-import { Link, usePage } from '@inertiajs/vue3';
+import SelectList from '@/Components/SelectList.vue';
+import { Link, useForm, usePage } from '@inertiajs/vue3';
+//import { ref } from 'vue';
 
 const props = usePage().props;
+let category_id = route().params.category_id ? route().params.category_id : 0;
 
 defineProps({
     title: {
         type: String,
 		default: 'Manage items',
     },
+	categories: {
+        type: Array,
+	},
 	items: {
-        type: Object,
+        type: Array,
 	},
 	item: {
         type: Object,
@@ -23,7 +30,7 @@ defineProps({
 	},
 });
 
-let selectItem = (item) => {
+const selectItem = (item) => {
 	if ( !item ) {
 		item = {
 			id: 0,
@@ -37,7 +44,10 @@ let selectItem = (item) => {
 	};
 	item.is_enabled = !!item.is_enabled;
 	props.item = item;
-	return false;
+};
+
+const selectCategory = () => {
+	if ( category_id) useForm().get( route('item.admin', category_id) );
 };
 </script>
 
@@ -45,13 +55,25 @@ let selectItem = (item) => {
 	<Page :title="title">
 		<Breadcrumbs :links="[ { title: 'Dashboard', route: 'dashboard' }, { title: title, route: false } ]" />
 		<h2>Items</h2>
+		<div class="input-group row mb-3">
+			<InputLabel for="category_id" value="Category" class="col-3 text-end" />
+			<SelectList
+				:options="categories"
+				id="category_id"
+				class="col"
+				v-model="category_id"
+				children="itemCount"
+				defaultOption="Select..."
+				@change="selectCategory"
+			/>
+		</div>
 		<div class="row justify-content-end">
 			<div class="col-auto">
 				<Link v-if="modal" data-bs-toggle="modal" data-bs-target="#itemFormModal" @click.prevent.stop="selectItem(0)" class="btn btn-primary m-3">Add new item</Link>
 				<Link v-else @click.prevent.stop="selectItem(0)" :href="route('item.create')" class="btn btn-primary m-3">Add new item</Link>
 			</div>
 		</div>
-		<div v-if="items.last_page > 1" class="row">
+		<div v-if="items.last_page > 1" class="row my-5">
 			<div class="col w-100 text-center">
 				<Link v-for=" (link, index) in items.links" :key="index" :href="link.url" class="btn btn-outline-primary mx-1" :class="{ active: link.active }" v-html="link.label"/>
 			</div>
@@ -113,7 +135,7 @@ let selectItem = (item) => {
 			</tr>
 			</tbody>
 		</table>
-		<div v-if="items.last_page > 1" class="row">
+		<div v-if="items.last_page > 1" class="row my-5">
 			<div class="col w-100 text-center">
 				<Link v-for=" (link, index) in items.links" :key="index" :href="link.url" class="btn btn-outline-primary mx-1" :class="{ active: link.active }" v-html="link.label"/>
 			</div>

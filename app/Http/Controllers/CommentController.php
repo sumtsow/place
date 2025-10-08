@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use App\Http\Requests\UpdateCommentRequest;
 use App\Models\Comment;
-use App\Models\Post;
 
 class CommentController extends Controller
 {

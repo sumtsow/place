@@ -69,7 +69,7 @@ const saveOrder = () => {
 							<InputLabel for="customer_id" value="Customer" class="col-3 text-end" />
 							<SelectList
 								:options="customers"
-								id="unit_id"
+								id="customer_id"
 								class="col"
 								v-model="form.customer_id"
 								autofocus
