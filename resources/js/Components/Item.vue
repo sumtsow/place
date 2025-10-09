@@ -13,10 +13,13 @@ defineProps({
 	auth: {
 		type: Object,
 	},
+	emptyParamGroup: {
+		type: String,
+	},
 });
 
 let groupId = 0;
-let isNew;
+let isNew = false;
 </script>
 
 <template>
@@ -61,31 +64,29 @@ let isNew;
 			</ul>
 			<div class="tab-content" id="itemTabContent">
 				<div class="tab-pane fade show active" id="desc-tab-pane" role="tabpanel" aria-labelledby="desc-tab" tabindex="0">
-					<h4 v-if="item.description">Description</h4>
 					<p>{{ item.description }}</p>
 				</div>
 				<div class="tab-pane fade" id="params-tab-pane" role="tabpanel" aria-labelledby="params-tab" tabindex="0">
 					<template v-if="item.parameters && item.parameters.length > 0">
-						<h4>Parameters</h4>
-						<span class="d-none">{{ isNew = true }}</span>
 						<table class="table table-striped">
 							<tbody>
 							<template v-for="parameter in item.parameters">
 								<template v-if="parameter.group">
+									<span class="d-none">{{ isNew = groupId != parameter.group.id }} {{ groupId = isNew ? parameter.group.id : groupId }}</span>
 									<tr v-if="isNew">
 										<th class="table-dark" colspan="2">
-											{{ parameter.group ? parameter.group.name : '' }}
+											{{ parameter.group.name }}
 										</th>
-										
 									</tr>
-									<span class="d-none">{{ groupId = isNew ? parameter.group.id : groupId }}
-										{{ isNew = ( groupId != parameter.group.id ) }}</span>
 								</template>
 								<template v-else>
-									<tr v-if="!isNew">
-										<th class="table-dark" colspan="2">Other</th>
+									<span class="d-none">{{ isNew = groupId != 0 }} {{ groupId = 0 }}</span>
+									<tr v-if="isNew">
+										<th class="table-dark" colspan="2">
+											{{ props.emptyParamGroup }}
+										</th>
 									</tr>
-									<span class="d-none">{{ isNew = true }}</span>
+									<span class="d-none">{{ isNew = false }}</span>
 								</template>
 								<template v-if="parameter.pivot && parameter.pivot.value">
 								<tr>

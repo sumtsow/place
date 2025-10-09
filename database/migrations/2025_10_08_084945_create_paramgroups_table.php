@@ -19,11 +19,9 @@ return new class extends Migration
             $table->timestamps();
         });
 		Schema::table('parameters', function (Blueprint $table) {
-			$table->after('unit_id', function (Blueprint $tablename) {
-				$tablename->foreignId('paramgroup_id')->nullable()->constrained(
-					table: 'paramgroup', indexName: 'parameter_group_id'
-				)->onUpdate('cascade')->onDelete('set null');
-			});
+			$table->foreignId('paramgroup_id')->after('unit_id')->nullable()->constrained(
+				table: 'paramgroups', indexName: 'parameter_group_id'
+			)->onUpdate('cascade')->onDelete('set null');
 		});
     }
 

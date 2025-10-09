@@ -6,7 +6,6 @@ import Item from '@/Pages/Admin/Item.vue';
 import ItemForm from '@/Components/Forms/ItemForm.vue';
 import SelectList from '@/Components/SelectList.vue';
 import { Link, useForm, usePage } from '@inertiajs/vue3';
-//import { ref } from 'vue';
 
 const props = usePage().props;
 let category_id = route().params.category_id ? route().params.category_id : 0;

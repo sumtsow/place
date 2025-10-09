@@ -45,9 +45,10 @@ class ItemController extends Controller
 		$isAdmin = Auth::id() ? Auth::user()->can('admin', User::class) : false;
 		if ( $isAdmin ) {
 			$item = Item::with([
-				'parameters.group' => function (Builder $query) {
-					$query->orderBy('order');
+				'parameters' => function (Builder $query) {
+					$query->leftJoin('paramgroups', 'paramgroups.id', '=', 'parameters.paramgroup_id')->orderByRaw('ISNULL(paramgroups.order), paramgroups.order, parameters.order');
 				},
+				'parameters.group',
 				'posts',
 				'distributors' => function (Builder $query) {
 					$query->orderBy('name');
@@ -79,6 +80,7 @@ class ItemController extends Controller
 			'item' => $item,
 			'emptyPost' => Post::getEmptyModel(),
 			'emptyComment' => Comment::getEmptyModel(),
+			'emptyParamGroup' => config('app.emptyParamGroup'),
 			'links' => $item->getCategoryLinks(),
 		]);
     }

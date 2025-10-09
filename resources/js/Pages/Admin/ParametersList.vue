@@ -21,23 +21,19 @@ defineProps({
 	empty: {
         type: String,
     },
+	groups: {
+        type: Array,
+    },
+	units: {
+        type: Array,
+    },
 	modal: {
 		type: Boolean,
 	},
 });
 
-let selectParameter = (parameter) => {
-	if ( !parameter ) {
-		parameter = {
-			id: 0,
-			name: '',
-			is_enabled: false,
-			unit_id: 0,
-		}
-	};
-	parameter.is_enabled = !!parameter.is_enabled;
-	props.parameter = parameter;
-	return true;
+let selectParameter = (param) => {
+	if ( param ) props.parameter = param;
 };
 </script>
 
@@ -61,6 +57,8 @@ let selectParameter = (parameter) => {
 				<tr>
 					<th>Id</th>
 					<th>Name</th>
+					<th>Order</th>
+					<th>Group</th>
 					<th>Unit</th>
 					<th>Enabled</th>
 					<th>Created</th>
@@ -80,6 +78,8 @@ let selectParameter = (parameter) => {
 						{{ parameter.name }}
 					</Link>
 				</td>
+				<td :class="{ 'text-body-tertiary': !parameter.is_enabled }">{{ parameter.order }}</td>
+				<td :class="{ 'text-body-tertiary': !parameter.is_enabled }">{{ parameter.paramgroup_id }}</td>
 				<td :class="{ 'text-danger': !parameter.unit, 'text-body-tertiary': !parameter.is_enabled }">{{ parameter.unit ? parameter.unit.name : empty }}</td>
 				<td :class="{ 'text-body-tertiary': !parameter.is_enabled }">{{ +parameter.is_enabled }}</td>
 				<td :class="{ 'text-body-tertiary': !parameter.is_enabled }">{{ new Date(parameter.created_at).toLocaleString() }}</td>

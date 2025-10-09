@@ -12,6 +12,14 @@ class Parameter extends Model
 		'is_enabled' => 'boolean',
 	];
 
+	private static $emptyModel = [
+		'unit_id' => 0,
+		'paramgroup_id' => 0,
+		'name' => '',
+		'order' => 0,
+		'is_enabled' => '0',
+	];
+
 	/**
      * Get the items that use with this parameter
      */
@@ -35,4 +43,8 @@ class Parameter extends Model
     {
         return $this->belongsTo(Paramgroup::class, 'paramgroup_id');
     }
+
+	public static function getEmptyModel() {
+		return self::$emptyModel;
+	}
 }

@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\DistributorController as DistributorAdminControll
 use App\Http\Controllers\Admin\DistributorItemController as DistributorItemAdminController;
 use App\Http\Controllers\Admin\ItemController as ItemAdminController;
 use App\Http\Controllers\Admin\ParameterController as ParameterAdminController;
+use App\Http\Controllers\Admin\ParamGroupController as ParamGroupAdminController;
 use App\Http\Controllers\Admin\PropositionController as PropositionAdminController;
 use App\Http\Controllers\Admin\OrderController as OrderAdminController;
 use App\Http\Controllers\Admin\UnitController as UnitAdminController;
@@ -69,6 +70,10 @@ Route::middleware(['auth', 'can:admin, App\Models\User'])->prefix('admin')->grou
 	Route::get('/parameter/{id}', [ParameterAdminController::class, 'edit'])->name('parameter.edit');
 	Route::put('/parameter/0', [ParameterAdminController::class, 'store'])->name('parameter.store');
 	Route::put('/parameter/{id}', [ParameterAdminController::class, 'update'])->name('parameter.update');
+	Route::get('/param-group', [ParamGroupAdminController::class, 'index'])->name('param-group.admin');
+	Route::get('/param-group/{id}', [ParamGroupAdminController::class, 'edit'])->name('param-group.edit');
+	Route::put('/param-group/0', [ParamGroupAdminController::class, 'store'])->name('param-group.store');
+	Route::put('/param-group/{id}', [ParamGroupAdminController::class, 'update'])->name('param-group.update');
 	Route::get('/units', [UnitAdminController::class, 'index'])->name('unit.admin');
 	Route::get('/unit/0', [UnitAdminController::class, 'create'])->name('unit.create');
 	Route::get('/unit/{id}', [UnitAdminController::class, 'edit'])->name('unit.edit');

@@ -50,12 +50,7 @@ let addPost = () => {
 </script>
 
 <template>
-	<div class="row">
-		<div class="col">
-			<h4>Posts</h4>
-		</div>
-		<PostForm :modal="true" :item="item" :editedPost="editedPost" :comment="0" :isComment="isComment"/>
-	</div>
+	<PostForm :modal="true" :item="item" :editedPost="editedPost" :comment="0" :isComment="isComment"/>
 	<div class="row row-cols-1 mx-0">
 		<template v-if="item.posts && item.posts.length">
 			<PostCard v-for="post in item.posts" :post="post" :auth="auth" @addComment="addComment(post.id)" />

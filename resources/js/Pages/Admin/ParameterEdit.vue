@@ -10,19 +10,21 @@ defineProps({
 	parameter: {
         type: Object,
 	},
+	emptyParam: {
+        type: Object,
+	},
+	groups: {
+        type: Array,
+    },
+	units: {
+        type: Array,
+    },
 	title: {
 		type: String,
 		default: 'Parameter Edit',
 	},
 });
 
-if ( !props.parameter.id ) props.parameter = {
-	id: 0,
-	name: '',	
-	is_enabled: false,
-	unit_id: 0,
-	token: props.csrf_token,
-};
 </script>
 
 <template>

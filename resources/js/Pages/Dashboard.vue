@@ -22,6 +22,7 @@ defineProps({
 			<Link class="list-group-item" :href="route('order.admin')">Manage Orders</Link>
 			<Link class="list-group-item" :href="route('unit.admin')">Manage Measuring Units</Link>
 			<Link class="list-group-item" :href="route('parameter.admin')">Manage Parameters</Link>
+			<Link class="list-group-item" :href="route('param-group.admin')">Manage Groups of parameters</Link>
 		</div>
 	</Page>
 </template>

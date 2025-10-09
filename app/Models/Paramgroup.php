@@ -11,8 +11,18 @@ class Paramgroup extends Model
 		'is_enabled' => 'boolean',
 	];
 
+	private static $emptyModel = [
+		'name' => '',
+		'order' => 0,
+		'is_enabled' => false,
+	];
+
+	public static function getEmptyModel() {
+		return self::$emptyModel;
+	}
+
 	/**
-     * Get the items that use with this parameter
+     * Get the collection of parameters that group contains
      */
     public function parameters(): HasMany
     {

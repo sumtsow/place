@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Inertia\Inertia;
 use App\Models\Parameter;
+use App\Models\Paramgroup;
 use App\Models\Unit;
 use App\Http\Requests\UpdateParameterRequest;
 
@@ -16,16 +17,12 @@ class ParameterController extends Controller
      */
     public function index()
     {
-		$emptyParameter = [
-			'unit_id' => 0,
-			'name' => '',
-			'is_enabled' => '0',
-		];
         return Inertia::render('Admin/ParametersList', [
 			'parameters' => Parameter::with(['unit'])->paginate( env('ITEMS_PER_PAGE') )->withQueryString(),
-			'parameter' => $emptyParameter,
+			'parameter' => Parameter::getEmptyModel(),
 			'empty' => config('app.emptyParameter'),
 			'units' => Unit::all(),
+			'groups' => Paramgroup::orderBy('order')->get(),
 		]);
     }
 
@@ -47,7 +44,9 @@ class ParameterController extends Controller
     {
         $parameter = new Parameter();
 		$parameter->unit_id = $request->input('unit_id') ? $request->input('unit_id') : null;
+		$parameter->paramgroup_id = $request->input('paramgroup_id') ? $request->input('paramgroup_id') : null;
 		$parameter->name = $request->input('name');
+		$parameter->order = $request->input('order');
 		$parameter->is_enabled = $request->input('is_enabled') ? 1 : 0;
 		$parameter->save();
     }
@@ -68,6 +67,8 @@ class ParameterController extends Controller
         return Inertia::render('Admin/ParameterEdit', [
 			'parameter' => Parameter::with(['unit'])->findOrFail($id),
 			'units' => Unit::all(),
+			'groups' => Paramgroup::orderBy('order')->get(),
+			'emptyParam' => Parameter::getEmptyModel(),
 		]);
     }
 
@@ -78,6 +79,8 @@ class ParameterController extends Controller
     {
 		$parameter = Parameter::findOrFail($id);
 		$parameter->unit_id = $request->input('unit_id') ? $request->input('unit_id') : null;
+		$parameter->paramgroup_id = $request->input('paramgroup_id') ? $request->input('paramgroup_id') : null;
+		$parameter->order = $request->input('order');
 		$parameter->name = $request->input('name');
 		$parameter->is_enabled = $request->input('is_enabled') ? 1 : 0;
 		$parameter->save();
