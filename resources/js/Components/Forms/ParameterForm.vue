@@ -35,7 +35,9 @@ watch(
 });
 
 const saveParameter = () => {
-	return !!form.id ? form.put( route('parameter.update')) : form.put(route('parameter.store'));
+	let result = !!form.id ? form.put( route('parameter.update')) : form.put(route('parameter.store'));
+	props.parameter = props.emptyParam;
+	return result;
 };
 </script>
 
@@ -120,7 +122,7 @@ const saveParameter = () => {
 					</div>
 					<div class="row justify-content-end">
 						<div class="col-2 m-4">
-						<PrimaryButton :disabled="form.processing">Save</PrimaryButton>
+						<PrimaryButton :disabled="form.processing" data-bs-dismiss="modal" >Save</PrimaryButton>
 							<p v-if="form.recentlySuccessful" class="text-success">
 								Saved
 							</p>

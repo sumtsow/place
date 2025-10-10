@@ -7,6 +7,7 @@ import ParameterForm from '@/Components/Forms/ParameterForm.vue';
 import { Link, useForm, usePage } from '@inertiajs/vue3';
 
 const props = usePage().props;
+const emptyParam = JSON.parse( JSON.stringify( props.parameter ) );
 
 defineProps({
     title: {
