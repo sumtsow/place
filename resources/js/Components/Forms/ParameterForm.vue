@@ -35,9 +35,8 @@ watch(
 });
 
 const saveParameter = () => {
-	let result = !!form.id ? form.put( route('parameter.update')) : form.put(route('parameter.store'));
-	props.parameter = props.emptyParam;
-	return result;
+	!!form.id ? form.put( route('parameter.update')) : form.put(route('parameter.store'));
+	props.parameter = JSON.parse( JSON.stringify( props.emptyParam ) );
 };
 </script>
 
