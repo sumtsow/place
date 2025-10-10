@@ -50,7 +50,8 @@ let selectValue = (pivot) => {
 };
 
 let saveParameters = () => {
-	return form.put( route( 'item-param.update', [ props.item.id ] ) );
+	form.put( route( 'item-param.update', [ props.item.id ] ) );
+	value.value = {};
 };
 
 </script>

@@ -7,7 +7,6 @@ import ParameterForm from '@/Components/Forms/ParameterForm.vue';
 import { Link, useForm, usePage } from '@inertiajs/vue3';
 
 const props = usePage().props;
-const emptyParam = JSON.parse( JSON.stringify( props.parameter ) );
 
 defineProps({
     title: {
@@ -106,6 +105,6 @@ const toggleState = (group) => {
 				<Link v-for=" (link, index) in parameters.links" :key="index" :href="link.url" class="btn btn-outline-primary mx-1" :class="{ active: link.active }" v-html="link.label"/>
 			</div>
 		</div>
-		<ParameterForm v-if="modal" :parameter="parameter"/>
+		<ParameterForm v-if="modal" :parameter="parameter" />
 	</Page>
 </template>

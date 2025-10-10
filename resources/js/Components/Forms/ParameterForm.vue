@@ -10,6 +10,7 @@ import { Link, useForm, usePage } from '@inertiajs/vue3';
 
 const props = usePage().props;
 const modal = props.modal;
+const emptyParam = JSON.parse( JSON.stringify( props.parameter ) );
 
 props.parameter.token = props.csrf_token;
 
@@ -36,7 +37,7 @@ watch(
 
 const saveParameter = () => {
 	!!form.id ? form.put( route('parameter.update')) : form.put(route('parameter.store'));
-	props.parameter = JSON.parse( JSON.stringify( props.emptyParam ) );
+	props.parameter = JSON.parse( JSON.stringify( emptyParam ) );
 };
 </script>
 

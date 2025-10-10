@@ -30,11 +30,11 @@ watch(
 		valueForm.item_id = props.value ? props.value.item_id : 0;
 		valueForm.parameter_id = props.value ? props.value.parameter_id : 0;
 		valueForm.value = props.value ? props.value.value : '';
-		//valueForm.token = props.csrf_token;
 		valueForm.clearErrors();
 });
 
 let saveValue = () => {
+	props.value = {};
 	return valueForm.put( route('value.update') );
 };
 </script>
