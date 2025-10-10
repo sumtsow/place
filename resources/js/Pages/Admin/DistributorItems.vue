@@ -63,7 +63,7 @@ const toggleState = (di) => {
 		item_id: di.item_id,
 		distributor_id: di.distributor_id,
 		is_enabled: !!di.is_enabled,
-	}).put( route('distributor-item.updateState') );
+	}).put( route('distributor-item.update-state') );
 };
 </script>
 

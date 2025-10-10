@@ -1,9 +1,10 @@
 <script setup>
 import Page from '@/Layouts/PageLayout.vue';
 import Breadcrumbs from '@/Components/Breadcrumbs.vue';
+import CheckInput from '@/Components/CheckInput.vue';
 import Parameter from '@/Pages/Admin/Parameter.vue';
 import ParameterForm from '@/Components/Forms/ParameterForm.vue';
-import { Link, usePage } from '@inertiajs/vue3';
+import { Link, useForm, usePage } from '@inertiajs/vue3';
 
 const props = usePage().props;
 
@@ -34,6 +35,14 @@ defineProps({
 
 let selectParameter = (param) => {
 	if ( param ) props.parameter = param;
+};
+
+const toggleState = (group) => {
+	if (!group) return;
+	useForm({
+		id: group.id,
+		is_enabled: !!group.is_enabled,
+	}).put( route('parameter.update-state') );
 };
 </script>
 
@@ -79,9 +88,13 @@ let selectParameter = (param) => {
 					</Link>
 				</td>
 				<td :class="{ 'text-body-tertiary': !parameter.is_enabled }">{{ parameter.order }}</td>
-				<td :class="{ 'text-body-tertiary': !parameter.is_enabled }">{{ parameter.paramgroup_id }}</td>
+				<td :class="{ 'text-danger': !parameter.paramgroup_id && parameter.is_enabled, 'text-body-tertiary': !parameter.is_enabled }">{{ parameter.paramgroup_id ? parameter.group.name : empty }}</td>
 				<td :class="{ 'text-danger': !parameter.unit, 'text-body-tertiary': !parameter.is_enabled }">{{ parameter.unit ? parameter.unit.name : empty }}</td>
-				<td :class="{ 'text-body-tertiary': !parameter.is_enabled }">{{ +parameter.is_enabled }}</td>
+				<td :class="{ 'text-body-tertiary': !parameter.is_enabled }">
+				<div class="d-inline-block form-check form-switch">
+					<CheckInput name="is_enabled" v-model="parameter.is_enabled" label="Enabled" @toggleState="toggleState(parameter)"/>
+				</div>
+				</td>
 				<td :class="{ 'text-body-tertiary': !parameter.is_enabled }">{{ new Date(parameter.created_at).toLocaleString() }}</td>
 				<td :class="{ 'text-body-tertiary': !parameter.is_enabled }">{{ new Date(parameter.updated_at).toLocaleString() }}</td>
 			</tr>

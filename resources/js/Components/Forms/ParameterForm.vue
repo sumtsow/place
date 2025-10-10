@@ -35,7 +35,7 @@ watch(
 });
 
 const saveParameter = () => {
-	return !!form.id ? form.put( route('parameter.update', [form.id])) : form.put(route('parameter.store'));
+	return !!form.id ? form.put( route('parameter.update')) : form.put(route('parameter.store'));
 };
 </script>
 

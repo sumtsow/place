@@ -42,7 +42,7 @@ Route::middleware(['auth', 'can:admin, App\Models\User'])->prefix('admin')->grou
 	Route::get('/distributor-item/{id}', [DistributorItemAdminController::class, 'edit'])->name('distributor-item.edit');
 	Route::put('/distributor-item', [DistributorItemAdminController::class, 'update'])->name('distributor-item.update');
 	Route::put('/distributor-items', [DistributorItemAdminController::class, 'updateItems'])->name('distributor-items.update');
-	Route::put('/distributor-item/state', [DistributorItemAdminController::class, 'updateState'])->name('distributor-item.updateState');
+	Route::put('/distributor-item/state', [DistributorItemAdminController::class, 'updateState'])->name('distributor-item.update-state');
 	Route::get('/items/{category_id?}', [ItemAdminController::class, 'index'])->name('item.admin');
 	Route::get('/item/parameters/{id}', [ItemAdminController::class, 'show'])->name('item.show');
 	Route::put('/item/parameters/{id}', [ItemAdminController::class, 'updateParams'])->name('item-param.update');
@@ -69,7 +69,8 @@ Route::middleware(['auth', 'can:admin, App\Models\User'])->prefix('admin')->grou
 	Route::get('/parameter/0', [ParameterAdminController::class, 'create'])->name('parameter.create');
 	Route::get('/parameter/{id}', [ParameterAdminController::class, 'edit'])->name('parameter.edit');
 	Route::put('/parameter/0', [ParameterAdminController::class, 'store'])->name('parameter.store');
-	Route::put('/parameter/{id}', [ParameterAdminController::class, 'update'])->name('parameter.update');
+	Route::put('/parameter', [ParameterAdminController::class, 'update'])->name('parameter.update');
+	Route::put('/parameter/state/', [ParameterAdminController::class, 'updateState'])->name('parameter.update-state');
 	Route::get('/param-group', [ParamGroupAdminController::class, 'index'])->name('param-group.admin');
 	Route::get('/param-group/{id}', [ParamGroupAdminController::class, 'edit'])->name('param-group.edit');
 	Route::put('/param-group/0', [ParamGroupAdminController::class, 'store'])->name('param-group.store');

@@ -8,6 +8,7 @@ use App\Models\Parameter;
 use App\Models\Paramgroup;
 use App\Models\Unit;
 use App\Http\Requests\UpdateParameterRequest;
+use App\Http\Requests\UpdateParameterStateRequest;
 
 class ParameterController extends Controller
 {
@@ -18,7 +19,7 @@ class ParameterController extends Controller
     public function index()
     {
         return Inertia::render('Admin/ParametersList', [
-			'parameters' => Parameter::with(['unit'])->paginate( env('ITEMS_PER_PAGE') )->withQueryString(),
+			'parameters' => Parameter::with(['unit', 'group'])->paginate( env('ITEMS_PER_PAGE') )->withQueryString(),
 			'parameter' => Parameter::getEmptyModel(),
 			'empty' => config('app.emptyParameter'),
 			'units' => Unit::all(),
@@ -75,13 +76,23 @@ class ParameterController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateParameterRequest $request, string $id)
+    public function update(UpdateParameterRequest $request)
     {
-		$parameter = Parameter::findOrFail($id);
+		$parameter = Parameter::findOrFail($request->input('id'));
 		$parameter->unit_id = $request->input('unit_id') ? $request->input('unit_id') : null;
 		$parameter->paramgroup_id = $request->input('paramgroup_id') ? $request->input('paramgroup_id') : null;
 		$parameter->order = $request->input('order');
 		$parameter->name = $request->input('name');
+		$parameter->is_enabled = $request->input('is_enabled') ? 1 : 0;
+		$parameter->save();
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function updateState(UpdateParameterStateRequest $request)
+    {
+		$parameter = Parameter::findOrFail($request->input('id'));
 		$parameter->is_enabled = $request->input('is_enabled') ? 1 : 0;
 		$parameter->save();
     }

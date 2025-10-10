@@ -13,6 +13,7 @@ class Parameter extends Model
 	];
 
 	private static $emptyModel = [
+		'id' => 0,
 		'unit_id' => 0,
 		'paramgroup_id' => 0,
 		'name' => '',
