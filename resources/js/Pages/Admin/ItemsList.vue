@@ -29,19 +29,12 @@ defineProps({
 	},
 });
 
+const emptyItem = JSON.parse( JSON.stringify( props.item ) );
+
 const selectItem = (item) => {
 	if ( !item ) {
-		item = {
-			id: 0,
-			name: '',
-			is_enabled: false,
-			unit_id: 0,
-			description: '',
-			images: '',
-			categories: [],
-		}
+		item = JSON.parse( JSON.stringify( emptyItem.value ) );
 	};
-	item.is_enabled = !!item.is_enabled;
 	props.item = item;
 };
 
@@ -85,6 +78,7 @@ const selectCategory = () => {
 					<th>Description</th>
 					<th>Images</th>
 					<th>Unit</th>
+					<th>Likes</th>
 					<th>Enabled</th>
 					<th>Category</th>
 					<th>Parameters</th>
@@ -113,6 +107,7 @@ const selectCategory = () => {
 					</p>
 				</td>
 				<td>{{ item.unit.name }}</td>
+				<td>{{ item.like }}</td>
 				<td>{{ +item.is_enabled }}</td>
 				<td>
 					<template v-for="cat in item.categories">

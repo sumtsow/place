@@ -11,14 +11,18 @@ defineProps({
         type: Boolean,
     },
     categories: {
-        type: Object,
+        type: Array,
         required: true,
     },
+	items: {
+		type: Object,
+		required: true,
+	},
 });
 </script>
 
 <template>
 	<Page title="Home">
-		<CategoriesList :categories="categories"/>
+		<CategoriesList :categories="categories" :items="items"/>
 	</Page>
 </template>

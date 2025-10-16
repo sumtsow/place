@@ -28,6 +28,7 @@ watch(
 	() => {
 		form.id = props.item ? props.item.id : 0;
 		form.name = props.item ? props.item.name : '';
+		form.like = props.item ? props.item.like : 0;
 		form.is_enabled = props.item ? props.item.is_enabled : false;
 		form.unit_id = props.item ? props.item.unit_id : 0;
 		form.description = props.item ? props.item.description : '';
@@ -121,6 +122,20 @@ let toggleSwitch = ( catId ) => {
 								autocomplete="name"
 							/>
 							<InputError class="mt-2" :message="form.errors.name" />
+						</div>
+
+						<div class="input-group row mb-3">
+							<InputLabel for="like" value="Likes" class="col-3 text-end" />
+							<TextInput
+								id="like"
+								type="number"
+								class="col"
+								v-model="form.like"
+								required
+								autofocus
+								autocomplete="like"
+							/>
+							<InputError class="mt-2" :message="form.errors.like" />
 						</div>
 
 						<div class="input-group row mb-3">

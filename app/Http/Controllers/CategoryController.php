@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Models\Category;
+use App\Models\Item;
 
 class CategoryController extends Controller
 {
@@ -15,7 +16,8 @@ class CategoryController extends Controller
     public function index()
     {
 		return Inertia::render('Home', [
-			'categories' => Category::where('category_id', NULL)->with('subcategories')->get(),
+			'categories' => Category::getCatList(),
+			'items' => Item::getMainPageItems(),
 		]);
     }
 

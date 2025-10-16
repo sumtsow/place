@@ -46,10 +46,11 @@ class ItemController extends Controller
         $item = new Item();
 		$item->unit_id = $request->input('unit_id') ? $request->input('unit_id') : null;
 		$item->name = $request->input('name');
+		$item->like = $request->input('like');
 		$item->is_enabled = $request->input('is_enabled') ? 1 : 0;
 		$item->description = $request->input('description') ?? null;
 		$item->images = $request->input('images') ?? null;
-		$result = $item->save();
+		$item->save();
 		$item->updateCategories($request->input('categories'));
     }
 
@@ -95,10 +96,11 @@ class ItemController extends Controller
 		$item = Item::findOrFail($id);
 		$item->unit_id = $request->input('unit_id') ?? null;
 		$item->name = $request->input('name');
+		$item->like = $request->input('like');
 		$item->is_enabled = $request->input('is_enabled') ? 1 : 0;
 		$item->description = $request->input('description') ?? null;
 		$item->images = $request->input('images') ?? null;
-		$result = $item->save();
+		$item->save();
 		$item->updateCategories($request->input('categories'));
     }
 

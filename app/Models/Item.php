@@ -19,10 +19,13 @@ class Item extends Model
 	private static $emptyModel = [
 		'unit_id' => 0,
 		'name' => '',
+		'like' => 0,
 		'is_enabled' => 0,
 		'description' => '',
 		'images' => '',
 	];
+
+	private const ITEMS_ON_PAGE = 10;
 
 	/**
      * Get the categories that contains the item
@@ -120,6 +123,18 @@ class Item extends Model
 			];
 		}
 		return $links;
+    }
+
+	/**
+     * Return newest Items
+     */
+    public static function getMainPageItems()
+    {
+		return [
+			'newest' => self::orderByDesc('updated_at')->limit(self::ITEMS_ON_PAGE)->get(),
+			'discussed' => self::withCount(['posts'])->orderByDesc('posts_count')->limit(self::ITEMS_ON_PAGE)->get(),
+			'liked' => self::orderByDesc('like')->limit(self::ITEMS_ON_PAGE)->get(),
+		];
     }
 
 	/**
