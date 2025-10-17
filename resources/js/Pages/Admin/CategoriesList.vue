@@ -52,6 +52,7 @@ let selectCat = (cat) => {
 					</div>
 					</button>
 					<div class="z-3 position-absolute top-0 start-0 m-3 pe-5 fs-5">
+						<div v-if="cat.logo" v-html="cat.logo" class="d-inline-block me-2" style="width: 20px;"></div>
 						<template v-if="modal">
 							<Link data-bs-toggle="modal" data-bs-target="#categoryFormModal" class="" @click.prevent.stop="selectCat(cat)">
 							{{ cat.name }}

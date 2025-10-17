@@ -90,6 +90,7 @@ class Category extends Model
 				'id' => $cat->id,
 				'name' => $cat->name,
 				'level' => $level,
+				'logo' => $cat->logo,
 				'hasChildren' => $hasChildren,
 				'itemCount' => $cat->items()->count(),
 			];

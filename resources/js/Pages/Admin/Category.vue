@@ -26,6 +26,7 @@ let selectCat = (cat) => {
 
 <template>
 	<div class="justify-content-between ms-3">
+		<div v-if="category.logo" v-html="category.logo" class="d-inline-block me-2" style="width: 20px;"></div>
 		<template v-if="modal">
 			<Link data-bs-toggle="modal" data-bs-target="#categoryFormModal" class="w-100 justify-content-between" @click.prevent.stop="selectCat(category)" :href="route('category', [category.id])">
 			{{ category.name }}

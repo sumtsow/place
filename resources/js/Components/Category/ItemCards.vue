@@ -1,5 +1,6 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
+import LikeIcon from '@/Components/LikeIcon.vue';
 
 defineProps({
 	items: {
@@ -23,7 +24,10 @@ const gtMedia = screen.width > 768;
 					<div class="card-body">
 						<h6 class="card-title">{{ item.name }}</h6>
 						<p class="card-text text-truncate text-wrap" style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3;">{{ item.description }}</p>
-						<p class="card-text text-secondary">Likes: {{ item.like }}</p>
+						<p class="card-text">
+							<LikeIcon class="d-inline-block mx-1"/>
+							<small class="d-inline-block text-secondary fs-6">{{ item.like }}</small>
+						</p>
 					</div>
 					<div class="card-footer text-secondary">
 						<small>Updated {{ new Date( item.updated_at ).toLocaleString() }}</small>

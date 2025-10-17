@@ -20,7 +20,7 @@ const gtMedia = screen.width > 768;
 		<div class="row g-4 py-2" :class="{'flex-nowrap': !wrapCols && gtMedia }">
 			<div v-for="category in categories" class="col-auto">
 				<Link class="card h-100 m-1 pt-3 text-decoration-none" style="min-width: 180px; max-width: 267px;" :href="route('category', [category.id])">
-					<div v-if="category.logo" v-html="category.logo" class="card-img-top mx-auto" style="width: 90px;" :alt="category.name"></div>
+					<div v-if="category.logo" v-html="category.logo" class="card-img-top mx-auto" style="width: 90px;"></div>
 					<div class="card-body">
 						<h5 class="card-title">{{ category.name }}</h5>
 					</div>

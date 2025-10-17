@@ -1,6 +1,7 @@
 <script setup>
 import Carousel from '@/Components/Carousel.vue';
 import ItemPostList from '@/Components/ItemPostList.vue';
+import LikeIcon from '@/Components/LikeIcon.vue';
 import { Link, usePage } from '@inertiajs/vue3';
 
 const props = usePage().props;
@@ -25,8 +26,11 @@ let isNew = false;
 <template>
 	<div class="row">
 		<div class="col">
-			<h2>{{ item.name }} <small class="text-secondary fs-6">Likes: {{ item.like }}</small></h2>
-			
+			<h2>
+				{{ item.name }}
+				<LikeIcon class="d-inline-block mx-2"/>
+				<small class="d-inline-block text-secondary fs-6">{{ item.like }}</small>
+			</h2>
 		</div>
 	</div>
 	<div class="row align-items-center">
