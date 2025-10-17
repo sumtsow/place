@@ -21,6 +21,11 @@ defineProps({
 
 let groupId = 0;
 let isNew = false;
+const formatDescription = (text) => {
+	let html = '';
+	html = '<p>' + text.replace(/\n/g, '</p><p>') + '</p>';
+	return html;
+}
 </script>
 
 <template>
@@ -28,8 +33,10 @@ let isNew = false;
 		<div class="col">
 			<h2>
 				{{ item.name }}
+				<template  v-if="item.like">
 				<LikeIcon class="d-inline-block mx-2"/>
 				<small class="d-inline-block text-secondary fs-6">{{ item.like }}</small>
+				</template>
 			</h2>
 		</div>
 	</div>
@@ -68,8 +75,7 @@ let isNew = false;
 				</li>
 			</ul>
 			<div class="tab-content" id="itemTabContent">
-				<div class="tab-pane fade show active" id="desc-tab-pane" role="tabpanel" aria-labelledby="desc-tab" tabindex="0">
-					<p>{{ item.description }}</p>
+				<div class="tab-pane fade show active" id="desc-tab-pane" role="tabpanel" aria-labelledby="desc-tab" tabindex="0" v-html="formatDescription( item.description )">
 				</div>
 				<div class="tab-pane fade" id="params-tab-pane" role="tabpanel" aria-labelledby="params-tab" tabindex="0">
 					<template v-if="item.parameters && item.parameters.length > 0">

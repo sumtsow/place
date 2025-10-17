@@ -24,7 +24,7 @@ const gtMedia = screen.width > 768;
 					<div class="card-body">
 						<h6 class="card-title">{{ item.name }}</h6>
 						<p class="card-text text-truncate text-wrap" style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3;">{{ item.description }}</p>
-						<p class="card-text">
+						<p v-if="item.like" class="card-text">
 							<LikeIcon class="d-inline-block mx-1"/>
 							<small class="d-inline-block text-secondary fs-6">{{ item.like }}</small>
 						</p>
