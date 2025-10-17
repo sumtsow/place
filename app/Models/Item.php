@@ -23,6 +23,7 @@ class Item extends Model
 		'is_enabled' => 0,
 		'description' => '',
 		'images' => '',
+		'categories' => [],
 	];
 
 	private const ITEMS_ON_PAGE = 10;
