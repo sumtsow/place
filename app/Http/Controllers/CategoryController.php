@@ -42,11 +42,11 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
-		$category = Category::findOrFail($id);
+		$category = Category::with(['subcategories', 'subcategories.subcategories', 'items', 'subcategories.items'])->findOrFail($id);
         return Inertia::render('Category', [
 			'canLogin' => Route::has('login'),
 			'canRegister' => Route::has('register'),
-			'category' => $category->load(['subcategories', 'items']),
+			'category' => $category,
 			'links' => $category->getParentLinks(),
 		]);
     }

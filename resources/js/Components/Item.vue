@@ -25,7 +25,8 @@ let isNew = false;
 <template>
 	<div class="row">
 		<div class="col">
-			<h2>{{ item.name }}</h2>
+			<h2>{{ item.name }} <small class="text-secondary fs-6">Likes: {{ item.like }}</small></h2>
+			
 		</div>
 	</div>
 	<div class="row align-items-center">

@@ -2,26 +2,32 @@
 import { Link } from '@inertiajs/vue3';
 
 defineProps({
-	items: {
+	categories: {
         type: Array,
 	},
+	wrapCols: {
+		type: Boolean,
+		default: false,
+	},
 });
+
+const gtMedia = screen.width > 768;
+
 </script>
 
 <template>
-	<div class="overflow-hidden pb-1">
-		<div class="row row-cols-1 row-cols-md-5 flex-nowrap g-4">
-			<div v-for="item in items" class="col">
-				<div class="card h-100 m-1 pt-3" style="min-width: 180px;">
-					<img :src="JSON.parse(item.images) ? '/storage/img/' + JSON.parse(item.images)[0] : '/storage/img/no-image.png'" class="card-img-top mx-auto" style="width: 165px;" :alt="item.name">
+	<div class="pb-1" :class="{'overflow-x-scroll': !wrapCols && gtMedia }">
+		<div class="row g-4 py-2" :class="{'flex-nowrap': !wrapCols && gtMedia }">
+			<div v-for="category in categories" class="col-auto">
+				<Link class="card h-100 m-1 pt-3 text-decoration-none" style="min-width: 180px; max-width: 267px;" :href="route('category', [category.id])">
+					<div v-if="category.logo" v-html="category.logo" class="card-img-top mx-auto" style="width: 90px;" :alt="category.name"></div>
 					<div class="card-body">
-						<h6 class="card-title">{{ item.name }}</h6>
-						<p class="card-text text-truncate text-wrap" style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3;">{{ item.description }}</p>
+						<h5 class="card-title">{{ category.name }}</h5>
 					</div>
-					<div class="card-footer text-body-secondary">
-						Updated {{ new Date( item.updated_at ).toLocaleString() }}
+					<div class="card-footer text-end" :class="{ 'text-info': category.subcategories && category.subcategories.length, 'text-primary': category.items && category.items.length }">
+						{{ category.subcategories && category.subcategories.length ? 'Categories: ' + category.subcategories.length : category.items && category.items.length ? 'Items: ' + category.items.length : '' }}
 					</div>
-				</div>
+				</Link>
 			</div>
 		</div>
 	</div>

@@ -1,6 +1,7 @@
 <script setup>
-import { Link } from '@inertiajs/vue3';
-import CategoryCards from '@/Components/Category/CategoryCards.vue';
+import { Link, router } from '@inertiajs/vue3';
+import ItemCards from '@/Components/Category/ItemCards.vue';
+import TabLabel from '@/Components/TabLabel.vue';
 
 defineProps({
     categories: {
@@ -11,11 +12,15 @@ defineProps({
 		type: Object,
 	},
 });
+
+const openLink = (e) => {
+	router.visit(e.target.href);
+};
 </script>
 
 <template>
-	<div class="container-fluid overflow-hidden">
-		<div class="row flex-nowrap pb-5">
+	<div class="container-fluid overflow-hidden pe-5">
+		<div class="row flex-md-nowrap pb-5">
 			<div class="col-12 col-md-3 mt-3" style="min-width: 320px;">
 				<div class="accordion" id="accordionList">
 					<template v-for="cat in categories">
@@ -23,7 +28,7 @@ defineProps({
 						<div class="accordion-header">
 							<button class="accordion-button collapsed p-2" data-bs-toggle="collapse" :data-bs-target="'#collapse-'+cat.id" aria-expanded="false" :aria-controls="'collapse-'+cat.id">
 							<div class="d-inline-flex w-75 pe-2" >
-								<Link :href="route('category', [cat.id])" class="text-decoration-none text-truncate" @click.stop="">
+								<Link :href="route('category', [cat.id])" class="z-3 text-decoration-none text-truncate" @click="openLink">
 									{{ cat.name }}
 								</Link>
 							</div>
@@ -45,13 +50,13 @@ defineProps({
 					</template>
 				</div>
 			</div>
-			<div class="col mt-3">
-				<h4 class="mb-3">New</h4>
-				<CategoryCards :items="items.newest"/>
-				<h4 class="my-3">Liked</h4>
-				<CategoryCards :items="items.liked"/>
-				<h4 class="my-3">Discussed</h4>
-				<CategoryCards :items="items.discussed"/>
+			<div class="col-12 col-md-9 mt-2">
+				<TabLabel label="New" />
+				<ItemCards :items="items.newest"/>
+				<TabLabel label="Liked" />
+				<ItemCards :items="items.liked"/>
+				<TabLabel label="Discussed" />
+				<ItemCards :items="items.discussed"/>
 			</div>
 		</div>
 	</div>

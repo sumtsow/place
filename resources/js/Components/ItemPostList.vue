@@ -32,14 +32,14 @@ defineProps({
 	},
 });
 
-let addComment = (postId) => {
+const addComment = (postId) => {
 	props.editedComment = props.emptyComment;
 	props.editedComment.id = 0;
 	props.editedComment.post_id = postId;
 	isComment.value = true;
 };
 
-let addPost = () => {
+const addPost = () => {
 	props.editedPost = props.emptyPost;
 	props.editedPost.id = 0;
 	props.editedPost.post_id = 0;
