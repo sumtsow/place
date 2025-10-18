@@ -9,7 +9,6 @@ import { ref, watch } from 'vue';
 
 const props = usePage().props;
 
-
 defineProps({
 	item: {
         type: Object,
@@ -26,7 +25,7 @@ defineProps({
 	},
 });
 
-const newParameterId = ref(0);
+let newParameterId = 0;
 
 const value = ref({});
 
@@ -36,9 +35,9 @@ const form = useForm({
 });
 
 let addParameter = () => {
-	if ( !newParameterId.value ) return false;
-	if ( !collectionHasModel( props.item.parameters, newParameterId.value ) ) {
-		props.item.parameters.push( findModelById(props.parameters, newParameterId.value ) );
+	if ( !newParameterId ) return false;
+	if ( !collectionHasModel( props.item.parameters, newParameterId ) ) {
+		props.item.parameters.push( findModelById(props.parameters, newParameterId ) );
 		form.parameters = props.item.parameters;
 	};
 };
@@ -46,7 +45,6 @@ let addParameter = () => {
 let selectValue = (pivot) => {
 	value.value = pivot ? pivot : {};
 	props.value = value.value;
-	return false;
 };
 
 let saveParameters = () => {

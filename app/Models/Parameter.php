@@ -18,7 +18,7 @@ class Parameter extends Model
 		'paramgroup_id' => 0,
 		'name' => '',
 		'order' => 0,
-		'is_enabled' => '0',
+		'is_enabled' => false,
 	];
 
 	/**

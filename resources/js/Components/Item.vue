@@ -85,7 +85,7 @@ const formatDescription = (text) => {
 								<template v-if="parameter.group">
 									<span class="d-none">{{ isNew = groupId != parameter.group.id }} {{ groupId = isNew ? parameter.group.id : groupId }}</span>
 									<tr v-if="isNew">
-										<th class="table-dark" colspan="2">
+										<th class="table-primary" colspan="2">
 											{{ parameter.group.name }}
 										</th>
 									</tr>
@@ -93,7 +93,7 @@ const formatDescription = (text) => {
 								<template v-else>
 									<span class="d-none">{{ isNew = groupId != 0 }} {{ groupId = 0 }}</span>
 									<tr v-if="isNew">
-										<th class="table-dark" colspan="2">
+										<th class="table-primary" colspan="2">
 											{{ props.emptyParamGroup }}
 										</th>
 									</tr>

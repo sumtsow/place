@@ -11,7 +11,7 @@ const modal = props.modal;
 
 defineProps({
 	value: {
-        type: Object,
+		type: Object,
 	},
 });
 
@@ -34,8 +34,11 @@ watch(
 });
 
 let saveValue = () => {
-	props.value = {};
-	return valueForm.put( route('value.update') );
+	return valueForm.put( route('value.update'), {
+		onSuccess: () => {
+			props.value = {};
+		},
+	} );
 };
 </script>
 
