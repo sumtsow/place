@@ -6,7 +6,6 @@ import { Link, usePage } from '@inertiajs/vue3';
 
 const props = usePage().props;
 
-
 defineProps({
 	item: {
         type: Object,
@@ -17,14 +16,15 @@ defineProps({
 	emptyParamGroup: {
 		type: String,
 	},
+	emptyParameter: {
+		type: String,
+	},
 });
 
 let groupId = 0;
 let isNew = false;
 const formatDescription = (text) => {
-	let html = '';
-	html = '<p>' + text.replace(/\n/g, '</p><p>') + '</p>';
-	return html;
+	return '<p>' + text.replace(/\n/g, '</p><p>') + '</p>';
 }
 </script>
 
@@ -99,10 +99,13 @@ const formatDescription = (text) => {
 									</tr>
 									<span class="d-none">{{ isNew = false }}</span>
 								</template>
-								<template v-if="parameter.pivot && parameter.pivot.value">
+								<template v-if="parameter.pivot">
 								<tr>
 									<td>{{ parameter.name }}</td>
-									<td class="text-end">{{ parameter.pivot.value }} {{ parameter.unit ? parameter.unit.name : ''}}</td>
+									<td class="text-end">
+									{{ parameter.pivot.value !== null ? parameter.pivot.value : emptyParameter }} 
+									{{ parameter.pivot.value !== null && parameter.unit ? parameter.unit.name : '' }}
+									</td>
 								</tr>
 								</template>
 							</template>

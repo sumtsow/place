@@ -15,12 +15,15 @@ defineProps({
 	auth: {
 		type: Object,
 	},
+	emptyParameter: {
+		type: String,
+	},
 });
 </script>
 
 <template>
 	<Page title="Item">
 		<Breadcrumbs :links="links" />
-		<Item :item="item" :auth="auth"/>
+		<Item :item="item" :auth="auth" :emptyParameter="emptyParameter"/>
 	</Page>
 </template>

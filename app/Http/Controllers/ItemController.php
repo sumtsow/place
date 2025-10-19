@@ -81,6 +81,7 @@ class ItemController extends Controller
 			'emptyPost' => Post::getEmptyModel(),
 			'emptyComment' => Comment::getEmptyModel(),
 			'emptyParamGroup' => config('app.emptyParamGroup'),
+			'emptyParameter' => config('app.emptyParameter'),
 			'links' => $item->getCategoryLinks(),
 		]);
     }

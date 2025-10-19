@@ -62,6 +62,7 @@ class ItemController extends Controller
         return Inertia::render('Admin/ItemShow', [
 			'item' => Item::with(['parameters'])->findOrFail($id),
 			'parameters' => Parameter::all(),
+			'emptyParameter' => config('app.emptyParameter'),
 		]);
     }
 

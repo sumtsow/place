@@ -59,7 +59,6 @@ let saveValue = () => {
 								type="text"
 								class="col"
 								v-model="valueForm.value"
-								required
 								autofocus
 								autocomplete="value"
 							/>

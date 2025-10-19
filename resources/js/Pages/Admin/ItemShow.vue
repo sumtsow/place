@@ -16,6 +16,9 @@ defineProps({
 	parameters: {
         type: Array,
 	},
+	emptyParameter: {
+		type: String,
+	},
 	title: {
 		type: String,
 		default: 'Item`s parameters edit',
@@ -63,12 +66,12 @@ let saveParameters = () => {
 				<li v-for="parameter in item.parameters" class="list-group-item d-flex justify-content-between align-items-center">
 					{{ parameter.name }}
 					<Link v-if="modal" data-bs-toggle="modal" data-bs-target="#parameterValueFormModal" @click.prevent.stop="selectValue(parameter.pivot)" class="btn text-decoration-none":class="{'btn-outline-danger': (parameter.pivot && !parameter.pivot.value), 'btn-outline-primary': (parameter.pivot && parameter.pivot.value) }">
-					{{ parameter.pivot ? (parameter.pivot.value ? parameter.pivot.value : 'not set') : '' }}
-					{{ parameter.unit ? parameter.unit.name : '' }}
+					{{ parameter.pivot ? (parameter.pivot.value ? parameter.pivot.value : emptyParameter ) : '' }}
+					{{ parameter.unit && parameter.pivot.value !== null ? parameter.unit.name : '' }}
 					</Link>
 					<Link v-else @click.prevent.stop="selectValue(parameter.pivot)" :href="route('value.edit', [ item.id, parameter.id ])" class="btn text-decoration-none" :class="{'btn-outline-danger': (parameter.pivot && !parameter.pivot.value), 'btn-outline-primary': (parameter.pivot && parameter.pivot.value) }">
-					{{ parameter.pivot ? (parameter.pivot.value ? parameter.pivot.value : 'not set') : '' }}
-					{{ parameter.unit ? parameter.unit.name : '' }}
+					{{ parameter.pivot ? (parameter.pivot.value ? parameter.pivot.value : emptyParameter ) : '' }}
+					{{ parameter.unit && parameter.pivot.value !== null ? parameter.unit.name : '' }}
 					</Link>
 				</li>
 				</template>

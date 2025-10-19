@@ -25,7 +25,7 @@ class UpdateValueRequest extends FormRequest
         return [
             'item_id' => 'numeric|gt:0',
 			'parameter_id' => 'numeric|gt:0',
-            'value' => 'string|required|max:255',
+            'value' => 'nullable|string|max:255',
         ];
     }
 }
