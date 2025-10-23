@@ -4,7 +4,7 @@ import Breadcrumbs from '@/Components/Breadcrumbs.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SelectList from '@/Components/SelectList.vue';
 import ParameterValueForm from '@/Components/Forms/ParameterValueForm.vue';
-import { Link, usePage, useForm } from '@inertiajs/vue3';
+import { Link, usePage, useForm, router } from '@inertiajs/vue3';
 import { ref, watch } from 'vue';
 
 const props = usePage().props;
@@ -18,6 +18,9 @@ defineProps({
 	},
 	emptyParameter: {
 		type: String,
+	},
+	emptyValue: {
+		type: Object,
 	},
 	title: {
 		type: String,
@@ -52,7 +55,6 @@ let selectValue = (pivot) => {
 
 let saveParameters = () => {
 	form.put( route( 'item-param.update', [ props.item.id ] ) );
-	value.value = {};
 };
 
 </script>
@@ -62,8 +64,8 @@ let saveParameters = () => {
 		<Breadcrumbs :links="[ { title: 'Dashboard', route: 'dashboard' }, { title: 'Items', route: 'item.admin' }, { title: title, route: false } ]" />
 		<form name="itemParametersForm" id="item-parameters-form" @submit.prevent="saveParameters">
 			<ul class="list-group">
-				<template v-if="item.parameters.length">
-				<li v-for="parameter in item.parameters" class="list-group-item d-flex justify-content-between align-items-center">
+				<template v-if="props.item.parameters.length">
+				<li v-for="parameter in props.item.parameters" class="list-group-item d-flex justify-content-between align-items-center">
 					{{ parameter.name }}
 					<Link v-if="modal" data-bs-toggle="modal" data-bs-target="#parameterValueFormModal" @click.prevent.stop="selectValue(parameter.pivot)" class="btn text-decoration-none":class="{'btn-outline-danger': (parameter.pivot && !parameter.pivot.value), 'btn-outline-primary': (parameter.pivot && parameter.pivot.value) }">
 					{{ parameter.pivot ? (parameter.pivot.value ? parameter.pivot.value : emptyParameter ) : '' }}
@@ -84,8 +86,6 @@ let saveParameters = () => {
 						v-model="newParameterId"
 						:default-option="'Select parameter ...'"
 						:data-key="key"
-						autofocus
-						autocomplete="parameter_id"
 					/>
 					<PrimaryButton @click.prevent.stop="addParameter" class="d-inline-block float-end"><span class="fs-3 lh-1 py-0">+</span></PrimaryButton>
 				</li>
@@ -99,6 +99,6 @@ let saveParameters = () => {
 				</div>
 			</div>
 		</form>
-		<ParameterValueForm v-if="modal" :value="value"/>
+		<ParameterValueForm v-if="modal" :value="value" :emptyValue="emptyValue"/>
     </Page>
 </template>

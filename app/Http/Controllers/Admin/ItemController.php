@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Inertia\Inertia;
 use App\Models\Category;
 use App\Models\Item;
@@ -60,9 +61,12 @@ class ItemController extends Controller
     public function show(string $id)
     {
         return Inertia::render('Admin/ItemShow', [
-			'item' => Item::with(['parameters'])->findOrFail($id),
+			'item' => Item::with(['parameters' => function (Builder $query) {
+					$query->leftJoin('paramgroups', 'paramgroups.id', '=', 'parameters.paramgroup_id')->orderByRaw('ISNULL(paramgroups.order), paramgroups.order, parameters.order');
+				}])->findOrFail($id),
 			'parameters' => Parameter::all(),
 			'emptyParameter' => config('app.emptyParameter'),
+			'emptyValue' => Item::getEmptyValue(),
 		]);
     }
 
@@ -110,7 +114,9 @@ class ItemController extends Controller
      */
     public function updateParams(UpdateItemParamRequest $request, string $id)
     {
-		Item::with(['parameters'])->findOrFail($id)->updateParameters($request->input('parameters'));
+		Item::with(['parameters' => function (Builder $query) {
+			$query->leftJoin('paramgroups', 'paramgroups.id', '=', 'parameters.paramgroup_id')->orderByRaw('ISNULL(paramgroups.order), paramgroups.order, parameters.order');
+		}])->findOrFail($id)->updateParameters($request->input('parameters'));
     }
 
     /**

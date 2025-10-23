@@ -3,42 +3,38 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
-import { watch } from 'vue';
-import { Link, useForm, usePage } from '@inertiajs/vue3';
+import { Link, useForm, usePage, router } from '@inertiajs/vue3';
+import { watch, ref } from 'vue';
 
 const props = usePage().props;
 const modal = props.modal;
+const processing = ref(false);
+const saved = ref(false);
 
 defineProps({
 	value: {
 		type: Object,
 	},
+	emptyValue: {
+		type: Object,
+	},
 });
 
-if (!props.value) props.value = {
-	item_id: 0,
-	parameter_id: 0,
-	value: '',
-	token: props.csrf_token,
+if ( !props.value ) props.value = props.emptyValue;
+
+const closeForm = () => {
+	processing.value = false;
+	saved.value = false;
 };
 
-const valueForm = useForm(props.value);
-
-watch(
-	() => props.value,
-	() => {
-		valueForm.item_id = props.value ? props.value.item_id : 0;
-		valueForm.parameter_id = props.value ? props.value.parameter_id : 0;
-		valueForm.value = props.value ? props.value.value : '';
-		valueForm.clearErrors();
-});
-
-let saveValue = () => {
-	return valueForm.put( route('value.update'), {
+const saveValue = () => {
+	processing.value = true;
+	return useForm( props.value ).put( route('value.update'), {
 		onSuccess: () => {
-			props.value = {};
+			processing.value = false;
+			saved.value = true;
 		},
-	} );
+	});
 };
 </script>
 
@@ -48,8 +44,8 @@ let saveValue = () => {
 			<div :class="{'modal-dialog modal-xl': modal}">
 				<div :class="{'modal-content': modal}">
 					<div :class="{'modal-header': modal}">
-						<div :class="{'modal-title h5': modal, 'h1 text-center': !modal}" id="modalLabel">Edit {{ valueForm.id }} value</div>
-						<button v-if="modal" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрити" @click="valueForm.clearErrors"></button>
+						<div :class="{'modal-title h5': modal, 'h1 text-center': !modal}" id="modalLabel">Edit {{ props.value.parameter_id }} value</div>
+						<button v-if="modal" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрити" @click="closeForm"></button>
 					</div>
 					<div :class="{'modal-body': modal}">
 						<div class="input-group row mb-3">
@@ -58,17 +54,16 @@ let saveValue = () => {
 								id="value"
 								type="text"
 								class="col"
-								v-model="valueForm.value"
+								v-model="props.value.value"
 								autofocus
 								autocomplete="value"
 							/>
-							<InputError class="mt-2" :message="valueForm.errors.value" />
 						</div>
 					</div>
 					<div class="row justify-content-end">
 						<div class="col-2 m-4">
-						<PrimaryButton :disabled="valueForm.processing">Save</PrimaryButton>
-							<p v-if="valueForm.recentlySuccessful" class="text-success">
+						<PrimaryButton :disabled="processing">Save</PrimaryButton>
+							<p v-if="saved" class="text-success">
 								Saved
 							</p>
 						</div>

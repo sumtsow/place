@@ -26,6 +26,12 @@ class Item extends Model
 		'categories' => [],
 	];
 
+	private static $emptyValue = [
+		'item_id' => 0,
+		'parameter_id' => 0,
+		'value' => null,
+	];
+
 	private const ITEMS_ON_PAGE = 10;
 
 	/**
@@ -171,6 +177,10 @@ class Item extends Model
 
 	public static function getEmptyModel() {
 		return self::$emptyModel;
+	}
+
+	public static function getEmptyValue() {
+		return self::$emptyValue;
 	}
 
 	/**
