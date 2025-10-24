@@ -1,6 +1,7 @@
 <script setup>
 import Page from '@/Layouts/PageLayout.vue';
 import Breadcrumbs from '@/Components/Breadcrumbs.vue';
+import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SelectList from '@/Components/SelectList.vue';
 import ParameterValueForm from '@/Components/Forms/ParameterValueForm.vue';
@@ -54,17 +55,22 @@ let selectValue = (pivot) => {
 };
 
 let saveParameters = () => {
-	form.put( route( 'item-param.update', [ props.item.id ] ) );
+	form.put( route( 'item-param.update', [ props.item.id ] ), {
+		onSuccess: () => {
+			router.visit( route('item.show', [ props.item.id ] ) );
+		},
+	});
 };
-
 </script>
 
 <template>
 	<Page :title="title">
 		<Breadcrumbs :links="[ { title: 'Dashboard', route: 'dashboard' }, { title: 'Items', route: 'item.admin' }, { title: title, route: false } ]" />
+		<h5>{{ item.name }} parameters</h5>
+		<div class="d-none">{{ item.parameters = props.item.parameters }}</div>
 		<form name="itemParametersForm" id="item-parameters-form" @submit.prevent="saveParameters">
 			<ul class="list-group">
-				<template v-if="props.item.parameters.length">
+				<template v-if="item.parameters.length">
 				<li v-for="parameter in props.item.parameters" class="list-group-item d-flex justify-content-between align-items-center">
 					{{ parameter.name }}
 					<Link v-if="modal" data-bs-toggle="modal" data-bs-target="#parameterValueFormModal" @click.prevent.stop="selectValue(parameter.pivot)" class="btn text-decoration-none":class="{'btn-outline-danger': (parameter.pivot && !parameter.pivot.value), 'btn-outline-primary': (parameter.pivot && parameter.pivot.value) }">
@@ -78,6 +84,7 @@ let saveParameters = () => {
 				</li>
 				</template>
 				<li class="list-group-item">
+					<InputLabel for="parameter_id" value="Parameter" class="text-end" />
 					<SelectList
 						:options="parameters"
 						id="parameter_id"

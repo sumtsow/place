@@ -65,7 +65,7 @@ Route::middleware(['auth', 'can:admin, App\Models\User'])->prefix('admin')->grou
 	Route::get('/posts/{id}', [PostController::class, 'index'])->name('post.admin');
 	Route::get('/post/{id}', [PostController::class, 'show'])->name('post.show');
 	Route::get('/comment/{id}', [CommentController::class, 'show'])->name('comment.show');
-	Route::get('/parameters', [ParameterAdminController::class, 'index'])->name('parameter.admin');
+	Route::get('/parameters/{id?}', [ParameterAdminController::class, 'index'])->name('parameter.admin');
 	Route::get('/parameter/0', [ParameterAdminController::class, 'create'])->name('parameter.create');
 	Route::get('/parameter/{id}', [ParameterAdminController::class, 'edit'])->name('parameter.edit');
 	Route::put('/parameter/0', [ParameterAdminController::class, 'store'])->name('parameter.store');

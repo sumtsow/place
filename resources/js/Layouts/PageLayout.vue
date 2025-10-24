@@ -14,7 +14,7 @@ defineProps({
     <Head :title="title" />
     <div class="container-fluid bg-body">
 		<NavBar />
-		<main class="mb-5">
+		<main class="mb-5 pb-3">
 			<slot />
 		</main>
 		<Footer />

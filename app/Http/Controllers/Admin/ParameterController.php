@@ -16,14 +16,20 @@ class ParameterController extends Controller
      * Display a listing of the resource.
 	 * @param \Illuminate\Http\Request $request
      */
-    public function index()
+    public function index(string $id = null)
     {
+		if ($id) {
+			$parameters = Parameter::where('paramgroup_id', $id)->with(['unit', 'group'])->paginate( env('ITEMS_PER_PAGE') )->withQueryString();
+		} else {
+			$parameters = Parameter::with(['unit', 'group'])->paginate( env('ITEMS_PER_PAGE') )->withQueryString();
+		}
         return Inertia::render('Admin/ParametersList', [
-			'parameters' => Parameter::with(['unit', 'group'])->paginate( env('ITEMS_PER_PAGE') )->withQueryString(),
+			'parameters' => $parameters,
 			'parameter' => Parameter::getEmptyModel(),
 			'empty' => config('app.emptyParameter'),
 			'units' => Unit::all(),
 			'groups' => Paramgroup::orderBy('order')->get(),
+			'groupId' => +$id,
 		]);
     }
 

@@ -2,9 +2,11 @@
 import Page from '@/Layouts/PageLayout.vue';
 import Breadcrumbs from '@/Components/Breadcrumbs.vue';
 import CheckInput from '@/Components/CheckInput.vue';
+import InputLabel from '@/Components/InputLabel.vue';
 import Parameter from '@/Pages/Admin/Parameter.vue';
 import ParameterForm from '@/Components/Forms/ParameterForm.vue';
-import { Link, useForm, usePage } from '@inertiajs/vue3';
+import SelectList from '@/Components/SelectList.vue';
+import { Link, useForm, usePage, router } from '@inertiajs/vue3';
 
 const props = usePage().props;
 
@@ -31,10 +33,17 @@ defineProps({
 	modal: {
 		type: Boolean,
 	},
+	groupId: {
+		type: Number,
+	},
 });
 
-let selectParameter = (param) => {
+const selectParameter = (param) => {
 	if ( param ) props.parameter = param;
+};
+
+const selectGroup = () => {
+	router.visit( route('parameter.admin', [ props.groupId ] ) );
 };
 
 const toggleState = (group) => {
@@ -55,6 +64,18 @@ const toggleState = (group) => {
 				<Link v-if="modal" data-bs-toggle="modal" data-bs-target="#parameterFormModal" @click.prevent.stop="selectParameter(0)" class="btn btn-primary m-3">Add new parameter</Link>
 				<Link v-else @click.prevent.stop="selectParameter(0)" :href="route('parameter.create')" class="btn btn-primary m-3">Add new parameter</Link>
 			</div>
+		</div>
+		<div class="row my-3">
+			<InputLabel for="group-id" value="Group" class="col-3 text-end" />
+			<SelectList
+				:options="groups"
+				id="group-id"
+				type="number"
+				defaultOption="All"
+				class="col"
+				v-model="props.groupId"
+				@change="selectGroup"
+			/>
 		</div>
 		<div v-if="parameters.last_page > 1" class="row">
 			<div class="col w-100 text-center">
