@@ -8,6 +8,10 @@ defineProps({
 		type: String,
 	},
 });
+
+const scrollToTop = () => {
+	window.scroll(0, 0);
+};
 </script>
 
 <template>
@@ -17,6 +21,6 @@ defineProps({
 		<main class="mb-5 pb-3">
 			<slot />
 		</main>
-		<Footer />
+		<Footer @scrollToTop="scrollToTop" />
     </div>
 </template>
