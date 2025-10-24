@@ -117,8 +117,10 @@ let saveParameters = () => {
 								:default-option="'Select parameter ...'"
 							/>
 						</div>
-					</div>
-					<PrimaryButton @click.prevent.stop="addParameter" class="d-inline-block float-end"><span class="fs-3 lh-1 py-0">+</span></PrimaryButton>
+						<div class="col">
+							<PrimaryButton @click.prevent.stop="addParameter" class="d-inline-block float-end"><span class="fs-3 lh-1 py-0">+</span></PrimaryButton>
+						</div>
+                    </div>
 				</li>
 			</ul>
 			<div class="row justify-content-end">
