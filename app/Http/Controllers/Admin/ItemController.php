@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use App\Models\Category;
 use App\Models\Item;
 use App\Models\Parameter;
+use App\Models\Paramgroup;
 use App\Models\Unit;
 use App\Http\Requests\UpdateItemRequest;
 use App\Http\Requests\UpdateItemParamRequest;
@@ -58,13 +59,15 @@ class ItemController extends Controller
     /**
      * Show the specified Item with it`s Parameters.
      */
-    public function show(string $id)
+    public function show(string $id, string $group_id = null)
     {
         return Inertia::render('Admin/ItemShow', [
 			'item' => Item::with(['parameters' => function (Builder $query) {
 					$query->leftJoin('paramgroups', 'paramgroups.id', '=', 'parameters.paramgroup_id')->orderByRaw('ISNULL(paramgroups.order), paramgroups.order, parameters.order');
 				}])->findOrFail($id),
-			'parameters' => Parameter::all(),
+			'parameters' => $group_id ? Parameter::where('paramgroup_id', $group_id)->get() : Parameter::all(),
+			'groups' => Paramgroup::all(),
+			'gid' => $group_id,
 			'emptyParameter' => config('app.emptyParameter'),
 			'emptyValue' => Item::getEmptyValue(),
 		]);

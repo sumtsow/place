@@ -17,6 +17,12 @@ defineProps({
 	parameters: {
         type: Array,
 	},
+	groups: {
+        type: Array,
+	},
+	gid: {
+		type: Number,
+	},
 	emptyParameter: {
 		type: String,
 	},
@@ -35,6 +41,7 @@ defineProps({
 let newParameterId = 0;
 
 const value = ref({});
+let gid = +props.gid;
 
 const form = useForm({
 	parameters: [],
@@ -48,6 +55,10 @@ let addParameter = () => {
 		form.parameters = props.item.parameters;
 	};
 };
+
+let selectGroup = () => {
+	useForm().get( route('item.show', [ props.item.id, gid ] ) );
+}
 
 let selectValue = (pivot) => {
 	value.value = pivot ? pivot : {};
@@ -84,16 +95,29 @@ let saveParameters = () => {
 				</li>
 				</template>
 				<li class="list-group-item">
-					<InputLabel for="parameter_id" value="Parameter" class="text-end" />
-					<SelectList
-						:options="parameters"
-						id="parameter_id"
-						type="number"
-						class="col d-inline-block w-75"
-						v-model="newParameterId"
-						:default-option="'Select parameter ...'"
-						:data-key="key"
-					/>
+					<div class="row">
+						<div class="col">
+							<InputLabel for="paramgroup_id" value="Group" class="text-end" />
+							<SelectList
+								:options="groups"
+								id="paramgroup_id"
+								class="col d-inline-block w-75"
+								v-model="gid"
+								:default-option="'Select group ...'"
+								@change="selectGroup"
+							/>
+						</div>
+						<div class="col">
+							<InputLabel for="parameter_id" value="Parameter" class="text-end" />
+							<SelectList
+								:options="parameters"
+								id="parameter_id"
+								class="col d-inline-block w-75"
+								v-model="newParameterId"
+								:default-option="'Select parameter ...'"
+							/>
+						</div>
+					</div>
 					<PrimaryButton @click.prevent.stop="addParameter" class="d-inline-block float-end"><span class="fs-3 lh-1 py-0">+</span></PrimaryButton>
 				</li>
 			</ul>
