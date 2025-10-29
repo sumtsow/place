@@ -24,7 +24,7 @@ defineProps({
 
 <template>
 	<Page :title="title">
-		<Breadcrumbs :links="[ { title: 'Dashboard', route: 'dashboard' }, { title: 'Distributors', route: 'distributor.admin' }, { title: title, route: false } ]" />
+		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.admin.distributors, route: 'distributor.admin' }, { title: distributor.id ? $page.props.lang.admin.edit + $page.props.lang.admin.distributor_ + distributor.id : $page.props.lang.admin.add + $page.props.lang.admin.distributor_, route: false } ]" />
 		<div class="justify-content-between ms-3">
 			<DistributorForm :distributor="distributor" :modal="modal" />
 		</div>

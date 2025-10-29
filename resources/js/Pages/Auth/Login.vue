@@ -56,7 +56,7 @@ const submit = () => {
 				</div>
 
 				<div class="mb-3">
-					<InputLabel for="password" value="Password" />
+					<InputLabel for="password" :value="$page.props.lang.auth.password" />
 
 					<TextInput
 						id="password"
@@ -74,7 +74,7 @@ const submit = () => {
 					<label class="form-label">
 						<Checkbox name="remember" v-model:checked="form.remember" />
 						<span class="ms-2 text-sm text-gray-600"
-							>Remember me</span
+							>{{ $page.props.lang.auth.remember_me }}</span
 						>
 					</label>
 				</div>
@@ -85,7 +85,7 @@ const submit = () => {
 						:href="route('password.request')"
 						class="float-end"
 					>
-						Forgot your password?
+						{{ $page.props.lang.auth.forgot_password }}
 					</Link>
 
 					<PrimaryButton
@@ -93,7 +93,7 @@ const submit = () => {
 						:class="{ 'opacity-25': form.processing }"
 						:disabled="form.processing"
 					>
-						Log in
+						{{ $page.props.lang.auth.login }}
 					</PrimaryButton>
 				</div>
 			</form>

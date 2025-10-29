@@ -15,7 +15,7 @@ defineProps({
 		default: false,
 	},
 });
-let selectItem = (item) => {
+const selectItem = (item) => {
 	if (item) {
 		props.item = item;
 		props.item.is_enabled = !!props.item.is_enabled;

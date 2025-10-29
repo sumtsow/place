@@ -24,7 +24,11 @@ if (!props.currentDistributorItem.id) props.currentDistributorItem = { ...emptyD
 
 <template>
 	<Page :title="title">
-		<Breadcrumbs :links="[ { title: 'Dashboard', route: 'dashboard' }, { title: 'Distributors', route: 'distributor.admin' }, { title: 'Distributor`s Items', route: 'distributor-item.admin', param: currentDistributorItem.distributor_id }, { title: title, route: false } ]" />
+		<Breadcrumbs :links="[
+		{ title: $page.props.lang.navbar.dashboard, route: 'dashboard' },
+		{ title: $page.props.lang.admin.distributors, route: 'distributor.admin' },
+		{ title: 'Distributor`s Items', route: 'distributor-item.admin', param: currentDistributorItem.distributor_id },
+		{ title: currentDistributorItem.id ? $page.props.lang.admin.edit + $page.props.lang.admin.distributor_ + $page.props.lang.admin.item_ + currentDistributorItem.id : $page.props.lang.admin.add + $page.props.lang.admin.distributor_ + $page.props.lang.admin.item_, route: false } ]" />
         <div class="row justify-content-center">
             <div class="col col-lg-6 my-lg-5">
                 <DistributorItemForm :currentDistributorItem="currentDistributorItem"/>

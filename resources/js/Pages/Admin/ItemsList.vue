@@ -24,16 +24,19 @@ defineProps({
 	item: {
         type: Object,
 	},
+	emptyItem: {
+        type: Object,
+	},	
 	modal: {
 		type: Boolean,
 	},
 });
 
-const emptyItem = JSON.parse( JSON.stringify( props.item ) );
+props.emptyItem = JSON.parse( JSON.stringify( props.item ) );
 
 const selectItem = (item) => {
 	if ( !item ) {
-		item = JSON.parse( JSON.stringify( emptyItem.value ) );
+		item = JSON.parse( JSON.stringify( props.emptyItem ) );
 	};
 	props.item = item;
 };
@@ -45,24 +48,24 @@ const selectCategory = () => {
 
 <template>
 	<Page :title="title">
-		<Breadcrumbs :links="[ { title: 'Dashboard', route: 'dashboard' }, { title: title, route: false } ]" />
-		<h2>Items</h2>
+		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.admin.manage + $page.props.lang.admin.items.toLowerCase(), route: false } ]" />
+		<h2>{{ $page.props.lang.admin.items }}</h2>
 		<div class="input-group row mb-3">
-			<InputLabel for="category_id" value="Category" class="col-3 text-end" />
+			<InputLabel for="category_id" :value="$page.props.lang.admin.category" class="col-3 text-end" />
 			<SelectList
 				:options="categories"
 				id="category_id"
 				class="col"
 				v-model="category_id"
 				children="itemCount"
-				defaultOption="Select..."
+				:defaultOption="$page.props.lang.admin.select + '...'"
 				@change="selectCategory"
 			/>
 		</div>
 		<div class="row justify-content-end">
 			<div class="col-auto">
-				<Link v-if="modal" data-bs-toggle="modal" data-bs-target="#itemFormModal" @click.prevent.stop="selectItem(0)" class="btn btn-primary m-3">Add new item</Link>
-				<Link v-else @click.prevent.stop="selectItem(0)" :href="route('item.create')" class="btn btn-primary m-3">Add new item</Link>
+				<Link v-if="modal" data-bs-toggle="modal" data-bs-target="#itemFormModal" @click.prevent.stop="selectItem(0)" class="btn btn-primary m-3">{{ $page.props.lang.admin.add + $page.props.lang.admin.new_male + $page.props.lang.admin.item.toLowerCase() }}</Link>
+				<Link v-else @click.prevent.stop="selectItem(0)" :href="route('item.create')" class="btn btn-primary m-3">{{ $page.props.lang.admin.add + $page.props.lang.admin.new_male + $page.props.lang.admin.item.toLowerCase() }}</Link>
 			</div>
 		</div>
 		<div v-if="items.last_page > 1" class="row my-5">
@@ -74,17 +77,17 @@ const selectCategory = () => {
 			<thead>
 				<tr>
 					<th>Id</th>
-					<th>Name</th>
-					<th>Description</th>
-					<th>Images</th>
-					<th>Unit</th>
-					<th>Likes</th>
-					<th>Enabled</th>
-					<th>Category</th>
-					<th>Parameters</th>
-					<th>Posts</th>
-					<th>Created</th>
-					<th>Updated</th>
+					<th>{{ $page.props.lang.admin.name }}</th>
+					<th>{{ $page.props.lang.admin.description }}</th>
+					<th>{{ $page.props.lang.admin.images }}</th>
+					<th>{{ $page.props.lang.admin.measuring_units }}</th>
+					<th>{{ $page.props.lang.admin.likes }}</th>
+					<th>{{ $page.props.lang.admin.enabled }}</th>
+					<th>{{ $page.props.lang.admin.category }}</th>
+					<th>{{ $page.props.lang.admin.parameters }}</th>
+					<th>{{ $page.props.lang.customer.posts }}</th>
+					<th>{{ $page.props.lang.admin.created }}</th>
+					<th>{{ $page.props.lang.admin.updated }}</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -134,6 +137,6 @@ const selectCategory = () => {
 				<Link v-for=" (link, index) in items.links" :key="index" :href="link.url" class="btn btn-outline-primary mx-1" :class="{ active: link.active }" v-html="link.label"/>
 			</div>
 		</div>
-		<ItemForm v-if="modal" :item="item"/>
+		<ItemForm v-if="modal" :item="item" :emptyItem="emptyItem"/>
 	</Page>
 </template>

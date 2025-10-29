@@ -19,16 +19,15 @@ const submit = () => {
 
 <template>
     <GuestLayout>
-        <Head title="Confirm Password" />
+        <Head :title="$page.props.lang.auth.confirm_password" />
 
         <div class="mb-3">
-            This is a secure area of the application. Please confirm your
-            password before continuing.
+            {{ $page.props.lang.auth.confirm_your_password }}
         </div>
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="password" value="Password" />
+                <InputLabel for="password" :value="$page.props.lang.auth.password" />
                 <TextInput
                     id="password"
                     type="password"
@@ -47,7 +46,7 @@ const submit = () => {
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                 >
-                    Confirm
+                    {{ $page.props.lang.auth.confirm }}
                 </PrimaryButton>
             </div>
         </form>

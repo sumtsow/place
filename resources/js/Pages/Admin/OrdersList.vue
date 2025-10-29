@@ -52,27 +52,27 @@ const toggleState = (order) => {
 
 <template>
 	<Page :title="title">
-		<Breadcrumbs :links="[ { title: 'Dashboard', route: 'dashboard' }, { title: title, route: false } ]" />
-		<h2>Orders</h2>
+		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.admin.manage + $page.props.lang.admin.order.toLowerCase(), route: false } ]" />
+		<h2>{{ $page.props.lang.admin.orders }}</h2>
 		<div class="row justify-content-end">
 			<div class="col-auto">
-				<Link v-if="modal" data-bs-toggle="modal" data-bs-target="#orderFormModal" @click.prevent.stop="selectOrder(0)" class="btn btn-primary m-3">Add new order</Link>
-				<Link v-else @click.prevent.stop="selectOrder(0)" :href="route('order.create')" class="btn btn-primary m-3">Add new Order</Link>
+				<Link v-if="modal" data-bs-toggle="modal" data-bs-target="#orderFormModal" @click.prevent.stop="selectOrder(0)" class="btn btn-primary m-3">{{ $page.props.lang.admin.add + $page.props.lang.admin.new_neuter + $page.props.lang.admin.order.toLowerCase() }}</Link>
+				<Link v-else @click.prevent.stop="selectOrder(0)" :href="route('order.create')" class="btn btn-primary m-3">{{ $page.props.lang.admin.add + $page.props.lang.admin.new_neuter + $page.props.lang.admin.order.toLowerCase() }}</Link>
 			</div>
 			<div class="table-responsive">
 				<table class="table table-striped">
 					<thead>
 						<tr>
 							<th>Id</th>
-							<th>Customer</th>
-							<th>Enabled</th>
-							<th>Status</th>
-							<th>Total</th>
-							<th>Propositions</th>
-							<th>Address</th>
-							<th>Expired</th>
-							<th>Created</th>
-							<th>Updated</th>
+							<th>{{ $page.props.lang.admin.name }}</th>
+							<th>{{ $page.props.lang.admin.enabled }}</th>
+							<th>{{ $page.props.lang.admin.status }}</th>
+							<th>{{ $page.props.lang.admin.total }}</th>
+							<th>{{ $page.props.lang.admin.propositions }}</th>
+							<th>{{ $page.props.lang.auth.address }}</th>
+							<th>{{ $page.props.lang.admin.expired }}</th>
+							<th>{{ $page.props.lang.admin.created }}</th>
+							<th>{{ $page.props.lang.admin.updated }}</th>
 						</tr>
 					</thead>
 					<tbody>

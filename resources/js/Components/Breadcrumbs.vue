@@ -12,7 +12,7 @@ defineProps({
 	<nav style="--bs-breadcrumb-divider: '|';" aria-label="breadcrumb">
 		<ol class="breadcrumb my-3">
 			<li class="breadcrumb-item">
-				<Link :href="route('home')">Home</Link>
+				<Link :href="route('home')">{{ $page.props.lang.navbar.home }}</Link>
 			</li>
 			<li v-for="link in links" class="breadcrumb-item">
 				<Link v-if="link.route" :href="route(link.route, link.param)">{{ link.title }}</Link>

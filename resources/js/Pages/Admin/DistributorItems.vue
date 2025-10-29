@@ -4,6 +4,7 @@ import Page from '@/Layouts/PageLayout.vue';
 import Breadcrumbs from '@/Components/Breadcrumbs.vue';
 import CheckInput from '@/Components/CheckInput.vue';
 import DistributorItemForm from '@/Components/Forms/DistributorItemForm.vue';
+import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SelectList from '@/Components/SelectList.vue';
 import { Link, usePage, useForm  } from '@inertiajs/vue3';
@@ -36,7 +37,7 @@ const id = ref(0);
 const emptyDistributorItem = JSON.parse( JSON.stringify( props.currentDistributorItem ) );
 
 const addItem = () => {
-	if ( id == 0 ) return;
+	if ( id.value == 0 ) return;
 	if ( !collectionHasModel( props.distributor.distributor_items, id ) ) {
 		let model = JSON.parse( JSON.stringify( emptyDistributorItem ) );
 		if (model) {
@@ -69,24 +70,24 @@ const toggleState = (di) => {
 
 <template>
 	<Page :title="title">
-		<Breadcrumbs :links="[ { title: 'Dashboard', route: 'dashboard' }, { title: 'Distributors', route: 'distributor.admin' }, { title: title, route: false } ]" />
+		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.admin.manage + $page.props.lang.admin.distributors_, route: 'distributor.admin' }, { title: $page.props.lang.admin.manage + $page.props.lang.admin.items.toLowerCase() + $page.props.lang.admin.distributors_, route: false } ]" />
 		<div class="justify-content-between ms-3">
 			<h2>{{ distributor.name }}</h2>
 
 			<form name="distributor-item" id="distributor-item-form" class="p-3 needs-validation" @submit.prevent.stop="saveItems"></form>
 
 			<div class="input-group mb-3">
-				<InputLabel for="items" value="Add item" class="col-3 text-end" />
+				<InputLabel for="items" :value="$page.props.lang.admin.add + $page.props.lang.admin.item.toLowerCase()" class="col-3 text-end" />
 				<SelectList
 					:options="items"
-					:defaultOption="'Select item'"
+					:defaultOption="$page.props.lang.admin.select + $page.props.lang.admin.item.toLowerCase() + '...'"
 					id="items"
 					class="col"
 					v-model="id"
 					autofocus
 					autocomplete="items"
 				/>
-				<PrimaryButton @click="addItem">Add&nbsp;item</PrimaryButton>
+				<PrimaryButton @click="addItem">{{ $page.props.lang.admin.add + $page.props.lang.admin.item.toLowerCase() }}</PrimaryButton>
 				<InputError class="mt-2" :message="formItems.errors.items" />
 			</div>
 
@@ -94,14 +95,14 @@ const toggleState = (di) => {
 				<thead>
 					<tr>
 						<th>Id</th>
-						<th>Name</th>
-						<th>Count</th>
-						<th>Price</th>
-						<th>Discount</th>
-						<th>Delivery</th>
-						<th>Enabled</th>
-						<th>Created</th>
-						<th>Updated</th>
+						<th>{{ $page.props.lang.admin.name }}</th>
+						<th>{{ $page.props.lang.admin.count }}</th>
+						<th>{{ $page.props.lang.customer.price }}</th>
+						<th>{{ $page.props.lang.customer.discount }}</th>
+						<th>{{ $page.props.lang.customer.delivery }}</th>
+						<th>{{ $page.props.lang.admin.enabled }}</th>
+						<th>{{ $page.props.lang.admin.created }}</th>
+						<th>{{ $page.props.lang.admin.updated }}</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -131,12 +132,14 @@ const toggleState = (di) => {
 			</table>
 
 			<div class="row">
-			<div class="col">
-				<PrimaryButton form="distributor-item-form" :disabled="formItems.processing">Save</PrimaryButton>
+				<div class="col text-end">
+					<PrimaryButton form="distributor-item-form" :disabled="formItems.processing">{{ $page.props.lang.customer.save }}</PrimaryButton>
+				</div>
 			</div>
-			<div class="col text-success">
-				<template v-if="formItems.recentlySuccessful">Saved.</template>
-			</div>
+			<div class="row">
+				<div class="col text-end text-success">
+					<template v-if="formItems.recentlySuccessful">{{ $page.props.lang.customer.saved }}</template>
+				</div>
 			</div>
 		</div>
 		<DistributorItemForm v-if="modal" :currentDistributorItem="currentDistributorItem"/>

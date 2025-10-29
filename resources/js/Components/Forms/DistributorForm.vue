@@ -9,7 +9,8 @@ import { Link, useForm, usePage } from '@inertiajs/vue3';
 const props = usePage().props;
 const modal = props.modal;
 
-const form = useForm(props.distributor);
+const form = useForm( props.distributor );
+const emptyDistributor = JSON.parse( JSON.stringify( props.distributor ) );
 
 defineProps({
 	distributor: {
@@ -36,7 +37,20 @@ watch(
 		form.clearErrors();
 });
 
-let saveDistributor = () => {
+const closeForm = () => {
+	form.id = emptyDistributor.id;
+	form.name = emptyDistributor.name;
+	form.is_enabled = emptyDistributor.is_enabled;
+	form.url = emptyDistributor.url;
+	form.email = emptyDistributor.email;
+	form.phone = emptyDistributor.phone;
+	form.like = emptyDistributor.like;
+	form.dislike = emptyDistributor.dislike;
+	form.sales = emptyDistributor.sales;
+	form.clearErrors();
+};
+
+const saveDistributor = () => {
 	if (!form.name) return false;
 	return !!form.id ? form.put( route('distributor.update', [form.id])) : form.put(route('distributor.store'));
 };
@@ -48,8 +62,8 @@ let saveDistributor = () => {
 			<div :class="{'modal-dialog modal-xl': modal}">
 				<div :class="{'modal-content': modal}">
 					<div :class="{'modal-header': modal}">
-						<div :class="{'modal-title h5': modal, 'h1 text-center': !modal}" id="modalLabel">{{ form && form.id > 0 ? 'Edit ' + form.id : 'Add' }} distributor</div>
-						<button v-if="modal" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрити" @click="form.reset"></button>
+						<div :class="{'modal-title h5': modal, 'h1 text-center': !modal}" id="modalLabel">{{ form && form.id > 0 ? $page.props.lang.admin.edit + $page.props.lang.admin.distributor_ + form.id : $page.props.lang.admin.add  + $page.props.lang.admin.distributor_ }}</div>
+						<button v-if="modal" type="button" class="btn-close" data-bs-dismiss="modal" :aria-label="$page.props.lang.admin.close" @click="closeForm"></button>
 					</div>
 					<div :class="{'modal-body': modal}">
 						<div class="input-group mb-3 row text-md-left justify-content-start has-validation">
@@ -57,13 +71,13 @@ let saveDistributor = () => {
 							<div class="col">
 								<div class="form-check form-switch">
 									<input id="is_enabled" name="is_enabled" type="checkbox" class="form-check-input" v-model="form.is_enabled" value="1"/>
-									<label class="form-check-label" for="visible">Enabled</label>
+									<label class="form-check-label" for="visible">{{ $page.props.lang.admin.enabled }}</label>
 								</div>
 							</div>
 						</div>
 
 						<div class="input-group row mb-3">
-							<InputLabel for="name" value="Name" class="col-3 text-end" />
+							<InputLabel for="name" :value="$page.props.lang.admin.name" class="col-3 text-end" />
 							<TextInput
 								id="name"
 								type="text"
@@ -105,7 +119,7 @@ let saveDistributor = () => {
 						</div>
 
 						<div class="input-group row mb-3">
-							<InputLabel for="phone" value="Phone" class="col-3 text-end" />
+							<InputLabel for="phone" :value="$page.props.lang.admin.phone" class="col-3 text-end" />
 							<TextInput
 								id="phone"
 								type="text"
@@ -119,7 +133,7 @@ let saveDistributor = () => {
 						</div>
 
 						<div class="input-group row mb-3">
-							<InputLabel for="like" value="Likes" class="col-3 text-end" />
+							<InputLabel for="like" :value="$page.props.lang.admin.likes" class="col-3 text-end" />
 							<TextInput
 								id="like"
 								type="number"
@@ -133,7 +147,7 @@ let saveDistributor = () => {
 						</div>
 
 						<div class="input-group row mb-3">
-							<InputLabel for="dislike" value="Dislikes" class="col-3 text-end" />
+							<InputLabel for="dislike" :value="$page.props.lang.admin.dislikes" class="col-3 text-end" />
 							<TextInput
 								id="dislike"
 								type="number"
@@ -147,7 +161,7 @@ let saveDistributor = () => {
 						</div>
 
 						<div class="input-group row mb-3">
-							<InputLabel for="sales" value="Sales" class="col-3 text-end" />
+							<InputLabel for="sales" :value="$page.props.lang.admin.sales" class="col-3 text-end" />
 							<TextInput
 								id="sales"
 								type="number"
@@ -159,13 +173,13 @@ let saveDistributor = () => {
 							/>
 							<InputError class="mt-2" :message="form.errors.sales" />
 						</div>
-					</div>
-					<div class="row justify-content-end">
-						<div class="col-2 m-4">
-						<PrimaryButton :disabled="form.processing">Save</PrimaryButton>
-							<p v-if="form.recentlySuccessful" class="text-success">
-								Saved
-							</p>
+						<div class="row justify-content-end">
+							<div class="col text-end pe-4">
+							<PrimaryButton :disabled="form.processing">{{ $page.props.lang.customer.save }}</PrimaryButton>
+								<p v-if="form.recentlySuccessful" class="text-success">
+									{{ $page.props.lang.customer.saved }}
+								</p>
+							</div>
 						</div>
 					</div>
 				</div>

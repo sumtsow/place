@@ -58,7 +58,7 @@ const toggleState = (post) => {
 					{{ post.user.firstname }} {{ post.user.lastname }} | {{ new Date(post.created_at).toLocaleString() }}
 				</Link>
 				<div class="d-inline-block float-end form-check form-switch">
-					<CheckInput :name="'is_enabled'" v-model="post.is_enabled" :label="'Enabled'" :post="post" isComment="false" @toggleState="toggleState(post)"></CheckInput>
+					<CheckInput :name="'is_enabled'" v-model="post.is_enabled" :label="$page.props.lang.admin.enabled" :post="post" isComment="false" @toggleState="toggleState(post)"></CheckInput>
 				</div>
 			</template>
 			<template v-else>
@@ -68,10 +68,10 @@ const toggleState = (post) => {
 		<div class="card-body fs-6">
 			<div class="p-3">
 				<h5 class="card-title">
-					<template v-if="!post || !post.id">There are not posts yet!</template>
+					<template v-if="!post || !post.id">{{ $page.props.lang.customer.not_posts_yet }}</template>
 				</h5>
 				<p class="card-text">
-					<template v-if="!post || !post.id">Your post can be first</template>
+					<template v-if="!post || !post.id">{{ $page.props.lang.customer.can_be_first }}</template>
 					<template v-else>{{ post.text }}</template>
 				</p>
 			</div>
@@ -80,7 +80,7 @@ const toggleState = (post) => {
 			</template>
 		</div>
 		<div v-if="post && post.id" class="card-footer text-end">
-			<PrimaryButton data-bs-toggle="modal" data-bs-target="#postFormModal" :disabled="!auth || !auth.user" @click="$emit('addComment')">Add Comment</PrimaryButton>
+			<PrimaryButton data-bs-toggle="modal" data-bs-target="#postFormModal" :disabled="!auth || !auth.user" @click="$emit('addComment')">{{ $page.props.lang.admin.add + $page.props.lang.admin.new_male + $page.props.lang.customer.comment_ }}</PrimaryButton>
 		</div>
 	</div>
 </template>

@@ -30,11 +30,11 @@ const form = useForm({
     <section>
         <header>
             <h2 class="">
-                Profile Information
+                {{ $page.props.lang.auth.profile_information }}
             </h2>
 
             <p class="">
-                Update your account's profile information and email address.
+				{{ $page.props.lang.auth.profile_information_update }}
             </p>
         </header>
 
@@ -43,13 +43,13 @@ const form = useForm({
             class=""
         >
 			<div>
-			Roles:
+			{{ $page.props.lang.auth.roles }}:
 			<ul>
 				<li v-for="role in user.roles">{{ role.id }}: {{ role.name }}</li>
 			</ul>
 			</div>
             <div>
-                <InputLabel for="firstname" value="First Name" />
+                <InputLabel for="firstname" :value="$page.props.lang.auth.firstname" />
 
                 <TextInput
                     id="firstname"
@@ -65,7 +65,7 @@ const form = useForm({
             </div>
 
             <div>
-                <InputLabel for="patronymic" value="Patronymic" />
+                <InputLabel for="patronymic" :value="$page.props.lang.auth.patronymic" />
 
                 <TextInput
                     id="patronymic"
@@ -80,7 +80,7 @@ const form = useForm({
             </div>
 
             <div>
-                <InputLabel for="lastname" value="Last Name" />
+                <InputLabel for="lastname" :value="$page.props.lang.auth.lastname" />
 
                 <TextInput
                     id="lastname"
@@ -95,7 +95,7 @@ const form = useForm({
             </div>
 
             <div>
-                <InputLabel for="address" value="Address" />
+                <InputLabel for="address" :value="$page.props.lang.auth.address" />
 
                 <TextInput
                     id="address"
@@ -110,7 +110,7 @@ const form = useForm({
             </div>
 
             <div>
-                <InputLabel for="birthdate" value="Birth Date" />
+                <InputLabel for="birthdate" :value="$page.props.lang.auth.birthdate" />
 
                 <TextInput
                     id="birthdate"
@@ -141,24 +141,24 @@ const form = useForm({
 
             <div v-if="mustVerifyEmail && user.email_verified_at === null">
                 <p class="">
-                    Your email address is unverified.
+					{{ $page.props.lang.auth.email_unverified }}
                     <Link
                         :href="route('verification.send')"
                         method="post"
                         as="button"
                         class=""
                     >
-                        Click here to re-send the verification email.
+                        {{ $page.props.lang.auth.re_send_email }}
                     </Link>
                 </p>
 
                 <div v-show="status === 'verification-link-sent'" class="">
-                    A new verification link has been sent to your email address.
+					{{ $page.props.lang.auth.email_verification_link_sent }}
                 </div>
             </div>
 
             <div class="">
-                <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
+                <PrimaryButton :disabled="form.processing">{{ $page.props.lang.customer.save }}</PrimaryButton>
 
                 <Transition
                     enter-active-class="transition ease-in-out"
@@ -167,7 +167,7 @@ const form = useForm({
                     leave-to-class="opacity-0"
                 >
                     <p v-if="form.recentlySuccessful" class="">
-                        Saved.
+                        {{ $page.props.lang.customer.saved }}
                     </p>
                 </Transition>
             </div>

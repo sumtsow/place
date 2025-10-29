@@ -35,12 +35,12 @@ let selectCat = (cat) => {
 
 <template>
 	<Page :title="title">
-		<Breadcrumbs :links="[ { title: 'Dashboard', route: 'dashboard' }, { title: title, route: false } ]" />
-		<h2>Top level categories</h2>
+		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.admin.manage + $page.props.lang.admin.categories, route: false } ]" />
+		<h2>{{ $page.props.lang.admin.top_level_categories }}</h2>
 		<div class="row justify-content-end">
 			<div class="col-auto">
-				<Link v-if="modal" data-bs-toggle="modal" data-bs-target="#categoryFormModal" @click.prevent.stop="selectCat()" class="btn btn-primary m-3">Add new category</Link>
-				<Link v-else @click.prevent.stop="selectCat()" :href="route('category.create')" class="btn btn-primary m-3">Add new category</Link>
+				<Link v-if="modal" data-bs-toggle="modal" data-bs-target="#categoryFormModal" @click.prevent.stop="selectCat()" class="btn btn-primary m-3">{{ $page.props.lang.admin.add + $page.props.lang.admin.new_female_ + $page.props.lang.admin.category_ }}</Link>
+				<Link v-else @click.prevent.stop="selectCat()" :href="route('category.create')" class="btn btn-primary m-3">{{ $page.props.lang.admin.add + $page.props.lang.admin.new_female_ + $page.props.lang.admin.category_ }}</Link>
 			</div>
 		</div>
 		<div class="accordion" id="accordionList">

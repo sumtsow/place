@@ -29,7 +29,7 @@ defineProps({
 
 <template>
 	<Page :title="title">
-		<Breadcrumbs :links="[ { title: 'Dashboard', route: 'dashboard' }, { title: 'Parameters', route: 'parameter.admin' }, { title: title, route: false } ]" />
+		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.admin.parameters, route: 'parameter.admin' }, { title: parameter.id ? $page.props.lang.admin.edit + $page.props.lang.admin.parameter.toLowerCase() + parameter.id : $page.props.lang.admin.add + $page.props.lang.admin.parameter.toLowerCase(), route: false } ]" />
         <div class="row justify-content-center">
             <div class="col col-md-6 my-md-5">
                 <ParameterForm :parameter="parameter" />

@@ -30,7 +30,7 @@ const gtMedia = screen.width > 768;
 						</p>
 					</div>
 					<div class="card-footer text-secondary">
-						<small>Updated {{ new Date( item.updated_at ).toLocaleString() }}</small>
+						<small>{{ $page.props.lang.admin.updated + ' ' +  new Date( item.updated_at ).toLocaleString() }}</small>
 					</div>
 				</Link>
 			</div>

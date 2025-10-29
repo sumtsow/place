@@ -49,8 +49,8 @@ let selectPost = (post) => {
 
 <template>
 	<Page :title="title">
-		<Breadcrumbs :links="[ { title: 'Dashboard', route: 'dashboard' }, { title: 'Items', route: 'item.admin' }, { title: title, route: false } ]" />
-		<h2>Posts</h2>
+		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.admin.items, route: 'item.admin' }, { title: $page.props.lang.admin.manage + $page.props.lang.customer.posts.toLowerCase() + $page.props.lang.admin.of_item, route: false } ]" />
+		<h2>{{ $page.props.lang.customer.posts }}</h2>
 		<div v-if="posts.last_page > 1" class="row">
 			<div class="col w-100 text-center">
 				<Link v-for=" (link, index) in posts.links" :key="index" :href="link.url" class="btn btn-outline-primary mx-1" :class="{ active: link.active }" v-html="link.label"/>

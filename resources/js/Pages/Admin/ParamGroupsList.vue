@@ -36,12 +36,12 @@ const toggleState = (group) => {
 
 <template>
 	<Page :title="title">
-		<Breadcrumbs :links="[ { title: 'Dashboard', route: 'dashboard' }, { title: title, route: false } ]" />
-		<h2>Groups</h2>
+		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.admin.manage + $page.props.lang.admin.parameter_groups, route: false } ]" />
+		<h2>{{ $page.props.lang.admin.parameter_groups }}</h2>
 		<div class="row justify-content-end">
 			<div class="col-auto">
-				<Link v-if="modal" data-bs-toggle="modal" data-bs-target="#groupFormModal" @click.prevent.stop="selectGroup(0)" class="btn btn-primary m-3">Add new group</Link>
-				<Link v-else :href="route('param-group.edit', [0])" class="btn btn-primary m-3">Add new group</Link>
+				<Link v-if="modal" data-bs-toggle="modal" data-bs-target="#groupFormModal" @click.prevent.stop="selectGroup(0)" class="btn btn-primary m-3">{{ $page.props.lang.admin.add + $page.props.lang.admin.new_female_ + $page.props.lang.admin.parameter_group_ }}</Link>
+				<Link v-else :href="route('param-group.create')" class="btn btn-primary m-3">{{ $page.props.lang.admin.add + $page.props.lang.admin.new_female_ + $page.props.lang.admin.parameter_group_ }}</Link>
 			</div>
 		</div>
 		<div v-if="paramGroups.last_page > 1" class="row my-5">
@@ -53,11 +53,11 @@ const toggleState = (group) => {
 			<thead>
 				<tr>
 					<th>Id</th>
-					<th>Name</th>
-					<th>Order</th>
-					<th>Enabled</th>
-					<th>Created</th>
-					<th>Updated</th>
+					<th>{{ $page.props.lang.admin.name }}</th>
+					<th>{{ $page.props.lang.admin.order }}</th>
+					<th>{{ $page.props.lang.admin.enabled }}</th>
+					<th>{{ $page.props.lang.admin.created }}</th>
+					<th>{{ $page.props.lang.admin.updated }}</th>
 				</tr>
 			</thead>
 			<tbody>

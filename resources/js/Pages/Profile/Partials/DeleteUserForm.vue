@@ -42,34 +42,30 @@ const closeModal = () => {
     <section class="space-y-6">
         <header>
             <h2 class="">
-                Delete Account
+				{{ $page.props.lang.auth.delete_account }}
             </h2>
 
             <p class="mb-3">
-                Once your account is deleted, all of its resources and data will
-                be permanently deleted. Before deleting your account, please
-                download any data or information that you wish to retain.
+                {{ $page.props.lang.auth.delete_account_warning }}
             </p>
         </header>
 
-        <DangerButton @click="confirmUserDeletion">Delete Account</DangerButton>
+        <DangerButton @click="confirmUserDeletion">{{ $page.props.lang.auth.delete_account }}</DangerButton>
 
         <Modal :show="confirmingUserDeletion" @close="closeModal" class="bg-white">
             <div class="bg-white">
                 <h2 class="" >
-                    Are you sure you want to delete your account?
+					{{ $page.props.lang.auth.delete_account_request }} 
                 </h2>
 
                 <p class="">
-                    Once your account is deleted, all of its resources and data
-                    will be permanently deleted. Please enter your password to
-                    confirm you would like to permanently delete your account.
+                    {{ $page.props.lang.auth.delete_account_confirm }} 
                 </p>
 
                 <div class="mb-3">
                     <InputLabel
                         for="password"
-                        value="Password"
+                        :value="$page.props.lang.auth.password"
                         class=""
                     />
 
@@ -79,7 +75,7 @@ const closeModal = () => {
                         v-model="form.password"
                         type="password"
                         class=""
-                        placeholder="Password"
+                        :placeholder="$page.props.lang.auth.password"
                         @keyup.enter="deleteUser"
                     />
 
@@ -88,7 +84,7 @@ const closeModal = () => {
 
                 <div class="mb-3">
                     <SecondaryButton @click="closeModal">
-                        Cancel
+                        {{ $page.props.lang.customer.cancel }}
                     </SecondaryButton>
 
                     <DangerButton
@@ -97,7 +93,7 @@ const closeModal = () => {
                         :disabled="form.processing"
                         @click="deleteUser"
                     >
-                        Delete Account
+                        {{ $page.props.lang.auth.delete_account }}
                     </DangerButton>
                 </div>
             </div>

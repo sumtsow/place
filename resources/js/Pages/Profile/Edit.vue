@@ -22,7 +22,7 @@ defineProps({
 
 <template>
 	<Page :title="title">
-		<Breadcrumbs :links="[ { title: title, route: false } ]" />
+		<Breadcrumbs :links="[ { title: $page.props.lang.auth.profile, route: false } ]" />
         <div class="row justify-content-center">
             <div class="col col-md-6 my-md-5">
                 <div class="mb-3">

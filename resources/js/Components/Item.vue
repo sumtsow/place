@@ -51,7 +51,7 @@ const formatDescription = (text) => {
 			</div>
 		</div>
 		<div class="col">
-			<h4 v-if="item.distributors.length">Prices</h4>
+			<h4 v-if="item.distributors.length">{{ $page.props.lang.customer.price }}</h4>
 			<div v-for="distributor in item.distributors" class="row fs-5" :class="{ 'text-body-tertiary': !distributor.is_enabled || !distributor.pivot.is_enabled }">
 				<div class="col">
 					{{( (1 - 0.01 * distributor.pivot.discount) * distributor.pivot.price ).toFixed(2) }} {{ props.currency }}
@@ -65,13 +65,13 @@ const formatDescription = (text) => {
 		<div class="col">
 			<ul class="nav nav-tabs mb-3" id="itemTab" role="tablist">
 				<li class="nav-item" role="presentation">
-					<button class="nav-link active" id="desc-tab" data-bs-toggle="tab" data-bs-target="#desc-tab-pane" type="button" role="tab" aria-controls="desc-tab-pane" aria-selected="true">Description</button>
+					<button class="nav-link active" id="desc-tab" data-bs-toggle="tab" data-bs-target="#desc-tab-pane" type="button" role="tab" aria-controls="desc-tab-pane" aria-selected="true">{{ $page.props.lang.admin.description }}</button>
 				</li>
 				<li class="nav-item" role="presentation">
-					<button class="nav-link" id="params-tab" data-bs-toggle="tab" data-bs-target="#params-tab-pane" type="button" role="tab" aria-controls="params-tab-pane" aria-selected="false">Parameters</button>
+					<button class="nav-link" id="params-tab" data-bs-toggle="tab" data-bs-target="#params-tab-pane" type="button" role="tab" aria-controls="params-tab-pane" aria-selected="false">{{ $page.props.lang.admin.parameters }}</button>
 				</li>
 				<li class="nav-item" role="presentation">
-					<button class="nav-link" id="posts-tab" data-bs-toggle="tab" data-bs-target="#posts-tab-pane" type="button" role="tab" aria-controls="posts-tab-pane" aria-selected="false">Posts</button>
+					<button class="nav-link" id="posts-tab" data-bs-toggle="tab" data-bs-target="#posts-tab-pane" type="button" role="tab" aria-controls="posts-tab-pane" aria-selected="false">{{ $page.props.lang.customer.posts }}</button>
 				</li>
 			</ul>
 			<div class="tab-content" id="itemTabContent">

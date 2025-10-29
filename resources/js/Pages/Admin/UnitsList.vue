@@ -46,12 +46,12 @@ let selectUnit = (unit) => {
 
 <template>
 	<Page :title="title">
-		<Breadcrumbs :links="[ { title: 'Dashboard', route: 'dashboard' }, { title: title, route: false } ]" />
-		<h2>Units</h2>
+		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.admin.manage + $page.props.lang.admin.measuring_units.toLowerCase(), route: false } ]" />
+		<h2>{{ $page.props.lang.admin.measuring_units }}</h2>
 		<div class="row justify-content-end">
 			<div class="col-auto">
-				<Link v-if="modal" data-bs-toggle="modal" data-bs-target="#unitFormModal" @click.prevent.stop="selectUnit(0)" class="btn btn-primary m-3">Add new unit</Link>
-				<Link v-else @click.prevent.stop="selectUnit(0)" :href="route('unit.create')" class="btn btn-primary m-3">Add new unit</Link>
+				<Link v-if="modal" data-bs-toggle="modal" data-bs-target="#unitFormModal" @click.prevent.stop="selectUnit(0)" class="btn btn-primary m-3">{{ $page.props.lang.admin.add + $page.props.lang.admin.new_female_ + $page.props.lang.admin.measuring_unit_ }}</Link>
+				<Link v-else @click.prevent.stop="selectUnit(0)" :href="route('unit.create')" class="btn btn-primary m-3">{{ $page.props.lang.admin.add + $page.props.lang.admin.new_female_ + $page.props.lang.admin.measuring_unit_ }}</Link>
 			</div>
 		</div>
 		<div v-if="units.last_page > 1" class="row">
@@ -63,11 +63,11 @@ let selectUnit = (unit) => {
 			<thead>
 				<tr>
 					<th>Id</th>
-					<th>Name</th>
-					<th>Type</th>
-					<th>Enabled</th>
-					<th>Created</th>
-					<th>Updated</th>
+					<th>{{ $page.props.lang.admin.name }}</th>
+					<th>{{ $page.props.lang.admin.type }}</th>
+					<th>{{ $page.props.lang.admin.enabled }}</th>
+					<th>{{ $page.props.lang.admin.created }}</th>
+					<th>{{ $page.props.lang.admin.updated }}</th>
 				</tr>
 			</thead>
 			<tbody>

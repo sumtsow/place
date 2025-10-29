@@ -76,8 +76,8 @@ let saveParameters = () => {
 
 <template>
 	<Page :title="title">
-		<Breadcrumbs :links="[ { title: 'Dashboard', route: 'dashboard' }, { title: 'Items', route: 'item.admin' }, { title: title, route: false } ]" />
-		<h5>{{ item.name }} parameters</h5>
+		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.admin.items, route: 'item.admin' }, { title: $page.props.lang.admin.edit + $page.props.lang.admin.parameters.toLowerCase() + $page.props.lang.admin.of_item, route: false } ]" />
+		<h5>{{ item.name }} {{ $page.props.lang.admin.parameters.toLowerCase() }}</h5>
 		<div class="d-none">{{ item.parameters = props.item.parameters }}</div>
 		<form name="itemParametersForm" id="item-parameters-form" @submit.prevent="saveParameters">
 			<ul class="list-group">
@@ -97,24 +97,24 @@ let saveParameters = () => {
 				<li class="list-group-item">
 					<div class="row">
 						<div class="col">
-							<InputLabel for="paramgroup_id" value="Group" class="text-end" />
+							<InputLabel for="paramgroup_id" :value="$page.props.lang.admin.parameter_group" class="text-end" />
 							<SelectList
 								:options="groups"
 								id="paramgroup_id"
 								class="col d-inline-block w-75"
 								v-model="gid"
-								:default-option="'Select group ...'"
+								:default-option="$page.props.lang.admin.select + $page.props.lang.admin.parameter_group_ + '...'"
 								@change="selectGroup"
 							/>
 						</div>
 						<div class="col">
-							<InputLabel for="parameter_id" value="Parameter" class="text-end" />
+							<InputLabel for="parameter_id" :value="$page.props.lang.admin.parameter" class="text-end" />
 							<SelectList
 								:options="parameters"
 								id="parameter_id"
 								class="col d-inline-block w-75"
 								v-model="newParameterId"
-								:default-option="'Select parameter ...'"
+								:default-option="$page.props.lang.admin.select + $page.props.lang.admin.parameter + '...'"
 							/>
 						</div>
 						<div class="col">
@@ -125,9 +125,9 @@ let saveParameters = () => {
 			</ul>
 			<div class="row justify-content-end">
 				<div class="col-2 m-4">
-				<PrimaryButton :disabled="form.processing">Save</PrimaryButton>
+				<PrimaryButton :disabled="form.processing">{{ $page.props.lang.customer.save }}</PrimaryButton>
 					<p v-if="form.recentlySuccessful" class="">
-						Saved.
+						{{ $page.props.lang.customer.saved }}
 					</p>
 				</div>
 			</div>

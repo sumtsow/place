@@ -110,17 +110,17 @@ const toggleState = (prop) => {
 
 <template>
 	<Page :title="title">
-		<Breadcrumbs :links="[ { title: 'Dashboard', route: 'dashboard' }, { title: 'Orders', route: 'order.admin' }, { title: title, route: false } ]" />
+		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.admin.orders, route: 'order.admin' }, { title: $page.props.lang.admin.manage + $page.props.lang.admin.propositions.toLowerCase() + $page.props.lang.admin.order.toLowerCase() , route: false } ]" />
 		<div class="justify-content-between ms-3">
-			<h2>Order #{{ order.id }} - {{ order.customer.user.lastname }} {{ order.customer.user.firstname }}</h2>
+			<h2>{{ $page.props.lang.admin.order + ' #' + order.id }} - {{ order.customer.user.lastname }} {{ order.customer.user.firstname }}</h2>
 
 			<form name="formPropositions" id="form-propositions" class="p-3 needs-validation" @submit.prevent.stop="savePropositions"></form>
 
 			<div class="input-group mb-3">
-				<InputLabel for="distributor" value="Distributor" class="col-3 me-2 text-end" />
+				<InputLabel for="distributor" :value="$page.props.lang.admin.distributor" class="col-3 me-2 text-end" />
 				<SelectList
 					:options="distributors"
-					:defaultOption="'Select distributor'"
+					:defaultOption="$page.props.lang.admin.select + $page.props.lang.admin.distributor_ + '...'"
 					id="distributor"
 					class="col"
 					v-model="proposition.distributor_item.distributor_id"
@@ -132,10 +132,10 @@ const toggleState = (prop) => {
 			</div>
 
 			<div class="input-group mb-3">
-				<InputLabel for="item" value="Item" class="col-3 me-2 text-end" />
+				<InputLabel for="item" :value="$page.props.lang.admin.item" class="col-3 me-2 text-end" />
 				<SelectList
 					:options="items"
-					:defaultOption="'Select item'"
+					:defaultOption="$page.props.lang.admin.select + $page.props.lang.admin.item.toLowerCase() + '...'"
 					id="item"
 					class="col"
 					v-model="proposition.distributor_item.item_id"
@@ -147,19 +147,19 @@ const toggleState = (prop) => {
 			</div>
 
 			<div class="input-group mb-3 justify-content-end">
-				<PrimaryButton @click="addProposition">Add&nbsp;proposition</PrimaryButton>
+				<PrimaryButton @click="addProposition">{{ $page.props.lang.admin.add + $page.props.lang.admin.proposition_ }}</PrimaryButton>
 			</div>
 
 			<table class="table table-striped">
 				<thead>
 					<tr>
 						<th>Id</th>
-						<th>Name</th>
-						<th>Distributor</th>
-						<th>Count</th>
-						<th>Enabled</th>
-						<th>Created</th>
-						<th>Updated</th>
+						<th>{{ $page.props.lang.admin.name }}</th>
+						<th>{{ $page.props.lang.admin.distributor }}</th>
+						<th>{{ $page.props.lang.admin.count }}</th>
+						<th>{{ $page.props.lang.admin.enabled }}</th>
+						<th>{{ $page.props.lang.admin.created }}</th>
+						<th>{{ $page.props.lang.admin.updated }}</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -196,12 +196,14 @@ const toggleState = (prop) => {
 			</table>
 
 			<div class="row">
-			<div class="col">
-				<PrimaryButton form="form-propositions" :disabled="formPropositions.processing">Save</PrimaryButton>
+				<div class="col text-end">
+					<PrimaryButton form="form-propositions" :disabled="formPropositions.processing">{{ $page.props.lang.customer.save }}</PrimaryButton>
+				</div>
 			</div>
-			<div class="col text-success">
-				<template v-if="formPropositions.recentlySuccessful">Saved.</template>
-			</div>
+			<div class="row">
+				<div class="col text-end text-success">
+					<template v-if="formPropositions.recentlySuccessful">{{ $page.props.lang.customer.saved }}</template>
+				</div>
 			</div>
 		</div>
 		<PropositionForm v-if="modal" :distributors="distributors" :order="order" :currentProposition="currentProposition" :modal="modal"/>

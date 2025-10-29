@@ -77,8 +77,8 @@ let savePost = () => {
 			<div :class="{'modal-dialog modal-xl': modal}">
 				<div :class="{'modal-content': modal}">
 					<div :class="{'modal-header': modal}">
-						<div :class="{'modal-title h5': modal, 'h1 text-center': !modal}" id="modalLabel">{{ form && form.id > 0 ? 'Edit ' + form.id : 'Add new ' }} {{ isComment ? 'comment' : 'post' }}</div>
-						<button v-if="modal" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрити" @click="form.clearErrors"></button>
+						<div :class="{'modal-title h5': modal, 'h1 text-center': !modal}" id="modalLabel">{{ form && form.id > 0 ? $page.props.lang.admin.edit + form.id : $page.props.lang.admin.add + $page.props.lang.customer.post_ }} {{ isComment ? $page.props.lang.customer.comment_ : $page.props.lang.customer.post_  }}</div>
+						<button v-if="modal" type="button" class="btn-close" data-bs-dismiss="modal" :aria-label="$page.props.lang.admin.close" @click="form.clearErrors"></button>
 					</div>
 					<div :class="{'modal-body': modal}">
 						<div v-if="auth && auth.user" class="input-group mb-3 row text-md-left justify-content-start has-validation">
@@ -92,7 +92,7 @@ let savePost = () => {
 						</div>
 
 						<div class="input-group row mb-3">
-							<InputLabel for="text" value="Text" class="col-3 text-end" />
+							<InputLabel for="text" :value="$page.props.lang.admin.text" class="col-3 text-end" />
 							<TextArea
 								id="text"
 								class="col"
@@ -102,11 +102,11 @@ let savePost = () => {
 							/>
 							<InputError class="mt-2" :message="form.errors.text" />
 						</div>
-					</div>
-					<div class="row justify-content-end">
-						<div class="col-2 m-4">
-						<PrimaryButton :disabled="form.processing">Save</PrimaryButton>
-							<p class="text-success" v-if="form.recentlySuccessful">Saved</p>
+						<div class="row justify-content-end">
+							<div class="col text-end pe-4">
+							<PrimaryButton :disabled="form.processing">{{ $page.props.lang.customer.save }}</PrimaryButton>
+								<p class="text-success" v-if="form.recentlySuccessful">{{ $page.props.lang.customer.saved }}</p>
+							</div>
 						</div>
 					</div>
 				</div>

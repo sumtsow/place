@@ -44,12 +44,12 @@ const saveValue = () => {
 			<div :class="{'modal-dialog modal-xl': modal}">
 				<div :class="{'modal-content': modal}">
 					<div :class="{'modal-header': modal}">
-						<div :class="{'modal-title h5': modal, 'h1 text-center': !modal}" id="modalLabel">Edit {{ props.value.parameter_id }} value</div>
-						<button v-if="modal" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрити" @click="closeForm"></button>
+						<div :class="{'modal-title h5': modal, 'h1 text-center': !modal}" id="modalLabel">{{ $page.props.lang.admin.edit + $page.props.lang.admin.value.toLowerCase() + props.value.parameter_id }}</div>
+						<button v-if="modal" type="button" class="btn-close" data-bs-dismiss="modal" :aria-label="$page.props.lang.admin.close" @click="closeForm"></button>
 					</div>
 					<div :class="{'modal-body': modal}">
 						<div class="input-group row mb-3">
-							<InputLabel for="value" value="Value" class="col-3 text-end" />
+							<InputLabel for="value" :value="$page.props.lang.admin.value" class="col-3 text-end" />
 							<TextInput
 								id="value"
 								type="text"
@@ -62,9 +62,9 @@ const saveValue = () => {
 					</div>
 					<div class="row justify-content-end">
 						<div class="col-2 m-4">
-						<PrimaryButton :disabled="processing">Save</PrimaryButton>
+						<PrimaryButton :disabled="processing">{{ $page.props.lang.customer.save }}</PrimaryButton>
 							<p v-if="saved" class="text-success">
-								Saved
+								{{ $page.props.lang.customer.saved }}
 							</p>
 						</div>
 					</div>

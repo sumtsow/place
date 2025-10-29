@@ -37,18 +37,17 @@ const updatePassword = () => {
     <section>
         <header>
             <h2 class="">
-                Update Password
+                {{ $page.props.lang.auth.update_password }}
             </h2>
 
             <p class="">
-                Ensure your account is using a long, random password to stay
-                secure.
+				{{ $page.props.lang.auth.password_requirements }}
             </p>
         </header>
 
         <form @submit.prevent="updatePassword" class="">
             <div>
-                <InputLabel for="current_password" value="Current Password" />
+                <InputLabel for="current_password" :value="$page.props.lang.auth.current_password" />
 
                 <TextInput
                     id="current_password"
@@ -66,7 +65,7 @@ const updatePassword = () => {
             </div>
 
             <div>
-                <InputLabel for="password" value="New Password" />
+                <InputLabel for="password" :value="$page.props.lang.auth.new_password" />
 
                 <TextInput
                     id="password"
@@ -83,7 +82,7 @@ const updatePassword = () => {
             <div>
                 <InputLabel
                     for="password_confirmation"
-                    value="Confirm Password"
+                    :value="$page.props.lang.auth.confirm_password"
                 />
 
                 <TextInput
@@ -101,7 +100,7 @@ const updatePassword = () => {
             </div>
 
             <div class="mt-3">
-                <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
+                <PrimaryButton :disabled="form.processing">{{ $page.props.lang.auth.save }}</PrimaryButton>
 
                 <Transition
                     enter-active-class="transition ease-in-out"
@@ -110,7 +109,7 @@ const updatePassword = () => {
                     leave-to-class="opacity-0"
                 >
                     <p v-if="form.recentlySuccessful" class="text-success" >
-                        Saved.
+                        {{ $page.props.lang.auth.saved }}
                     </p>
                 </Transition>
             </div>

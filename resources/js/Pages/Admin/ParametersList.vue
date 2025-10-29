@@ -57,21 +57,21 @@ const toggleState = (group) => {
 
 <template>
 	<Page :title="title">
-		<Breadcrumbs :links="[ { title: 'Dashboard', route: 'dashboard' }, { title: title, route: false } ]" />
-		<h2>Parameters</h2>
+		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.admin.manage + $page.props.lang.admin.parameters.toLowerCase(), route: false } ]" />
+		<h2>{{ $page.props.lang.admin.parameters }}</h2>
 		<div class="row justify-content-end">
 			<div class="col-auto">
-				<Link v-if="modal" data-bs-toggle="modal" data-bs-target="#parameterFormModal" @click.prevent.stop="selectParameter(0)" class="btn btn-primary m-3">Add new parameter</Link>
-				<Link v-else @click.prevent.stop="selectParameter(0)" :href="route('parameter.create')" class="btn btn-primary m-3">Add new parameter</Link>
+				<Link v-if="modal" data-bs-toggle="modal" data-bs-target="#parameterFormModal" @click.prevent.stop="selectParameter(0)" class="btn btn-primary m-3">{{ $page.props.lang.admin.add + $page.props.lang.admin.new_male + $page.props.lang.admin.parameter.toLowerCase() }}</Link>
+				<Link v-else @click.prevent.stop="selectParameter(0)" :href="route('parameter.create')" class="btn btn-primary m-3">{{ $page.props.lang.admin.add + $page.props.lang.admin.new_male + $page.props.lang.admin.parameter.toLowerCase() }}</Link>
 			</div>
 		</div>
 		<div class="row my-3">
-			<InputLabel for="group-id" value="Group" class="col-3 text-end" />
+			<InputLabel for="group-id" :value="$page.props.lang.admin.group" class="col-3 text-end" />
 			<SelectList
 				:options="groups"
 				id="group-id"
 				type="number"
-				defaultOption="All"
+				:defaultOption="$page.props.lang.admin.all"
 				class="col"
 				v-model="props.groupId"
 				@change="selectGroup"
@@ -86,13 +86,13 @@ const toggleState = (group) => {
 			<thead>
 				<tr>
 					<th>Id</th>
-					<th>Name</th>
-					<th>Order</th>
-					<th>Group</th>
-					<th>Unit</th>
-					<th>Enabled</th>
-					<th>Created</th>
-					<th>Updated</th>
+					<th>{{ $page.props.lang.admin.name }}</th>
+					<th>{{ $page.props.lang.admin.order }}</th>
+					<th>{{ $page.props.lang.admin.group }}</th>
+					<th>{{ $page.props.lang.admin.measuring_unit }}</th>
+					<th>{{ $page.props.lang.admin.enabled }}</th>
+					<th>{{ $page.props.lang.admin.created }}</th>
+					<th>{{ $page.props.lang.admin.updated }}</th>
 				</tr>
 			</thead>
 			<tbody>

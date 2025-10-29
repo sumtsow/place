@@ -30,7 +30,7 @@ if (!props.category.id) props.category = {
 
 <template>
 	<Page :title="title">
-		<Breadcrumbs :links="[ { title: 'Dashboard', route: 'dashboard' }, { title: 'Categories', route: 'category.admin' }, { title: title, route: false } ]" />
+		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.admin.manage + $page.props.lang.admin.categories, route: 'category.admin' }, { title: category.id ? $page.props.lang.admin.edit + $page.props.lang.admin.category_ + category.id : $page.props.lang.admin.add + $page.props.lang.admin.category_, route: false } ]" />
         <div class="row justify-content-center">
             <div class="col col-md-6 my-md-5">
                 <CategoryForm :category="category" :catList="catList"/>

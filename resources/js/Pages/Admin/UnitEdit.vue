@@ -27,7 +27,7 @@ if ( !props.unit.id ) props.unit = {
 
 <template>
 	<Page :title="title">
-		<Breadcrumbs :links="[ { title: 'Dashboard', route: 'dashboard' }, { title: 'Units', route: 'unit.admin' }, { title: title, route: false } ]" />
+		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.admin.manage + $page.props.lang.admin.measuring_units.toLowerCase(), route: 'unit.admin' }, { title: $page.props.lang.admin.edit + $page.props.lang.admin.measuring_unit_, route: false } ]" />
         <div class="row justify-content-center">
             <div class="col col-md-6 my-md-5">
                 <UnitForm :unit="unit" />

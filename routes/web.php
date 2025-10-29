@@ -72,6 +72,7 @@ Route::middleware(['auth', 'can:admin, App\Models\User'])->prefix('admin')->grou
 	Route::put('/parameter', [ParameterAdminController::class, 'update'])->name('parameter.update');
 	Route::put('/parameter/state/', [ParameterAdminController::class, 'updateState'])->name('parameter.update-state');
 	Route::get('/param-group', [ParamGroupAdminController::class, 'index'])->name('param-group.admin');
+	Route::get('/param-group/0', [ParamGroupAdminController::class, 'create'])->name('param-group.create');
 	Route::get('/param-group/{id}', [ParamGroupAdminController::class, 'edit'])->name('param-group.edit');
 	Route::put('/param-group/0', [ParamGroupAdminController::class, 'store'])->name('param-group.store');
 	Route::put('/param-group/{id}', [ParamGroupAdminController::class, 'update'])->name('param-group.update');
@@ -91,5 +92,16 @@ Route::middleware('auth')->group(function () {
 	Route::put('/comment/0', [CommentController::class, 'store'])->name('comment.store');
 	Route::put('/comment/{id}', [CommentController::class, 'update'])->name('comment.update');
 });
+
+Route::get('/switch-locale/{locale?}', function (string $locale) {
+	if ( !isset($locale) ) {
+		$locale = config('app.locale');
+	}
+    if (! in_array($locale, config('app.lang'))) {
+        abort(400);
+    }
+    App::setLocale($locale);
+    return back()->cookie('locale', $locale);
+})->name('switch.locale');
 
 require __DIR__.'/auth.php';

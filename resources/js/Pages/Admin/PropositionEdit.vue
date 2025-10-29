@@ -27,7 +27,7 @@ if (!props.currentProposition.id) props.currentProposition = { ...emptyPropositi
 
 <template>
 	<Page :title="title">
-		<Breadcrumbs :links="[ { title: 'Dashboard', route: 'dashboard' }, { title: 'Orders', route: 'order.admin' }, { title: 'Propositions', route: 'proposition.admin', param: currentProposition.order_id }, { title: title, route: false } ]" />
+		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.admin.orders, route: 'order.admin' }, { title: $page.props.lang.admin.propositions, route: 'proposition.admin', param: currentProposition.order_id }, { title: $page.props.lang.admin.edit + $page.props.lang.admin.proposition_, route: false } ]" />
         <div class="row justify-content-center">
             <div class="col col-lg-6 my-lg-5">
                 <PropositionForm :currentProposition="currentProposition" :distributors="distributors"/>

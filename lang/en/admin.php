@@ -1,0 +1,70 @@
+<?php
+
+return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Customer Language Lines
+    |--------------------------------------------------------------------------
+    |
+    |
+    */
+
+	'possible_operations' => 'Possible opreations',
+	'manage' => 'Manage ',
+	'categories' => 'Categories',
+	'category' => 'Category ',
+	'category_' => 'category ',
+	'distributors' => 'Distributors',
+	'distributors_' => 'distributors',
+	'distributor' => 'Distributor',
+	'distributor_' => 'distributor ',
+	'items' => 'Items ',
+	'item' => 'item ',
+	'of_item' => ' of item ',
+	'orders' => 'Orders',
+	'order' => 'Order ',
+	'measuring_units' => 'Measuring Units',
+	'measuring_unit' => 'Measuring Unit',
+	'measuring_unit_' => 'measuring unit ',
+	'parameters' => 'Parameters',
+	'parameter' => 'Parameter ',
+	'parameter_groups' => 'Groups of parameters',
+	'parameter_group' => 'Group of parameters',
+	'parameter_group_' => 'group of parameters ',
+	'propositions' => 'Propositions',
+	'proposition' => 'proposition ',
+	'proposition_' => 'proposition ',
+	'top_level_categories' => 'Top level categories',
+	'close' => 'Close',
+	'add' => 'Add ',
+	'edit' => 'Edit ',
+	'enabled' => 'Enabled',
+	'new_female' => 'new ',
+	'new_female_' => 'new ',
+	'new_male' => 'new ',
+	'new_neuter' => 'new ',
+	'name' => 'Name',
+	'logo' => 'Logo',
+	'phone' => 'Phone',
+	'likes' => 'Likes',
+	'dislikes' => 'Dislikes',
+	'sales' => 'Sales',
+	'created' => 'Created',
+	'updated' => 'Updated',
+	'select' => 'Select ',
+	'description' => 'Description',
+	'images' => 'Images',
+	'posts' => 'Posts',
+	'sure_want_delete' => 'Are you sure you want to delete ',
+	'have_not_items' => "This Category coudn't have items!",
+	'expired' => 'Expired',
+	'status' => 'Status',
+	'total' => 'Total cost',
+	'type' => 'Type',
+	'group' => 'Group',
+	'all' => 'All ',
+	'text' => 'Text',
+	'count' => 'Count',
+	'value' => 'Value ',
+];

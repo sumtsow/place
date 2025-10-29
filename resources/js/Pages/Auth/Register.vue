@@ -30,7 +30,7 @@ const submit = () => {
 		<div class="row justify-content-center">
 			<form @submit.prevent="submit" class="col col-md-6 my-md-5">
 				<div class="mb-3">
-					<InputLabel class="form-label" for="firstname" value="First Name" />
+					<InputLabel class="form-label" for="firstname" :value="$page.props.lang.auth.firstname" />
 
 					<TextInput
 						id="firstname"
@@ -46,7 +46,7 @@ const submit = () => {
 				</div>
 
 				<div class="mb-3">
-					<InputLabel class="form-label" for="patronymic" value="Patronymic" />
+					<InputLabel class="form-label" for="patronymic" :value="$page.props.lang.auth.patronymic" />
 
 					<TextInput
 						id="patronymic"
@@ -61,7 +61,7 @@ const submit = () => {
 				</div>
 
 				<div class="mb-3">
-					<InputLabel class="form-label" for="lastname" value="Last Name" />
+					<InputLabel class="form-label" for="lastname" :value="$page.props.lang.auth.lastname" />
 
 					<TextInput
 						id="lastname"
@@ -76,7 +76,7 @@ const submit = () => {
 				</div>
 
 				<div class="mb-3">
-					<InputLabel class="form-label" for="address" value="Address" />
+					<InputLabel class="form-label" for="address" :value="$page.props.lang.auth.address" />
 
 					<TextInput
 						id="address"
@@ -91,7 +91,7 @@ const submit = () => {
 				</div>
 
 				<div class="mb-3">
-					<InputLabel class="form-label" for="birthdate" value="Birth Date" />
+					<InputLabel class="form-label" for="birthdate" :value="$page.props.lang.auth.birthdate" />
 
 					<TextInput
 						id="birthdate"
@@ -121,7 +121,7 @@ const submit = () => {
 				</div>
 
 				<div class="mb-3">
-					<InputLabel class="form-label" for="password" value="Password" />
+					<InputLabel class="form-label" for="password" :value="$page.props.lang.auth.password" />
 
 					<TextInput
 						id="password"
@@ -136,7 +136,7 @@ const submit = () => {
 				</div>
 
 				<div class="mb-3">
-					<InputLabel class="form-label" for="password_confirmation" value="Confirm Password" />
+					<InputLabel class="form-label" for="password_confirmation" :value="$page.props.lang.auth.confirm_password" />
 
 					<TextInput
 						id="password_confirmation"
@@ -158,7 +158,7 @@ const submit = () => {
 						:href="route('login')"
 						class="float-end"
 					>
-						Already registered?
+						{{ $page.props.lang.auth.already_registered }}
 					</Link>
 
 					<PrimaryButton
@@ -166,7 +166,7 @@ const submit = () => {
 						:class="{ 'opacity-25': form.processing }"
 						:disabled="form.processing"
 					>
-						Register
+						{{ $page.props.lang.auth.register }}
 					</PrimaryButton>
 				</div>
 			</form>

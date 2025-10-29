@@ -30,7 +30,7 @@ defineProps({
 
 <template>
 	<Page :title="title">
-		<Breadcrumbs :links="[ { title: 'Dashboard', route: 'dashboard' }, { title: 'Orders', route: 'order.admin' }, { title: title, route: false } ]" />
+		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.admin.all + $page.props.lang.admin.orders.toLowerCase(), route: 'order.admin' }, { title: $page.props.lang.admin.manage + $page.props.lang.admin.order.toLowerCase(), route: false } ]" />
 		<div class="justify-content-between ms-3">
 			<OrderForm :order="order" :customers="customers" :statuses="statuses" :modal="modal"/>
 		</div>

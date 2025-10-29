@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Inertia\Middleware;
 use App\Models\User;
 
@@ -37,9 +38,22 @@ class HandleInertiaRequests extends Middleware
 				'isAdmin' => $request->user() ? $request->user()->can('admin', User::class) : false,
 				'isOperator' => $request->user() ? $request->user()->can('operator', User::class) : false,
             ],
+			'locale' => self::setLang($request),
+			'locales' => config('app.lang'),
 			'csrf_token' => csrf_token(),
 			'modal' => config('app.modalMode'),
 			'currency' => config('app.currency'),
         ];
     }
+
+	private static function setLang(Request $request) {
+		$locale = $request->cookie('locale');
+		
+		if (!isset($locale)) {
+			$locale = substr($request->server('HTTP_ACCEPT_LANGUAGE') ?? config('app.lang'), 0, 2);
+		}
+		if ( in_array( $locale, config('app.lang') ) ) App::setLocale($locale);
+		syncLangFiles( config('app.langFiles') );
+		return $locale;
+	}
 }

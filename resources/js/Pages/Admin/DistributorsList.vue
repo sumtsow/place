@@ -34,28 +34,28 @@ const selectDistributor = (distr) => {
 
 <template>
 	<Page :title="title">
-		<Breadcrumbs :links="[ { title: 'Dashboard', route: 'dashboard' }, { title: title, route: false } ]" />
-		<h2>Distributors</h2>
+		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.admin.manage + $page.props.lang.admin.distributors, route: false } ]" />
+		<h2>{{ $page.props.lang.admin.distributors }}</h2>
 		<div class="row justify-content-end">
 			<div class="col-auto">
-				<Link v-if="modal" data-bs-toggle="modal" data-bs-target="#distributorFormModal" @click.prevent.stop="selectDistributor(0)" class="btn btn-primary m-3">Add new distributor</Link>
-				<Link v-else @click.prevent.stop="selectDistributor(0)" :href="route('distributor.create')" class="btn btn-primary m-3">Add new Distributor</Link>
+				<Link v-if="modal" data-bs-toggle="modal" data-bs-target="#distributorFormModal" @click.prevent.stop="selectDistributor(0)" class="btn btn-primary m-3">{{ $page.props.lang.admin.add + $page.props.lang.admin.distributor_ }}</Link>
+				<Link v-else @click.prevent.stop="selectDistributor(0)" :href="route('distributor.create')" class="btn btn-primary m-3">{{ $page.props.lang.admin.add + $page.props.lang.admin.distributor_ }}</Link>
 			</div>
 			<div class="table-responsive">
 				<table class="table table-striped">
 					<thead>
 						<tr>
 							<th>Id</th>
-							<th>Name</th>
+							<th>{{ $page.props.lang.admin.name }}</th>
 							<th>URL</th>
 							<th>Email</th>
-							<th>Phone</th>
-							<th>Items</th>
-							<th>Likes</th>
-							<th>Dislikes</th>
-							<th>Sales</th>
-							<th>Created</th>
-							<th>Updated</th>
+							<th>{{ $page.props.lang.admin.phone }}</th>
+							<th>{{ $page.props.lang.admin.items }}</th>
+							<th>{{ $page.props.lang.admin.likes }}</th>
+							<th>{{ $page.props.lang.admin.dislikes }}</th>
+							<th>{{ $page.props.lang.admin.sales }}</th>
+							<th>{{ $page.props.lang.admin.created }}</th>
+							<th>{{ $page.props.lang.admin.updated }}</th>
 						</tr>
 					</thead>
 					<tbody>

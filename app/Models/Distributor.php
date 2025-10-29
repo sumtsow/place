@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-//use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Distributor extends Model
@@ -36,7 +36,7 @@ class Distributor extends Model
      */
     public function items(): BelongsToMany
     {
-        return $this->belongsToMany(Item::class, 'distributor_has_item')->withPivot('count', 'price', 'discount', 'delivery', 'is_enabled')->withTimestamps();
+        return $this->belongsToMany(Item::class, 'distributor_has_item')->withPivot('count', 'price', 'discount', 'delivery', 'is_enabled');
     }
 
 	/**

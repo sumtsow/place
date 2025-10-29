@@ -26,8 +26,9 @@ class ParamGroupController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Admin/ParamgroupEdit', [
-			'paramgroup' => new Paramgroup(),
+        return Inertia::render('Admin/ParamGroupEdit', [
+			'paramGroup' => new Paramgroup(),
+			'emptyGroup' => Paramgroup::getEmptyModel(),
 		]);
     }
 
@@ -56,8 +57,9 @@ class ParamGroupController extends Controller
      */
     public function edit(string $id)
     {
-        return Inertia::render('Admin/ParamgroupEdit', [
-			'paramgroup' => Paramgroup::findOrFail($id),
+        return Inertia::render('Admin/ParamGroupEdit', [
+			'paramGroup' => Paramgroup::findOrFail($id),
+			'emptyGroup' => Paramgroup::getEmptyModel(),
 		]);
     }
 

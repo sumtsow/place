@@ -43,7 +43,7 @@ const toggleState = (comment) => {
 					{{ comment.user.firstname }} {{ comment.user.lastname }} | {{ new Date(comment.created_at).toLocaleString() }}
 				</Link>
 				<div class="d-inline-block float-end form-check form-switch">
-					<CheckInput :name="'is_enabled'" v-model="comment.is_enabled" :label="'Enabled'" :post="comment" :isComment="true" @toggleState="toggleState(comment)"></CheckInput>
+					<CheckInput :name="'is_enabled'" v-model="comment.is_enabled" :label="$page.props.lang.admin.enabled" :post="comment" :isComment="true" @toggleState="toggleState(comment)"></CheckInput>
 				</div>	
 			</template>
 			<template v-else>

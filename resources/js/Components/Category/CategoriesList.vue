@@ -51,11 +51,11 @@ const openLink = (e) => {
 				</div>
 			</div>
 			<div class="col-12 col-md-9 mt-2">
-				<TabLabel label="New" />
+				<TabLabel :label="$page.props.lang.customer.new" />
 				<ItemCards :items="items.newest"/>
-				<TabLabel label="Liked" />
+				<TabLabel :label="$page.props.lang.customer.favorites" />
 				<ItemCards :items="items.liked"/>
-				<TabLabel label="Discussed" />
+				<TabLabel :label="$page.props.lang.customer.discussed" />
 				<ItemCards :items="items.discussed"/>
 			</div>
 		</div>

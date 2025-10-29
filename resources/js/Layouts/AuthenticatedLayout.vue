@@ -16,10 +16,10 @@ import { Link } from '@inertiajs/vue3';
 				<div class="collapse navbar-collapse" id="navbarNavDropdown">
 					<ul class="navbar-nav">
 						<li class="nav-item">
-							<Link class="nav-link active" aria-current="page" :href="route('home')">Home</Link>
+							<Link class="nav-link active" aria-current="page" :href="route('home')">{{ $page.props.lang.navbar.home }}</Link>
 						</li>
 						<li class="nav-item">
-							<Link class="nav-link" :href="route('dashboard')" :active="route().current('dashboard')">Dashboard</Link>
+							<Link class="nav-link" :href="route('dashboard')" :active="route().current('dashboard')">{{ $page.props.lang.navbar.dashboard }}</Link>
 						</li>
 						<li class="nav-item dropdown">
 							<Link class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -27,10 +27,10 @@ import { Link } from '@inertiajs/vue3';
 							</Link>
 							<ul class="dropdown-menu">
 								<li>
-									<Link class="dropdown-item" :href="route('profile.edit')">Profile</Link>
+									<Link class="dropdown-item" :href="route('profile.edit')">{ $page.props.lang.navbar.profile }}</Link>
 								</li>
 								<li>
-									<Link class="dropdown-item" :href="route('logout')" method="post">Log Out</Link>
+									<Link class="dropdown-item" :href="route('logout')" method="post">{{ $page.props.lang.navbar.logout }}</Link>
 								</li>
 							</ul>
 						</li>

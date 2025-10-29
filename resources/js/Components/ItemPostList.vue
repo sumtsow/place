@@ -61,7 +61,7 @@ const addPost = () => {
 	</div>
 	<div class="row my-3">
 		<div class="col text-end">
-			<PrimaryButton data-bs-toggle="modal" data-bs-target="#postFormModal" :disabled="!auth || !auth.user" @click="addPost">Add new Post</PrimaryButton>
+			<PrimaryButton data-bs-toggle="modal" data-bs-target="#postFormModal" :disabled="!auth || !auth.user" @click="addPost">{{ $page.props.lang.admin.add + $page.props.lang.admin.new_male + $page.props.lang.customer.post_ }}</PrimaryButton>
 		</div>
 		<PostForm :modal="true" :item="item" :editedPost="editedPost" :comment="0" :isComment="isComment"/>
 	</div>

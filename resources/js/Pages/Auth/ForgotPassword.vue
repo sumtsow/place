@@ -26,9 +26,7 @@ const submit = () => {
         <Head title="Forgot Password" />
 
         <div class="mb-3">
-            Forgot your password? No problem. Just let us know your email
-            address and we will email you a password reset link that will allow
-            you to choose a new one.
+            {{ $page.props.lang.auth.send_forgotten_password }}
         </div>
 
         <div
@@ -60,7 +58,7 @@ const submit = () => {
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                 >
-                    Email Password Reset Link
+                    {{ $page.props.lang.auth.email_password_reset_link }}
                 </PrimaryButton>
             </div>
         </form>
