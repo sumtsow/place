@@ -10,9 +10,6 @@ defineProps({
 	parameter: {
         type: Object,
 	},
-	emptyParam: {
-        type: Object,
-	},
 	groups: {
         type: Array,
     },

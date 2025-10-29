@@ -30,4 +30,5 @@ return [
 	'delivery' => 'Доставка',
 	'days' => 'днів',
 	'currency' => 'грн',
+	'order' => 'Порядок',
 ];

@@ -26,6 +26,9 @@ defineProps({
 	modal: {
 		type: Boolean,
 	},
+	description_rows:  {
+        type: Number,
+	},	
 });
 
 props.emptyItem = JSON.parse( JSON.stringify( props.item ) );
@@ -99,7 +102,7 @@ const selectCategory = () => {
 						{{ item.name }}
 					</Link>
 				</td>
-				<td>{{ item.description }}</td>
+				<td><span class="text-truncate text-wrap" :style="'display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: ' + description_rows + ';'">{{ item.description }}</span></td>
 				<td>
 					<p v-for="image in JSON.parse(item.images)">
 						<img :src="'/storage/img/' + image" :alt="item.name" style="width: 100px;"/>

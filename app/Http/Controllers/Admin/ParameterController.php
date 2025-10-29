@@ -39,8 +39,10 @@ class ParameterController extends Controller
     public function create()
     {
         return Inertia::render('Admin/ParameterEdit', [
-			'parameter' => new Parameter(),
+			'parameter' => Parameter::getEmptyModel(),
 			'units' => Unit::all(),
+			'groups' => Paramgroup::orderBy('order')->get(),
+			'emptyParam' => Parameter::getEmptyModel(),
 		]);
     }
 

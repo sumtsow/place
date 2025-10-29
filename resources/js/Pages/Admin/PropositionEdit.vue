@@ -18,7 +18,7 @@ defineProps({
 	},
 });
 
-if (!props.currentProposition.id) props.currentProposition = { ...emptyProposition };
+if (!props.currentProposition.id) props.currentProposition = JSON.parse( JSON.stringify( props.emptyProposition ) );
 </script>
 
 <template>

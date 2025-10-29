@@ -93,22 +93,22 @@ let saveParameters = () => {
 				<li class="list-group-item">
 					<div class="row">
 						<div class="col">
-							<InputLabel for="paramgroup_id" :value="$page.props.lang.admin.parameter_group" class="text-end" />
+							<InputLabel for="paramgroup_id" :value="$page.props.lang.admin.parameter_group" class="text-end fw-bold" />
 							<SelectList
 								:options="groups"
 								id="paramgroup_id"
-								class="col d-inline-block w-75"
+								class="form-select"
 								v-model="gid"
 								:default-option="$page.props.lang.admin.select + $page.props.lang.admin.parameter_group_ + '...'"
 								@change="selectGroup"
 							/>
 						</div>
 						<div class="col">
-							<InputLabel for="parameter_id" :value="$page.props.lang.admin.parameter" class="text-end" />
+							<InputLabel for="parameter_id" :value="$page.props.lang.admin.parameter" class="text-end fw-bold" />
 							<SelectList
 								:options="parameters"
 								id="parameter_id"
-								class="col d-inline-block w-75"
+								class="form-select"
 								v-model="newParameterId"
 								:default-option="$page.props.lang.admin.select + $page.props.lang.admin.parameter + '...'"
 							/>

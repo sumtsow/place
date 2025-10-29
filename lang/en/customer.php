@@ -30,4 +30,5 @@ return [
 	'delivery' => 'Delivery',
 	'days' => 'days',
 	'currency' => 'UAH',
+	'order' => 'Order',
 ];

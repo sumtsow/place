@@ -27,6 +27,7 @@ class ItemController extends Controller
 			'item' => Item::getEmptyModel(),
 			'units' => Unit::all(),
 			'categories' => Category::getPlainCatList(),
+			'description_rows' => env('DESCRIPTION_ROWS_ON_ITEM_ADMIN_PAGE'),
 		]);
     }
 
@@ -37,6 +38,9 @@ class ItemController extends Controller
     {
         return Inertia::render('Admin/ItemEdit', [
 			'item' => new Item(),
+			'emptyItem' => Item::getEmptyModel(),
+			'categories' => Category::getPlainCatList(),
+			'units' => Unit::all(),
 		]);
     }
 

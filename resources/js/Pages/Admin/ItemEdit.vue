@@ -15,7 +15,7 @@ defineProps({
 	},
 });
 
-if (!props.item.id) props.item = { ...props.emptyItem };
+if (!props.item.id) props.item = JSON.parse( JSON.stringify( props.emptyItem ) );
 
 </script>
 

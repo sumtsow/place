@@ -77,7 +77,7 @@ const saveGroup = () => {
 						</div>
 
 						<div class="input-group row mb-3">
-							<InputLabel for="order" :value="$page.props.lang.admin.order" class="col-3 text-end" />
+							<InputLabel for="order" :value="$page.props.lang.customer.order" class="col-3 text-end" />
 							<TextInput
 								id="order"
 								type="number"

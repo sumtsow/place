@@ -32,8 +32,6 @@ class Item extends Model
 		'value' => null,
 	];
 
-	private const ITEMS_ON_PAGE = 10;
-
 	/**
      * Get the categories that contains the item
      */
@@ -138,9 +136,9 @@ class Item extends Model
     public static function getMainPageItems()
     {
 		return [
-			'newest' => self::orderByDesc('updated_at')->limit(self::ITEMS_ON_PAGE)->get(),
-			'discussed' => self::withCount(['posts'])->orderByDesc('posts_count')->limit(self::ITEMS_ON_PAGE)->get(),
-			'liked' => self::orderByDesc('like')->limit(self::ITEMS_ON_PAGE)->get(),
+			'newest' => self::orderByDesc('updated_at')->limit(env('ITEMS_ON_MAIN_PAGE'))->get(),
+			'discussed' => self::withCount(['posts'])->orderByDesc('posts_count')->limit(env('ITEMS_ON_MAIN_PAGE'))->get(),
+			'liked' => self::orderByDesc('like')->limit(env('ITEMS_ON_MAIN_PAGE'))->get(),
 		];
     }
 
