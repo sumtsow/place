@@ -11,10 +11,6 @@ const props = usePage().props;
 const isComment = ref(false);
 
 defineProps({
-    title: {
-        type: String,
-		default: 'Manage item posts',
-    },
 	posts: {
         type: Array,
     },
@@ -48,7 +44,7 @@ let selectPost = (post) => {
 </script>
 
 <template>
-	<Page :title="title">
+	<Page :title="$page.props.lang.admin.manage + $page.props.lang.customer.posts.toLowerCase() + $page.props.lang.admin.of_item">
 		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.admin.items, route: 'item.admin' }, { title: $page.props.lang.admin.manage + $page.props.lang.customer.posts.toLowerCase() + $page.props.lang.admin.of_item, route: false } ]" />
 		<h2>{{ $page.props.lang.customer.posts }}</h2>
 		<div v-if="posts.last_page > 1" class="row">

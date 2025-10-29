@@ -29,10 +29,6 @@ defineProps({
 	emptyValue: {
 		type: Object,
 	},
-	title: {
-		type: String,
-		default: 'Item`s parameters edit',
-	},
 	modal: {
 		type: Boolean,
 	},
@@ -75,7 +71,7 @@ let saveParameters = () => {
 </script>
 
 <template>
-	<Page :title="title">
+	<Page :title="$page.props.lang.admin.edit + $page.props.lang.admin.parameters.toLowerCase() + $page.props.lang.admin.of_item">
 		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.admin.items, route: 'item.admin' }, { title: $page.props.lang.admin.edit + $page.props.lang.admin.parameters.toLowerCase() + $page.props.lang.admin.of_item, route: false } ]" />
 		<h5>{{ item.name }} {{ $page.props.lang.admin.parameters.toLowerCase() }}</h5>
 		<div class="d-none">{{ item.parameters = props.item.parameters }}</div>

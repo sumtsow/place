@@ -29,4 +29,5 @@ return [
 	'discount' => 'Знижка',
 	'delivery' => 'Доставка',
 	'days' => 'днів',
+	'currency' => 'грн',
 ];

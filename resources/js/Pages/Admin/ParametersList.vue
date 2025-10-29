@@ -11,10 +11,6 @@ import { Link, useForm, usePage, router } from '@inertiajs/vue3';
 const props = usePage().props;
 
 defineProps({
-    title: {
-        type: String,
-		default: 'Manage parameters',
-    },
 	parameters: {
         type: Array,
 	},
@@ -56,7 +52,7 @@ const toggleState = (group) => {
 </script>
 
 <template>
-	<Page :title="title">
+	<Page :title="$page.props.lang.admin.manage + $page.props.lang.admin.parameters.toLowerCase()">
 		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.admin.manage + $page.props.lang.admin.parameters.toLowerCase(), route: false } ]" />
 		<h2>{{ $page.props.lang.admin.parameters }}</h2>
 		<div class="row justify-content-end">

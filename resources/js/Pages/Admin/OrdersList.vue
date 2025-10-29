@@ -11,10 +11,6 @@ const modal = props.modal;
 const emptyOrder = {...props.order};
 
 defineProps({
-    title: {
-        type: String,
-		default: 'Manage Orders',
-    },
 	orders: {
 		type: Array,
 	},
@@ -51,7 +47,7 @@ const toggleState = (order) => {
 </script>
 
 <template>
-	<Page :title="title">
+	<Page :title="$page.props.lang.admin.manage + $page.props.lang.admin.order.toLowerCase()">
 		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.admin.manage + $page.props.lang.admin.order.toLowerCase(), route: false } ]" />
 		<h2>{{ $page.props.lang.admin.orders }}</h2>
 		<div class="row justify-content-end">

@@ -8,10 +8,6 @@ import { Link, usePage } from '@inertiajs/vue3';
 const props = usePage().props;
 
 defineProps({
-    title: {
-        type: String,
-		default: 'Manage categories',
-    },
 	categories: {
         type: Object,
 	},
@@ -34,8 +30,8 @@ let selectCat = (cat) => {
 </script>
 
 <template>
-	<Page :title="title">
-		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.admin.manage + $page.props.lang.admin.categories, route: false } ]" />
+	<Page :title="$page.props.lang.admin.manage + $page.props.lang.admin.categories.toLowerCase()">
+		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.admin.manage + $page.props.lang.admin.categories.toLowerCase(), route: false } ]" />
 		<h2>{{ $page.props.lang.admin.top_level_categories }}</h2>
 		<div class="row justify-content-end">
 			<div class="col-auto">

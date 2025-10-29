@@ -18,10 +18,6 @@ let proposition = JSON.parse( JSON.stringify(props.currentProposition) );
 const emptyProposition = JSON.parse( JSON.stringify(props.currentProposition) );
 
 defineProps({
-    title: {
-        type: String,
-		default: 'Manage order\'s propositions',
-    },
 	order: {
         type: Object,
 	},
@@ -109,7 +105,7 @@ const toggleState = (prop) => {
 </script>
 
 <template>
-	<Page :title="title">
+	<Page :title="$page.props.lang.admin.manage + $page.props.lang.admin.propositions.toLowerCase() + $page.props.lang.admin.order.toLowerCase()">
 		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.admin.orders, route: 'order.admin' }, { title: $page.props.lang.admin.manage + $page.props.lang.admin.propositions.toLowerCase() + $page.props.lang.admin.order.toLowerCase() , route: false } ]" />
 		<div class="justify-content-between ms-3">
 			<h2>{{ $page.props.lang.admin.order + ' #' + order.id }} - {{ order.customer.user.lastname }} {{ order.customer.user.firstname }}</h2>

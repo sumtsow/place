@@ -39,7 +39,7 @@ class Item extends Model
      */
     public function categories(): BelongsToMany
     {
-        return $this->belongsToMany(Category::class, 'category_has_item')->withPivot('is_main')->withTimestamps();
+        return $this->belongsToMany(Category::class, 'category_has_item')->using(CategoryItem::class)->withPivot('is_main')->withTimestamps();
     }
 
 	/**

@@ -42,7 +42,6 @@ class HandleInertiaRequests extends Middleware
 			'locales' => config('app.lang'),
 			'csrf_token' => csrf_token(),
 			'modal' => config('app.modalMode'),
-			'currency' => config('app.currency'),
         ];
     }
 

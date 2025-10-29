@@ -8,10 +8,6 @@ import { watch } from 'vue';
 const props = usePage().props;
 
 defineProps({
-    title: {
-        type: String,
-		default: 'Post edit',
-    },
 	editedPost: {
         type: Object,
 	},
@@ -43,8 +39,8 @@ if ( !props.editedComment ) {
 </script>
 
 <template>
-	<Page :title="title">
-		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.admin.items, route: 'item.admin' }, { title: $page.props.lang.admin.manage + $page.props.lang.admin.item + editedPost.item_id, route: 'item.edit', param: [editedPost.item_id] }, { title: $page.props.lang.customer.posts, route: 'post.admin', param: [editedPost.item_id] }, { title: $page.props.lang.admin.edit + $page.props.lang.customer.post_, route: false } ]" />
+	<Page :title="$page.props.lang.admin.edit + $page.props.lang.customer.post_">
+		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.admin.items, route: 'item.admin' }, { title: $page.props.lang.admin.manage + $page.props.lang.admin.item.toLowerCase() + editedPost.item_id, route: 'item.edit', param: [editedPost.item_id] }, { title: $page.props.lang.customer.posts, route: 'post.admin', param: [editedPost.item_id] }, { title: $page.props.lang.admin.edit + $page.props.lang.customer.post_, route: false } ]" />
 		<div class="justify-content-between ms-3">
 			<PostForm :item="editedPost.item_id" :auth="props.auth" :editedPost="editedPost" :isComment="isComment" :emptyComment="emptyComment" :emptyPost="emptyPost"/>
 		</div>

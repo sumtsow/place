@@ -29,4 +29,5 @@ return [
 	'discount' => 'Discount',
 	'delivery' => 'Delivery',
 	'days' => 'days',
+	'currency' => 'UAH',
 ];

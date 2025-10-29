@@ -19,16 +19,12 @@ defineProps({
 	units: {
         type: Array,
     },
-	title: {
-		type: String,
-		default: 'Parameter Edit',
-	},
 });
 
 </script>
 
 <template>
-	<Page :title="title">
+	<Page :title="parameter.id ? $page.props.lang.admin.edit + $page.props.lang.admin.parameter.toLowerCase() + parameter.id : $page.props.lang.admin.add + $page.props.lang.admin.parameter.toLowerCase()">
 		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.admin.parameters, route: 'parameter.admin' }, { title: parameter.id ? $page.props.lang.admin.edit + $page.props.lang.admin.parameter.toLowerCase() + parameter.id : $page.props.lang.admin.add + $page.props.lang.admin.parameter.toLowerCase(), route: false } ]" />
         <div class="row justify-content-center">
             <div class="col col-md-6 my-md-5">

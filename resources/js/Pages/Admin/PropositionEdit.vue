@@ -16,17 +16,13 @@ defineProps({
 	emptyProposition: {
         type: Object,
 	},
-	title: {
-		type: String,
-		default: 'Proposition Edit',
-	},
 });
 
 if (!props.currentProposition.id) props.currentProposition = { ...emptyProposition };
 </script>
 
 <template>
-	<Page :title="title">
+	<Page :title="$page.props.lang.admin.edit + $page.props.lang.admin.proposition_">
 		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.admin.orders, route: 'order.admin' }, { title: $page.props.lang.admin.propositions, route: 'proposition.admin', param: currentProposition.order_id }, { title: $page.props.lang.admin.edit + $page.props.lang.admin.proposition_, route: false } ]" />
         <div class="row justify-content-center">
             <div class="col col-lg-6 my-lg-5">

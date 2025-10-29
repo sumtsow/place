@@ -11,10 +11,6 @@ const props = usePage().props;
 let category_id = route().params.category_id ? route().params.category_id : 0;
 
 defineProps({
-    title: {
-        type: String,
-		default: 'Manage items',
-    },
 	categories: {
         type: Array,
 	},
@@ -47,7 +43,7 @@ const selectCategory = () => {
 </script>
 
 <template>
-	<Page :title="title">
+	<Page :title="$page.props.lang.admin.manage + $page.props.lang.admin.items.toLowerCase()">
 		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.admin.manage + $page.props.lang.admin.items.toLowerCase(), route: false } ]" />
 		<h2>{{ $page.props.lang.admin.items }}</h2>
 		<div class="input-group row mb-3">

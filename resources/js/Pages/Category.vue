@@ -14,7 +14,7 @@ defineProps({
 </script>
 
 <template>
-	<Page title="Category">
+	<Page :title="$page.props.lang.admin.category">
 		<Breadcrumbs :links="links" />
 		<Category :category="category"/>
 	</Page>

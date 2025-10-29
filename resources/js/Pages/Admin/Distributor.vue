@@ -9,10 +9,6 @@ const props = usePage().props;
 const modal = props.modal;
 
 defineProps({
-    title: {
-        type: String,
-		default: 'Manage distributors',
-    },
 	distributor: {
         type: Object,
 	},
@@ -23,7 +19,7 @@ defineProps({
 </script>
 
 <template>
-	<Page :title="title">
+	<Page :title="distributor.id ? $page.props.lang.admin.edit + $page.props.lang.admin.distributor_ + distributor.id : $page.props.lang.admin.add + $page.props.lang.admin.distributor_">
 		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.admin.distributors, route: 'distributor.admin' }, { title: distributor.id ? $page.props.lang.admin.edit + $page.props.lang.admin.distributor_ + distributor.id : $page.props.lang.admin.add + $page.props.lang.admin.distributor_, route: false } ]" />
 		<div class="justify-content-between ms-3">
 			<DistributorForm :distributor="distributor" :modal="modal" />

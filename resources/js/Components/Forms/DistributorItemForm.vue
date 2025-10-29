@@ -80,7 +80,7 @@ const saveDistributorItem = () => {
 						</div>
 
 						<div class="input-group row mb-3">
-							<InputLabel for="price" :value="$page.props.lang.customer.price + ', ' + props.currency" class="col-3 text-end" />
+							<InputLabel for="price" :value="$page.props.lang.customer.price + ', ' + $page.props.lang.customer.currency" class="col-3 text-end" />
 							<TextInput
 								id="price"
 								type="text"

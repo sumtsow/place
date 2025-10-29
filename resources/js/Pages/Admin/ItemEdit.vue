@@ -13,10 +13,6 @@ defineProps({
 	emptyItem: {
         type: Object,
 	},
-	title: {
-		type: String,
-		default: 'Item Edit',
-	},
 });
 
 if (!props.item.id) props.item = { ...props.emptyItem };
@@ -24,8 +20,8 @@ if (!props.item.id) props.item = { ...props.emptyItem };
 </script>
 
 <template>
-	<Page :title="title">
-		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.admin.manage + $page.props.lang.admin.items.toLowerCase(), route: 'item.admin' }, { title: item.id ? $page.props.lang.admin.edit + $page.props.lang.admin.item.toLowerCase() + item.id : $page.props.lang.admin.add + $page.props.lang.admin.item, route: false } ]" />
+	<Page :title="item.id ? $page.props.lang.admin.edit + $page.props.lang.admin.item.toLowerCase() + item.id : $page.props.lang.admin.add + $page.props.lang.admin.item.toLowerCase()">
+		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.admin.manage + $page.props.lang.admin.items.toLowerCase(), route: 'item.admin' }, { title: item.id ? $page.props.lang.admin.edit + $page.props.lang.admin.item.toLowerCase() + item.id : $page.props.lang.admin.add + $page.props.lang.admin.item.toLowerCase(), route: false } ]" />
         <div class="row justify-content-center">
             <div class="col col-lg-6 my-lg-5">
                 <ItemForm :item="item" />

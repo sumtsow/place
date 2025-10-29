@@ -2,17 +2,10 @@
 import Page from '@/Layouts/PageLayout.vue';
 import Breadcrumbs from '@/Components/Breadcrumbs.vue';
 import { Link } from '@inertiajs/vue3';
-
-defineProps({
-    title: {
-        type: String,
-		default: 'Dashboard',
-    },
-});
 </script>
 
 <template>
-	<Page :title="title">
+	<Page :title="$page.props.lang.navbar.dashboard">
 		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: false } ]" />
 		<h2>{{ $page.props.lang.admin.possible_operations }}</h2>
 		<div class="list-group">

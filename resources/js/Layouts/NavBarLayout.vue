@@ -9,7 +9,7 @@ const { lang } = usePage().props;
 
 <template>
 	<nav class="navbar navbar-expand-lg">
-		<div class="container-fluid row justify-content-end">
+		<div class="container-fluid row align-items-start">
 			<div class="col">
 				<ul class="nav justify-content-start">
 					<li class="nav-item d-inline" v-for="ln in props.locales">
@@ -17,16 +17,18 @@ const { lang } = usePage().props;
 					</li>
 				</ul>
 			</div>
-			<div class="col">
-				<div v-if="$page.props.auth.user" class="navbar-nav">
-					<Link :href="route('home')" class="navbar-brand">
-						{{ $page.props.lang.navbar.home }}
-					</Link>
+			<div class="col-auto">
+				<div v-if="$page.props.auth.user" class="navbar-nav d-block text-end">
 					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 					  <span class="navbar-toggler-icon"></span>
 					</button>
-					<div class="collapse navbar-collapse" id="navbarNavDropdown">
+					<div class="collapse navbar-collapse text-start" id="navbarNavDropdown">
 						<ul class="navbar-nav">
+							<li class="nav-item">
+								<Link :href="route('home')" class="nav-link">
+									{{ $page.props.lang.navbar.home }}
+								</Link>
+							</li>
 							<li v-if="$page.props.auth.isAdmin" class="nav-item">
 								<Link class="nav-link" :href="route('dashboard')" :active="route().current('dashboard')">{{ $page.props.lang.navbar.dashboard }}</Link>
 							</li>

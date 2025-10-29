@@ -11,6 +11,7 @@ class Category extends Model
 {
 	protected $casts = [
 		'is_enabled' => 'boolean',
+		'is_main_pivot_attribute' => 'boolean',
 	];
 	/**
      * Get the items for the category.

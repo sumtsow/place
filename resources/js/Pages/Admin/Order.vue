@@ -9,10 +9,6 @@ const props = usePage().props;
 const modal = props.modal;
 
 defineProps({
-    title: {
-        type: String,
-		default: 'Manage distributors',
-    },
 	order: {
         type: Object,
 	},
@@ -29,7 +25,7 @@ defineProps({
 </script>
 
 <template>
-	<Page :title="title">
+	<Page :title="$page.props.lang.admin.manage + $page.props.lang.admin.order.toLowerCase()">
 		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.admin.all + $page.props.lang.admin.orders.toLowerCase(), route: 'order.admin' }, { title: $page.props.lang.admin.manage + $page.props.lang.admin.order.toLowerCase(), route: false } ]" />
 		<div class="justify-content-between ms-3">
 			<OrderForm :order="order" :customers="customers" :statuses="statuses" :modal="modal"/>

@@ -21,7 +21,7 @@ defineProps({
 </script>
 
 <template>
-	<Page title="Home">
+	<Page :title="$page.props.lang.navbar.home">
 		<CategoriesList :categories="categories" :items="items"/>
 	</Page>
 </template>

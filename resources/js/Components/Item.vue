@@ -54,7 +54,7 @@ const formatDescription = (text) => {
 			<h4 v-if="item.distributors.length">{{ $page.props.lang.customer.price }}</h4>
 			<div v-for="distributor in item.distributors" class="row fs-5" :class="{ 'text-body-tertiary': !distributor.is_enabled || !distributor.pivot.is_enabled }">
 				<div class="col">
-					{{( (1 - 0.01 * distributor.pivot.discount) * distributor.pivot.price ).toFixed(2) }} {{ props.currency }}
+					{{( (1 - 0.01 * distributor.pivot.discount) * distributor.pivot.price ).toFixed(2) + ' ' + $page.props.lang.customer.currency }}
 					<small v-if="distributor.pivot.discount" class="badge rounded-pill text-bg-danger">&ndash; {{ distributor.pivot.discount }}%</small>
 				</div>
 				<div class="col">{{ distributor.name }}</div>

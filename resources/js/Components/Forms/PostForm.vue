@@ -27,9 +27,6 @@ defineProps({
 	modal: {
 		type: Boolean,
 	},
-	isComment: {
-		type: Boolean,
-	},
 });
 
 let formTpl = props.modal ? props.emptyPost : props.editedPost;
@@ -77,7 +74,7 @@ let savePost = () => {
 			<div :class="{'modal-dialog modal-xl': modal}">
 				<div :class="{'modal-content': modal}">
 					<div :class="{'modal-header': modal}">
-						<div :class="{'modal-title h5': modal, 'h1 text-center': !modal}" id="modalLabel">{{ form && form.id > 0 ? $page.props.lang.admin.edit + form.id : $page.props.lang.admin.add + $page.props.lang.customer.post_ }} {{ isComment ? $page.props.lang.customer.comment_ : $page.props.lang.customer.post_  }}</div>
+						<div :class="{'modal-title h5': modal, 'h1 text-center': !modal}" id="modalLabel">{{ form && form.id > 0 ? $page.props.lang.admin.edit + form.id : $page.props.lang.admin.add + $page.props.lang.admin.new_male }} {{ props.isComment ? $page.props.lang.customer.comment_ : $page.props.lang.customer.post_  }}</div>
 						<button v-if="modal" type="button" class="btn-close" data-bs-dismiss="modal" :aria-label="$page.props.lang.admin.close" @click="form.clearErrors"></button>
 					</div>
 					<div :class="{'modal-body': modal}">

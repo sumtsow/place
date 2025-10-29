@@ -20,7 +20,7 @@ defineProps({
 </script>
 
 <template>
-	<Page title="Item">
+	<Page :title="$page.props.lang.admin.item">
 		<Breadcrumbs :links="links" />
 		<Item :item="item" :auth="auth" :emptyParameter="emptyParameter"/>
 	</Page>

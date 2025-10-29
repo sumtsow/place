@@ -15,10 +15,6 @@ const formItems = useForm({ items: [], distributor_id: 0 });
 const modal = props.modal;
 
 defineProps({
-    title: {
-        type: String,
-		default: 'Manage distributor\'s items',
-    },
 	distributor: {
         type: Object,
 	},
@@ -69,7 +65,7 @@ const toggleState = (di) => {
 </script>
 
 <template>
-	<Page :title="title">
+	<Page :title="$page.props.lang.admin.manage + $page.props.lang.admin.items.toLowerCase() + $page.props.lang.admin.distributors_">
 		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.admin.manage + $page.props.lang.admin.distributors_, route: 'distributor.admin' }, { title: $page.props.lang.admin.manage + $page.props.lang.admin.items.toLowerCase() + $page.props.lang.admin.distributors_, route: false } ]" />
 		<div class="justify-content-between ms-3">
 			<h2>{{ distributor.name }}</h2>
@@ -77,7 +73,7 @@ const toggleState = (di) => {
 			<form name="distributor-item" id="distributor-item-form" class="p-3 needs-validation" @submit.prevent.stop="saveItems"></form>
 
 			<div class="input-group mb-3">
-				<InputLabel for="items" :value="$page.props.lang.admin.add + $page.props.lang.admin.item.toLowerCase()" class="col-3 text-end" />
+				<InputLabel for="items" :value="$page.props.lang.admin.add + $page.props.lang.admin.item.toLowerCase()" class="col-3 text-end pe-2" />
 				<SelectList
 					:options="items"
 					:defaultOption="$page.props.lang.admin.select + $page.props.lang.admin.item.toLowerCase() + '...'"
@@ -117,7 +113,7 @@ const toggleState = (di) => {
 							</Link>
 						</td>
 						<td :class="{ 'text-body-tertiary': !distributorItem.is_enabled }">{{ distributorItem.count }}</td>
-						<td :class="{ 'text-body-tertiary': !distributorItem.is_enabled }">{{ distributorItem.price }}&nbsp;{{ props.currency }}</td>
+						<td :class="{ 'text-body-tertiary': !distributorItem.is_enabled }">{{ distributorItem.price + '&nbsp;' + $page.props.lang.customer.currency }}</td>
 						<td :class="{ 'text-body-tertiary': !distributorItem.is_enabled }">{{ distributorItem.discount }} %</td>
 						<td :class="{ 'text-body-tertiary': !distributorItem.is_enabled }">{{ distributorItem.delivery }}</td>
 						<td :class="{ 'text-body-tertiary': !distributorItem.is_enabled }">

@@ -8,10 +8,6 @@ import { watch } from 'vue';
 const props = usePage().props;
 
 defineProps({
-    title: {
-        type: String,
-		default: 'Comment edit',
-    },
 	editedPost: {
         type: Object,
 	},
@@ -39,8 +35,8 @@ let selectComment = (comment) => {
 </script>
 
 <template>
-	<Page :title="title">
-		<Breadcrumbs :links="[ { title: 'Dashboard', route: 'dashboard' }, { title: 'Posts', route: 'post.admin', param: [editedPost.post.item_id] }, { title: title, route: false } ]" />
+	<Page :title="$page.props.lang.admin.edit + $page.props.lang.customer.comment.toLowerCase()">
+		<Breadcrumbs :links="[ { title: $page.props.lang.navbar.dashboard, route: 'dashboard' }, { title: $page.props.lang.customer.posts + ' ' + $page.props.lang.admin.of_item + editedPost.post.item_id, route: 'post.admin', param: [editedPost.post.item_id] }, { title: $page.props.lang.admin.edit + $page.props.lang.customer.comment.toLowerCase(), route: false } ]" />
 		<div class="justify-content-between ms-3">
 			<PostForm :item="editedPost.post.item_id" :auth="props.auth" :editedPost="editedPost" :isComment="isComment"/>
 		</div>
