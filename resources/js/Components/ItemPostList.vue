@@ -1,68 +1,52 @@
 <script setup>
 
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import PostForm from '@/Components/Forms/PostForm.vue';
 import PostCard from '@/Components/PostCard.vue';
-import { ref } from 'vue';
-import { router, usePage } from '@inertiajs/vue3';
-
-const props = usePage().props;
-const currentPost = props.emptyPost;
-currentPost.item_id = props.item.id;
-const isComment = ref(false);
+import PostForm from '@/Components/Forms/PostForm.vue';
+import CommentForm from '@/Components/Forms/CommentForm.vue';
+import { usePage } from '@inertiajs/vue3';
 
 defineProps({
+	comment: {
+		type: Object,
+	},
+	post: {
+		type: Object,
+	},
 	item: {
-		type: Object,
-	},
-	auth: {
-		type: Object,
-	},
-	editedComment: {
-		type: Object,
-	},
-	editedPost: {
-		type: Object,
-	},
-	emptyPost: {
-		type: Object,
-	},
-	emptyComment: {
 		type: Object,
 	},
 });
 
+const props = usePage().props;
+
 const addComment = (postId) => {
-	props.editedComment = props.emptyComment;
-	props.editedComment.id = 0;
-	props.editedComment.post_id = postId;
-	isComment.value = true;
+	props.comment.post_id = postId;
 };
 
-const addPost = () => {
-	props.editedPost = props.emptyPost;
-	props.editedPost.id = 0;
-	props.editedPost.post_id = 0;
-	props.editedPost.item_id = props.item.id;
-	isComment.value = false;
+const selectComment = (comment) => {
+	if (comment) props.comment = comment;
 };
 
+const selectPost = (post) => {
+	if (post) props.post = post;
+};
 </script>
 
 <template>
-	<PostForm :modal="true" :item="item" :editedPost="editedPost" :comment="0" :isComment="isComment"/>
+	<PostForm :post="post"/>
+	<CommentForm :comment="props.comment"/>
 	<div class="row row-cols-1 mx-0">
 		<template v-if="item.posts && item.posts.length">
-			<PostCard v-for="post in item.posts" :post="post" :auth="auth" @addComment="addComment(post.id)" />
+			<PostCard v-for="post in item.posts" :post="post" @addComment="addComment(post.id)" @selectComment="selectComment" @selectPost="selectPost(post)" />
 		</template>
 		<template v-else>
-			<PostCard :post="editedPost" :auth="false"/>
+			<PostCard :post="post"/>
 		</template>
 	</div>
 	<div class="row my-3">
 		<div class="col text-end">
-			<PrimaryButton data-bs-toggle="modal" data-bs-target="#postFormModal" :disabled="!auth || !auth.user" @click="addPost">{{ $page.props.lang.admin.add + $page.props.lang.admin.new_male + $page.props.lang.customer.post_ }}</PrimaryButton>
+			<PrimaryButton data-bs-toggle="modal" data-bs-target="#postFormModal" :disabled="!props.auth || !props.auth.user">{{ $page.props.lang.admin.add + $page.props.lang.admin.new_male + $page.props.lang.customer.post_ }}</PrimaryButton>
 		</div>
-		<PostForm :modal="true" :item="item" :editedPost="editedPost" :comment="0" :isComment="isComment"/>
 	</div>
 </template>

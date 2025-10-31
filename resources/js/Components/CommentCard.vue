@@ -15,10 +15,6 @@ defineProps({
 	modal: {
 		type: Boolean,
 	},
-	isComment: {
-		type: Boolean,
-		default: true,
-	},
 });
 
 const toggleState = (comment) => {
@@ -35,7 +31,7 @@ const toggleState = (comment) => {
 		<div class="card-header">
 			<template v-if="props.auth.isAdmin">
 				<template v-if="props.modal">
-					<Link data-bs-toggle="modal" data-bs-target="#postFormModal" class="w-100 justify-content-between" :class="{'link-secondary': !comment.is_enabled}" @click.prevent.stop="$emit('selectComment', comment)" :href="route('comment.update', [comment.id])">
+					<Link data-bs-toggle="modal" data-bs-target="#commentFormModal" class="w-100 justify-content-between" :class="{'link-secondary': !comment.is_enabled}" @click.prevent.stop="$emit('selectComment', comment)" :href="route('comment.update', [comment.id])">
 					{{ comment.user.firstname }} {{ comment.user.lastname }} | {{ new Date(comment.created_at).toLocaleString() }}
 					</Link>
 				</template>

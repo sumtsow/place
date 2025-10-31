@@ -17,7 +17,6 @@ class Post extends Model
 		'id' => 0,
 		'text' => '',
 		'item_id' => 0,
-		'post_id' => 0,
 		'user_id' => 0,
 		'is_enabled' => false,
 	];

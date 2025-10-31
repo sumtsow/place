@@ -10,11 +10,17 @@ defineProps({
 	links: {
 		type: Array,
 	},
-	auth: {
-		type: Object,
-	},
 	emptyParameter: {
 		type: String,
+	},
+	emptyPost: {
+		type: Object,
+	},
+	emptyComment: {
+		type: Object,
+	},
+	emptyParamGroup: {
+		type: Object,
 	},
 });
 </script>
@@ -22,6 +28,6 @@ defineProps({
 <template>
 	<Page :title="$page.props.lang.admin.item">
 		<Breadcrumbs :links="links" />
-		<Item :item="item" :auth="auth" :emptyParameter="emptyParameter"/>
+		<Item :item="item" :emptyParameter="emptyParameter" :emptyPost="emptyPost" :emptyComment="emptyComment" :emptyParamGroup="emptyParamGroup"/>
 	</Page>
 </template>

@@ -1,6 +1,7 @@
 <script setup>
 import Page from '@/Layouts/PageLayout.vue';
 import Breadcrumbs from '@/Components/Breadcrumbs.vue';
+import CommentForm from '@/Components/Forms/CommentForm.vue';
 import Post from '@/Pages/Admin/Post.vue';
 import PostForm from '@/Components/Forms/PostForm.vue';
 import PostCard from '@/Components/PostCard.vue';
@@ -14,10 +15,10 @@ defineProps({
 	posts: {
         type: Array,
     },
-	editedComment: {
+	comment: {
 		type: Object,
 	},
-	editedPost: {
+	post: {
 		type: Object,
 	},
 	emptyPost: {
@@ -31,16 +32,17 @@ defineProps({
 	},
 });
 
-let addComment = (postId) => {
-	props.editedComment = props.emptyComment;
-	props.editedComment.post_id = postId;
-	isComment.value = true;
+const addComment = (postId) => {
+	props.comment.post_id = postId;
 };
 
-let selectPost = (post) => {
-	if (post) props.editedPost = post;
+const selectPost = (post) => {
+	if (post) props.post = post;
 };
 
+const selectComment = (comment) => {
+	if (comment) props.comment = comment;
+};
 </script>
 
 <template>
@@ -60,6 +62,7 @@ let selectPost = (post) => {
 				<Link v-for=" (link, index) in posts.links" :key="index" :href="link.url" class="btn btn-outline-primary mx-1" :class="{ active: link.active }" v-html="link.label"/>
 			</div>
 		</div>
-		<PostForm v-if="modal" :modal="modal" :auth="props.auth" :emptyPost="emptyPost" :emptyComment="emptyComment" :isComment="isComment" :post="editedPost" :comment="editedComment"/>
+		<PostForm v-if="modal"/>
+		<CommentForm v-if="modal"/>
 	</Page>
 </template>

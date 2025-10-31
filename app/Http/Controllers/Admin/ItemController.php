@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Inertia\Inertia;
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Item;
 use App\Models\Parameter;
 use App\Models\Paramgroup;
+use App\Models\Post;
 use App\Models\Unit;
 use App\Http\Requests\UpdateItemRequest;
 use App\Http\Requests\UpdateItemParamRequest;
@@ -27,6 +29,8 @@ class ItemController extends Controller
 			'item' => Item::getEmptyModel(),
 			'units' => Unit::all(),
 			'categories' => Category::getPlainCatList(),
+			'emptyPost' => Post::getEmptyModel(),
+			'emptyComment' => Comment::getEmptyModel(),
 			'description_rows' => env('DESCRIPTION_ROWS_ON_ITEM_ADMIN_PAGE'),
 		]);
     }

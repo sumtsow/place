@@ -3,10 +3,8 @@
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import CommentCard from '@/Components/CommentCard.vue';
 import CheckInput from '@/Components/CheckInput.vue';
-import { watch, useAttrs } from 'vue';
 import { Link, usePage, useForm } from '@inertiajs/vue3';
 
-const auth = useAttrs().auth;
 const props = usePage().props;
 const modal = props.modal;
 
@@ -20,21 +18,7 @@ defineProps({
 	modal: {
 		type: Boolean,
 	},
-	isComment: {
-		type: Boolean,
-		default: false,
-	},
 });
-
-const selectPost = (post) => {
-	if (post) props.post = post;
-	props.isComment = false;
-};
-
-const selectComment = (com) => {
-	if (com) props.editedComment = com;
-	props.isComment = true;
-};
 
 const toggleState = (post) => {
 	if (!post) return;
@@ -48,9 +32,9 @@ const toggleState = (post) => {
 <template>
 	<div class="card h-100 justify-content-centermt-3 p-0 my-3" :class="{'text-body-tertiary': post && !post.is_enabled}">
 		<div v-if="post && post.id" class="card-header">
-			<template v-if="auth.isAdmin">
+			<template v-if="props.auth.isAdmin">
 				<template v-if="modal">
-					<Link data-bs-toggle="modal" data-bs-target="#postFormModal" class="w-100 justify-content-between" :class="{'link-secondary': !post.is_enabled}" @click.stop.prevent="$emit('selectPost')" :href="route('post.update', [post.id])">
+					<Link data-bs-toggle="modal" data-bs-target="#postFormModal" class="w-100 justify-content-between" :class="{'link-secondary': !post.is_enabled}" @click.stop.prevent="$emit('selectPost', post)" :href="route('post.update', [post.id])">
 					{{ post.user.firstname }} {{ post.user.lastname }} | {{ new Date(post.created_at).toLocaleString() }}
 					</Link>
 				</template>
@@ -76,11 +60,11 @@ const toggleState = (post) => {
 				</p>
 			</div>
 			<template v-if="post && post.id">
-			<CommentCard v-for="comm in post.comments" :comment="comm" :post="post" @selectComment="selectComment(comm)"/>
+			<CommentCard v-for="comm in post.comments" :comment="comm" @selectComment="$emit('selectComment', comm)"/>
 			</template>
 		</div>
 		<div v-if="post && post.id" class="card-footer text-end">
-			<PrimaryButton data-bs-toggle="modal" data-bs-target="#postFormModal" :disabled="!auth || !auth.user" @click="$emit('addComment')">{{ $page.props.lang.admin.add + $page.props.lang.admin.new_male + $page.props.lang.customer.comment_ }}</PrimaryButton>
+			<PrimaryButton data-bs-toggle="modal" data-bs-target="#commentFormModal" :disabled="!props.auth || !props.auth.user" @click="$emit('addComment', post.id)">{{ $page.props.lang.admin.add + $page.props.lang.admin.new_male + $page.props.lang.customer.comment_ }}</PrimaryButton>
 		</div>
 	</div>
 </template>

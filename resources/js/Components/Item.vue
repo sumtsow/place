@@ -10,14 +10,17 @@ defineProps({
 	item: {
         type: Object,
 	},
-	auth: {
-		type: Object,
-	},
 	emptyParamGroup: {
 		type: String,
 	},
 	emptyParameter: {
 		type: String,
+	},
+	emptyPost: {
+		type: Object,
+	},
+	emptyComment: {
+		type: Object,
 	},
 });
 
@@ -114,7 +117,7 @@ const formatDescription = (text) => {
 					</template>
 				</div>
 				<div class="tab-pane fade" id="posts-tab-pane" role="tabpanel" aria-labelledby="posts-tab" tabindex="0">
-					<ItemPostList :item="item" :auth="auth" />
+					<ItemPostList :item="item" :post="emptyPost" :comment="emptyComment"/>
 				</div>
 			</div>
 		</div>
