@@ -73,7 +73,7 @@ class ItemController extends Controller
 			'item' => Item::with(['parameters' => function (Builder $query) {
 					$query->leftJoin('paramgroups', 'paramgroups.id', '=', 'parameters.paramgroup_id')->orderByRaw('ISNULL(paramgroups.order), paramgroups.order, parameters.order');
 				}])->findOrFail($id),
-			'parameters' => $group_id ? Parameter::where('paramgroup_id', $group_id)->get() : Parameter::all(),
+			'parameters' => $group_id ? Parameter::where('paramgroup_id', $group_id)->orderBy('name')->get() : Parameter::orderBy('name')->get(),
 			'groups' => Paramgroup::all(),
 			'gid' => $group_id,
 			'emptyParameter' => config('app.emptyParameter'),

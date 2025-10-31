@@ -59,13 +59,13 @@ const saveValue = () => {
 								autocomplete="value"
 							/>
 						</div>
-					</div>
-					<div class="row justify-content-end">
-						<div class="col-2 m-4">
-						<PrimaryButton :disabled="processing">{{ $page.props.lang.customer.save }}</PrimaryButton>
-							<p v-if="saved" class="text-success">
-								{{ $page.props.lang.customer.saved }}
-							</p>
+						<div class="row justify-content-end">
+							<div class="col text-end pe-4">
+							<PrimaryButton :disabled="processing">{{ $page.props.lang.customer.save }}</PrimaryButton>
+								<p v-if="saved" class="text-success">
+									{{ $page.props.lang.customer.saved }}
+								</p>
+							</div>
 						</div>
 					</div>
 				</div>

@@ -19,15 +19,15 @@ class ParameterController extends Controller
     public function index(string $id = null)
     {
 		if ($id) {
-			$parameters = Parameter::where('paramgroup_id', $id)->with(['unit', 'group'])->paginate( env('ITEMS_PER_PAGE') )->withQueryString();
+			$parameters = Parameter::where('paramgroup_id', $id)->with(['unit', 'group'])->orderBy('name')->paginate( env('ITEMS_PER_PAGE') )->withQueryString();
 		} else {
-			$parameters = Parameter::with(['unit', 'group'])->paginate( env('ITEMS_PER_PAGE') )->withQueryString();
+			$parameters = Parameter::with(['unit', 'group'])->orderBy('name')->paginate( env('ITEMS_PER_PAGE') )->withQueryString();
 		}
         return Inertia::render('Admin/ParametersList', [
 			'parameters' => $parameters,
 			'parameter' => Parameter::getEmptyModel(),
 			'empty' => config('app.emptyParameter'),
-			'units' => Unit::all(),
+			'units' => Unit::orderBy('name')->get(),
 			'groups' => Paramgroup::orderBy('order')->get(),
 			'groupId' => +$id,
 		]);
