@@ -105,7 +105,7 @@ const selectCategory = () => {
 				<td><span class="text-truncate text-wrap" :style="'display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: ' + description_rows + ';'">{{ item.description }}</span></td>
 				<td>
 					<p v-for="image in JSON.parse(item.images)">
-						<img :src="'/storage/img/' + image" :alt="item.name" style="width: 100px;"/>
+						<img :src="'/storage/img/' + image" :alt="item.name" style="max-width: 100px; max-height: 100px;"/>
 					</p>
 				</td>
 				<td>{{ item.unit.name }}</td>

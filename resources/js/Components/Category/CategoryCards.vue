@@ -25,7 +25,7 @@ const gtMedia = screen.width > 768;
 						<h5 class="card-title">{{ category.name }}</h5>
 					</div>
 					<div class="card-footer text-end" :class="{ 'text-info': category.subcategories && category.subcategories.length, 'text-primary': category.items && category.items.length }">
-						{{ category.subcategories && category.subcategories.length ? $page.props.lang.admin.categories + ': ' + category.subcategories.length : category.items && category.items.length ? $page.props.lang.admin.items + ': ' + category.items.length : '' }}
+						{{ category.subcategories && category.subcategories.length ? $page.props.lang.admin.categories + ': ' + category.subcategories.length : category.items && category.items.length ? $page.props.lang.admin.items + ': ' + category.items.length : '&nbsp;' }}
 					</div>
 				</Link>
 			</div>
