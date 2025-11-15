@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Arr;
 
 class Item extends Model
@@ -16,13 +17,17 @@ class Item extends Model
 		'is_enabled' => 'boolean',
 	];
 
+	public const IMAGE_DIR = 'img';
+	public const IMAGE_TYPES =  [ 'image/png', 'image/jpeg' ];
+	public const IMAGE_SIZE =  165;
+	
 	private static $emptyModel = [
 		'unit_id' => 0,
 		'name' => '',
 		'like' => 0,
 		'is_enabled' => 0,
 		'description' => '',
-		'images' => '',
+		//'images' => '',
 		'categories' => [],
 	];
 
@@ -88,26 +93,109 @@ class Item extends Model
         return $this->belongsToMany(Parameter::class, 'item_has_parameter')->with(['unit'])->withPivot('value')->withTimestamps();
     }
 
+	public function deleteImage(string $filename) {
+		if (!$filename) return false;
+		$imageParams = self::parseImageFileName($filename);
+		if ( !$imageParams ) return false;
+		$images = json_decode( $this->images );
+		if ( ( $delKey = array_search( $filename, $images ) ) !== false ) {
+			Arr::pull( $images, $delKey);
+			$images = array_values( $images );
+			$file = '/' . self::IMAGE_DIR . '/' . $filename;
+			if( Storage::disk('public')->exists( $file ) ) {
+				Storage::disk('public')->delete( $file );
+			}
+			$count = count($images);
+			for( $i = $delKey; $i < $count; $i++ ) {
+				$ext = explode('.', $images[ $i ] )[1];
+				$oldName = $images[ $i ];
+				$images[ $i ] = $this->getImageFileName( $i + 1, $ext );
+				Storage::disk('public')->move('/' . self::IMAGE_DIR . '/' . $oldName, '/' . self::IMAGE_DIR . '/' . $images[ $i ]);
+			}
+			$this->images = json_encode( $images );
+		}
+		return false;
+	}
+
+	public function formatNumber( $number )
+	{
+		return sprintf( '%0'.config('app.imageNumberMaxLength').'d', intval( $number ) );
+	}
+
+	/**
+     * Check image file exists
+     */
+	public function imageFileExists( $filename )
+	{
+		return Storage::disk('public')->exists( '/' . self::IMAGE_DIR . '/' . $filename );
+	}
+
+	/**
+     * Check image file exists
+     */
+	public function imageResize( $file, $type, $filename )
+	{
+		if ( !$file || !$type || !$filename ) return false;
+		if ( !in_array( $type, self::IMAGE_TYPES ) ) return false;
+		list($width, $height) = getimagesize($file);
+		$ratio = $width / $height;
+		if( $ratio > 1 ) {
+			$newWidth = self::IMAGE_SIZE;
+			$newHeight = round( self::IMAGE_SIZE / $ratio );
+		} else {
+			$newHeight = self::IMAGE_SIZE;
+			$newWidth = round( self::IMAGE_SIZE * $ratio );
+		}
+		//dd( storage_path( 'app/public/' . self::IMAGE_DIR ) . '/' . $filename ); die();
+		if( $type === self::IMAGE_TYPES[0] ) {
+			$image = imagecreatefrompng($file);
+			$imageResized = imagescale($image , $newWidth, $newHeight);
+			imagepng($imageResized, storage_path( 'app/public/' . self::IMAGE_DIR ) . '/' . $filename );
+		} else {
+			$image = imagecreatefromjpeg($file);
+			$imageResized = imagescale($image , $newWidth, $newHeight);
+			imagejpeg($imageResized, storage_path( 'app/public/' . self::IMAGE_DIR ) . '/' . $filename ); 
+		}
+		return true;
+	}
+
+	/**
+     * Return image file name for got params
+     */
+	public function getImageFileName( $id, $ext )
+	{
+		return $id && $ext ? 'item-' . $this->id . '-image-' . $this->formatNumber($id) . '.' . $ext : false;
+	}
+
+	/**
+     * Generate new image file name
+     */
+	public function newImageFileName( $ext )
+	{
+		if(!$ext) return false;
+		$images = $this->images ? json_decode( $this->images ) : [];
+		$index = count($images) + 1;
+		if ( $index >= ( 10 ** config('app.imageNumberMaxLength') ) ) return false;
+		do {
+			$filename = $this->getImageFileName( $index++, $ext );
+		} while( $this->imageFileExists( $filename ) );
+		return $filename;
+	}
+	
 	/**
      * Return all items.
      */
 	public static function getList($category_id = null)
 	{
-		$items = [];
-		if ($category_id) {
-			$ids = 0;
-			$items = self::whereHas('categories', function (Builder $query) use ($category_id) {
-					$query->where('categories.id', '=', $category_id);
-				})
-				->orderBy('name')
-				->with([ 'categories', 'mainCategory', 'unit', 'parameters', 'posts' ])
-				->paginate( env('ITEMS_PER_PAGE') )
-				->withQueryString();
-		} else {
-			$items = self::orderBy('name')->with([ 'categories', 'mainCategory', 'unit', 'parameters', 'posts' ])->paginate( env('ITEMS_PER_PAGE') )->withQueryString();
-		}
-		//dd($items); die();
-		return $items;
+		return $category_id ? self::whereHas('categories', function (Builder $query) use ($category_id) {
+						$query->where('categories.id', '=', $category_id);
+					})->orderBy('name')
+					->with([ 'categories', 'mainCategory', 'unit', 'parameters', 'posts' ])
+					->paginate( env('ITEMS_PER_PAGE') )
+					->withQueryString()
+				: self::orderBy('name')->with([ 'categories', 'mainCategory', 'unit', 'parameters', 'posts' ])
+					->paginate( env('ITEMS_PER_PAGE') )
+					->withQueryString();
 	}
 
 	/**
@@ -179,6 +267,28 @@ class Item extends Model
 
 	public static function getEmptyValue() {
 		return self::$emptyValue;
+	}
+
+	public function getStoredImages() {
+		$prefix = 'item-' . $this->id . '-image-';
+		$filtered = Arr::where(Storage::disk('public')->files( Item::IMAGE_DIR ), function (string $value) use ( $prefix ) {
+			return str_contains( $value, $prefix );
+		});
+		return $filtered;
+	}
+
+	public static function parseImageFileName(string $filename ) {
+		if ( !$filename) return false;
+		$parts = explode( '-', $filename );
+		$item_id = intval( $parts[1] );
+		if ( !$item_id ) return false;
+		$image_id = explode( '.', $parts[3] );
+		$image_id = intval( $image_id[0] );
+		if ( !$image_id ) return false;
+		return [
+			'item_id' => $item_id,
+			'image_id' => $image_id,
+		];
 	}
 
 	/**

@@ -28,7 +28,13 @@ defineProps({
 	},
 	description_rows:  {
         type: Number,
-	},	
+	},
+	category_id:  {
+        type: Number,
+	},
+	image_max:  {
+        type: Number,
+	},
 });
 
 props.emptyItem = JSON.parse( JSON.stringify( props.item ) );
@@ -41,7 +47,7 @@ const selectItem = (item) => {
 };
 
 const selectCategory = () => {
-	if ( category_id) useForm().get( route('item.admin', category_id) );
+	if ( category_id ) useForm().get( route('item.admin', category_id) );
 };
 </script>
 
@@ -104,9 +110,11 @@ const selectCategory = () => {
 				</td>
 				<td><span class="text-truncate text-wrap" :style="'display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: ' + description_rows + ';'">{{ item.description }}</span></td>
 				<td>
+					<template v-if="item.images">
 					<p v-for="image in JSON.parse(item.images)">
 						<img :src="'/storage/img/' + image" :alt="item.name" style="max-width: 100px; max-height: 100px;"/>
 					</p>
+					</template>
 				</td>
 				<td>{{ item.unit.name }}</td>
 				<td>{{ item.like }}</td>
@@ -136,6 +144,6 @@ const selectCategory = () => {
 				<Link v-for=" (link, index) in items.links" :key="index" :href="link.url" class="btn btn-outline-primary mx-1" :class="{ active: link.active }" v-html="link.label"/>
 			</div>
 		</div>
-		<ItemForm v-if="modal" :item="item" :emptyItem="emptyItem"/>
+		<ItemForm v-if="modal" :item="props.item" :emptyItem="emptyItem" :category_id="category_id" :image_max="image_max"/>
 	</Page>
 </template>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
 use Inertia\Inertia;
 use App\Models\Category;
 use App\Models\Comment;
@@ -12,6 +13,8 @@ use App\Models\Parameter;
 use App\Models\Paramgroup;
 use App\Models\Post;
 use App\Models\Unit;
+use App\Http\Requests\DeleteImageRequest;
+use App\Http\Requests\StoreImageRequest;
 use App\Http\Requests\UpdateItemRequest;
 use App\Http\Requests\UpdateItemParamRequest;
 use App\Http\Requests\UpdateValueRequest;
@@ -29,9 +32,11 @@ class ItemController extends Controller
 			'item' => Item::getEmptyModel(),
 			'units' => Unit::all(),
 			'categories' => Category::getPlainCatList(),
+			'category_id' => $category_id,
 			'emptyPost' => Post::getEmptyModel(),
 			'emptyComment' => Comment::getEmptyModel(),
-			'description_rows' => env('DESCRIPTION_ROWS_ON_ITEM_ADMIN_PAGE'),
+			'description_rows' => config('app.descriptionRowsOnItemAdminPage'),
+			'image_max' => config('app.imageNumberMaxLength'),
 		]);
     }
 
@@ -59,7 +64,7 @@ class ItemController extends Controller
 		$item->like = $request->input('like');
 		$item->is_enabled = $request->input('is_enabled') ? 1 : 0;
 		$item->description = $request->input('description') ?? null;
-		$item->images = $request->input('images') ?? null;
+		//$item->images = $request->input('images') ?? null;
 		$item->save();
 		$item->updateCategories($request->input('categories'));
     }
@@ -90,6 +95,7 @@ class ItemController extends Controller
 			'item' => Item::with(['categories', 'mainCategory', 'unit'])->findOrFail($id),
 			'emptyItem' => Item::getEmptyModel(),
 			'categories' => Category::getPlainCatList(),
+			'category_id' => 0,
 			'units' => Unit::all(),
 		]);
     }
@@ -115,7 +121,7 @@ class ItemController extends Controller
 		$item->like = $request->input('like');
 		$item->is_enabled = $request->input('is_enabled') ? 1 : 0;
 		$item->description = $request->input('description') ?? null;
-		$item->images = $request->input('images') ?? null;
+		//$item->images = $request->input('images') ?? null;
 		$item->save();
 		$item->updateCategories($request->input('categories'));
     }
@@ -141,10 +147,41 @@ class ItemController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified resource`s image from storage.
      */
-    public function destroy(string $id)
+    public function storeImage(StoreImageRequest $request)
     {
-        //
+		$image = $request->file('image');
+		$itemId = $request->input('item_id');
+		$item = Item::findOrFail( $itemId );
+		$images = $item->images ? json_decode( $item->images ) : [];
+		$filename = $item->newImageFileName( explode('.', $image->getClientOriginalName())[1] );
+		if( !$filename ) return false;
+		$file = $item->imageResize( $request->file('image')->getRealPath(), $request->file('image')->getClientMimeType(), $filename );
+		if( !$file ) return false;
+		array_push($images, $filename);
+		$item->images = json_encode($images);
+		$item->save();
+		return false;
+    }
+
+    /**
+     * Remove the specified resource`s image from storage.
+     */
+    public function deleteImage(DeleteImageRequest $request)
+    {
+		$filename = $request->input('filename');
+		$category_id = $request->input('category_id');
+		if ($filename) {
+			$imageParams = Item::parseImageFileName($filename);
+			if ( $imageParams ) {
+				$item = Item::findOrFail( $imageParams['item_id'] );
+				if ( $item ) {
+					$item->deleteImage( $filename );
+					$item->save();
+				}
+			}
+		}
+		return false;
     }
 }

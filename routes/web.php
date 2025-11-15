@@ -50,8 +50,10 @@ Route::middleware(['auth', 'can:admin, App\Models\User'])->prefix('admin')->grou
 	Route::put('/item/value/', [ItemAdminController::class, 'updateValue'])->name('value.update');
 	Route::get('/item/0', [ItemAdminController::class, 'create'])->name('item.create');
 	Route::get('/item/{id}', [ItemAdminController::class, 'edit'])->name('item.edit');
+	Route::post('/item/image', [ItemAdminController::class, 'storeImage'])->name('item.image-store');
 	Route::put('/item/0', [ItemAdminController::class, 'store'])->name('item.store');
 	Route::put('/item/{id}', [ItemAdminController::class, 'update'])->name('item.update');
+	Route::delete('/item/image', [ItemAdminController::class, 'deleteImage'])->name('item.image-delete');
 	Route::get('/orders', [OrderAdminController::class, 'index'])->name('order.admin');
 	Route::get('/order/0', [OrderAdminController::class, 'create'])->name('order.create');
 	Route::get('/propositions/{order_id}', [PropositionAdminController::class, 'index'])->name('proposition.admin');

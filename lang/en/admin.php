@@ -55,6 +55,7 @@ return [
 	'select' => 'Select ',
 	'description' => 'Description',
 	'images' => 'Images',
+	'image' => 'image',
 	'posts' => 'Posts',
 	'sure_want_delete' => 'Are you sure you want to delete ',
 	'have_not_items' => "This Category coudn't have items!",
@@ -67,4 +68,5 @@ return [
 	'text' => 'Text',
 	'count' => 'Count',
 	'value' => 'Value ',
+	'delete' => 'Delete ',
 ];
