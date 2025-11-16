@@ -27,6 +27,7 @@ class DistributorItem extends Model
 		'discount',
 		'delivery',
 		'is_enabled',
+		'url',
     ];
 
 	private static $emptyModel = [
@@ -38,6 +39,7 @@ class DistributorItem extends Model
 		'discount' => 0,
 		'delivery' => '',
 		'is_enabled' => false,
+		'url' => '',
 	];
 
 	/**

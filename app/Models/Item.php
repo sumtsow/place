@@ -82,7 +82,7 @@ class Item extends Model
      */
     public function distributors(): BelongsToMany
     {
-		return $this->belongsToMany(Distributor::class, 'distributor_has_item')->withPivot('count', 'price', 'discount', 'delivery', 'is_enabled');
+		return $this->belongsToMany(Distributor::class, 'distributor_has_item')->withPivot('count', 'price', 'discount', 'delivery', 'is_enabled', 'url');
     }
 
 	/**
@@ -146,7 +146,6 @@ class Item extends Model
 			$newHeight = self::IMAGE_SIZE;
 			$newWidth = round( self::IMAGE_SIZE * $ratio );
 		}
-		//dd( storage_path( 'app/public/' . self::IMAGE_DIR ) . '/' . $filename ); die();
 		if( $type === self::IMAGE_TYPES[0] ) {
 			$image = imagecreatefrompng($file);
 			$imageResized = imagescale($image , $newWidth, $newHeight);

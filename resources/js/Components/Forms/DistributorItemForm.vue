@@ -29,8 +29,9 @@ watch(
 		form.count = props.currentDistributorItem ? props.currentDistributorItem.count : 0;
 		form.price = props.currentDistributorItem ? props.currentDistributorItem.price : 0;
 		form.discount = props.currentDistributorItem ? props.currentDistributorItem.discount : 0;
-		form.delivery = props.currentDistributorItem ? props.currentDistributorItem.delivery : 0;
+		form.delivery = props.currentDistributorItem ? props.currentDistributorItem.delivery : '';
 		form.is_enabled = props.currentDistributorItem ? props.currentDistributorItem.is_enabled : false;
+		form.url = props.currentDistributorItem ? props.currentDistributorItem.url : '';
 		form.token = props.csrf_token;
 		form.clearErrors();
 });
@@ -119,6 +120,20 @@ const saveDistributorItem = () => {
 								autocomplete="delivery"
 							/>
 							<InputError class="mt-2" :message="form.errors.discount" />
+						</div>
+						
+						<div class="input-group row mb-3">
+							<InputLabel for="url" value="URL" class="col-3 text-end" />
+							<TextInput
+								id="url"
+								type="text"
+								class="col"
+								v-model="form.url"
+								required
+								autofocus
+								autocomplete="url"
+							/>
+							<InputError class="mt-2" :message="form.errors.url" />
 						</div>
 						<div class="row justify-content-end">
 							<div class="col text-end pe-4">

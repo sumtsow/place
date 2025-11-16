@@ -71,6 +71,7 @@ class DistributorItemController
 		$distributorItem->delivery = $request->input('delivery');
 		$distributorItem->price = $request->input('price');
 		$distributorItem->is_enabled = $request->input('is_enabled') ? 1 : 0;
+		$distributorItem->url = $request->input('url');
 		$distributorItem->save();
     }
 
@@ -93,6 +94,7 @@ class DistributorItemController
 			$itemObj->discount = 0;
 			$itemObj->delivery = 0;
 			$itemObj->is_enabled = false;
+			$itemObj->url = '';
 			$items->push( $itemObj );
 		}
 		$distributor = Distributor::findOrFail( $distributor_id );

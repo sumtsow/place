@@ -60,7 +60,14 @@ const formatDescription = (text) => {
 					{{( (1 - 0.01 * distributor.pivot.discount) * distributor.pivot.price ).toFixed(2) + ' ' + $page.props.lang.customer.currency }}
 					<small v-if="distributor.pivot.discount" class="badge rounded-pill text-bg-danger">&ndash; {{ distributor.pivot.discount }}%</small>
 				</div>
-				<div class="col">{{ distributor.name }}</div>
+				<div class="col">
+					<a v-if="distributor.pivot.url" target="_blank" :href="distributor.pivot.url" class="">
+					{{ distributor.name }}
+					</a>
+					<template v-else>
+					{{ distributor.name }}
+					</template>
+				</div>
 			</div>
 		</div>
 	</div>

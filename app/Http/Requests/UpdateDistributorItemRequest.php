@@ -28,6 +28,7 @@ class UpdateDistributorItemRequest extends FormRequest
 			'delivery' => 'string|max:255|nullable',
 			'discount' => 'numeric|nullable',
 			'is_enabled' => 'boolean',
+			'url' => 'string|max:255|nullable',
 			'price' => 'decimal:2,8',
 
         ];

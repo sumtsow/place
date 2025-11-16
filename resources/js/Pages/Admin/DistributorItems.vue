@@ -96,6 +96,7 @@ const toggleState = (di) => {
 						<th>{{ $page.props.lang.customer.price }}</th>
 						<th>{{ $page.props.lang.customer.discount }}</th>
 						<th>{{ $page.props.lang.customer.delivery }}</th>
+						<th>URL</th>
 						<th>{{ $page.props.lang.admin.enabled }}</th>
 						<th>{{ $page.props.lang.admin.created }}</th>
 						<th>{{ $page.props.lang.admin.updated }}</th>
@@ -116,6 +117,11 @@ const toggleState = (di) => {
 						<td :class="{ 'text-body-tertiary': !distributorItem.is_enabled }">{{ distributorItem.price + '&nbsp;' + $page.props.lang.customer.currency }}</td>
 						<td :class="{ 'text-body-tertiary': !distributorItem.is_enabled }">{{ distributorItem.discount }} %</td>
 						<td :class="{ 'text-body-tertiary': !distributorItem.is_enabled }">{{ distributorItem.delivery }}</td>
+						<td :class="{ 'text-body-tertiary': !distributorItem.is_enabled }">
+							<Link v-if="distributorItem.url" href="distributorItem.url" class="">
+							{{ distributorItem.url }}
+							</Link>
+						</td>
 						<td :class="{ 'text-body-tertiary': !distributorItem.is_enabled }">
 							<div class="d-inline-block form-check form-switch">
 								<CheckInput name="is_enabled" v-model="distributorItem.is_enabled" label="Enabled" @toggleState="toggleState(distributorItem)"/>
