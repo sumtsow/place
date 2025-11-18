@@ -94,7 +94,7 @@ class DistributorItemController
 			$itemObj->discount = 0;
 			$itemObj->delivery = 0;
 			$itemObj->is_enabled = false;
-			$itemObj->url = '';
+			$itemObj->url = null;
 			$items->push( $itemObj );
 		}
 		$distributor = Distributor::findOrFail( $distributor_id );
