@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Database\Eloquent\Builder;
-use Illuminate\Support\Arr;
 use Inertia\Inertia;
 use App\Models\Category;
 use App\Models\Comment;
@@ -162,7 +161,7 @@ class ItemController extends Controller
 		array_push($images, $filename);
 		$item->images = json_encode($images);
 		$item->save();
-		return false;
+		return response()->json( $images );
     }
 
     /**
@@ -171,17 +170,18 @@ class ItemController extends Controller
     public function deleteImage(DeleteImageRequest $request)
     {
 		$filename = $request->input('filename');
-		$category_id = $request->input('category_id');
+		$images = false;
 		if ($filename) {
 			$imageParams = Item::parseImageFileName($filename);
 			if ( $imageParams ) {
 				$item = Item::findOrFail( $imageParams['item_id'] );
 				if ( $item ) {
+					if( $item->images ) $images = json_decode( $item->images );
 					$item->deleteImage( $filename );
 					$item->save();
 				}
 			}
 		}
-		return false;
+		return response()->json( $images );
     }
 }

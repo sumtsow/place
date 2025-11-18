@@ -31,10 +31,10 @@ defineProps({
 });
 
 const form = useForm(props.item);
-const imageForm = useForm({
+/*const imageForm = useForm({
 	image: null,
 	item_id: null,
-})
+})*/
 
 watch(
 	() => props.item,
@@ -58,22 +58,21 @@ const addCategory = () => {
 };
 
 const addImage = () => {
-	imageForm.image = newImage;
-	imageForm.item_id = props.item.id;
-	imageForm.post( route( 'item.image-store' ), {
-		onSuccess: () => {
-			let images = JSON.parse( props.item.images );
-			let ext = imageForm.image.type === 'image/png' ? '.png' : '.jpg';
-			let index = images ? images.length + 1 : 0;
-			index = '' + index;
-			index = index.padStart( props.image_max, '0' );
-			let filename = 'item-' + imageForm.item_id + '-image-' + index + ext;
-			images.push( filename );
-			props.item.images = JSON.stringify( images );
+	if( !newImage ) return;
+	let data = new FormData();
+	data.set('image', newImage);
+	data.set('item_id', props.item.id);
+	data.set('_token', props.csrf_token);
+	const request = new XMLHttpRequest();
+	request.onload = () => {
+		const resp = request.response;
+		if( resp ) {
+			props.item.images = resp;
 			form.images = props.item.images;
-		},
-	});
-	return false;
+		}
+	};
+	request.open( 'POST', route( 'item.image-store' ) );
+	request.send( data );
 };
 
 const closeForm = () => {
@@ -83,18 +82,19 @@ const closeForm = () => {
 const deleteImage = (e) => {
 	let res = confirm(props.lang.admin.sure_want_delete + props.lang.admin.image + '?');
 	if( res ) {
-		let filename = e.target.dataset.filename;
-		useForm( { filename: filename, category_id: props.category_id } ).delete( route('item.image-delete'), {
-			onSuccess: () => {
-				let images = JSON.parse( props.item.images );
-				let index = images.findIndex( ( image ) => {
-					return image === filename;
-				});
-				images.splice( index, 1);
-				props.item.images = JSON.stringify( images );
+		let data = new FormData();
+		data.set('filename', e.target.dataset.filename);
+		data.set('_token', props.csrf_token);
+		const request = new XMLHttpRequest();
+		request.onload = () => {
+			const resp = request.response;
+			if( resp ) {
+				props.item.images = resp;
 				form.images = props.item.images;
-			},
-		});
+			}
+		};
+		request.open( 'POST', route( 'item.image-delete' ) );
+		request.send( data );
 	}
 };
 
@@ -259,7 +259,7 @@ const toggleSwitch = ( catId ) => {
 
 						<div class="input-group row mb-3">
 							<div v-if="form.images" class="col">
-								<div class="d-inline-block position-relative border border-secondary mx-2 p-2 pe-3" v-for="image in JSON.parse( form.images )">
+								<div class="d-inline-block position-relative border border-secondary m-2 p-2 pe-3" v-for="image in JSON.parse( form.images )">
 									<img :src="'/storage/img/' + image" :alt="image" class="mx-2" style="max-width: 100px; max-height: 100px;"/>
 									<button type="button" class="btn-close position-absolute top-0 end-0" :title="$page.props.lang.admin.delete" @click.prevent="deleteImage" :data-filename="image"></button>
 								</div>
