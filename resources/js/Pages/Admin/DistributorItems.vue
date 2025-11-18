@@ -118,7 +118,7 @@ const toggleState = (di) => {
 						<td :class="{ 'text-body-tertiary': !distributorItem.is_enabled }">{{ distributorItem.discount }} %</td>
 						<td :class="{ 'text-body-tertiary': !distributorItem.is_enabled }">{{ distributorItem.delivery }}</td>
 						<td :class="{ 'text-body-tertiary': !distributorItem.is_enabled }">
-							<Link v-if="distributorItem.url" href="distributorItem.url" class="">
+							<Link v-if="distributorItem.url" :href="distributorItem.url" target="_blank" class="">
 							{{ distributorItem.url }}
 							</Link>
 						</td>

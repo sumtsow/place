@@ -71,7 +71,7 @@ class DistributorItemController
 		$distributorItem->delivery = $request->input('delivery');
 		$distributorItem->price = $request->input('price');
 		$distributorItem->is_enabled = $request->input('is_enabled') ? 1 : 0;
-		$distributorItem->url = $request->input('url');
+		$distributorItem->url = $request->input('url') ? $request->input('url') : null;
 		$distributorItem->save();
     }
 

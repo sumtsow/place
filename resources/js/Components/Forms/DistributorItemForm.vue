@@ -129,7 +129,6 @@ const saveDistributorItem = () => {
 								type="text"
 								class="col"
 								v-model="form.url"
-								required
 								autofocus
 								autocomplete="url"
 							/>
