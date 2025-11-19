@@ -11,6 +11,9 @@ defineProps({
 	items: {
 		type: Object,
 	},
+	imageSize: {
+		type: Number,
+	},
 });
 
 const openLink = (e) => {
@@ -52,11 +55,11 @@ const openLink = (e) => {
 			</div>
 			<div class="col-12 col-md-9 mt-2">
 				<TabLabel :label="$page.props.lang.customer.new" />
-				<ItemCards :items="items.newest"/>
+				<ItemCards :items="items.newest" :imageSize="imageSize"/>
 				<TabLabel :label="$page.props.lang.customer.favorites" />
-				<ItemCards :items="items.liked"/>
+				<ItemCards :items="items.liked" :imageSize="imageSize"/>
 				<TabLabel :label="$page.props.lang.customer.discussed" />
-				<ItemCards :items="items.discussed"/>
+				<ItemCards :items="items.discussed" :imageSize="imageSize"/>
 			</div>
 		</div>
 	</div>

@@ -8,6 +8,9 @@ defineProps({
 	category: {
         type: Object,
 	},
+	imageSize: {
+		type: Number,
+	},
 });
 </script>
 
@@ -15,6 +18,6 @@ defineProps({
 	<div class="container-fluid">
 		<TabLabel :label="category.name" />
 		<CategoryCards v-if="category.subcategories.length" :categories="category.subcategories" wrapCols="true"/>
-		<ItemCards v-else :items="category.items" wrapCols="true"/>
+		<ItemCards v-else :items="category.items" :imageSize="imageSize" wrapCols="true"/>
 	</div>
 </template>

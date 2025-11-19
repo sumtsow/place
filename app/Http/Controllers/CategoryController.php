@@ -18,6 +18,7 @@ class CategoryController extends Controller
 		return Inertia::render('Home', [
 			'categories' => Category::getCatList(),
 			'items' => Item::getMainPageItems(),
+			'imageSize' => config('app.imageSize'),
 		]);
     }
 
@@ -42,12 +43,13 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
-		$category = Category::with(['subcategories', 'subcategories.subcategories', 'items', 'subcategories.items'])->findOrFail($id);
+		$category = Category::with(['subcategories', 'subcategories.subcategories', 'items.minPrice', 'items.maxPrice', 'subcategories.items'])->findOrFail($id);
         return Inertia::render('Category', [
 			'canLogin' => Route::has('login'),
 			'canRegister' => Route::has('register'),
 			'category' => $category,
 			'links' => $category->getParentLinks(),
+			'imageSize' => config('app.imageSize'),
 		]);
     }
 

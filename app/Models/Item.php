@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Arr;
@@ -19,7 +20,6 @@ class Item extends Model
 
 	public const IMAGE_DIR = 'img';
 	public const IMAGE_TYPES =  [ 'image/png', 'image/jpeg' ];
-	public const IMAGE_SIZE =  165;
 	
 	private static $emptyModel = [
 		'unit_id' => 0,
@@ -52,6 +52,22 @@ class Item extends Model
     {
 		return $this->hasMany(DistributorItem::class);
     }
+
+	/**
+	 * Get the item's lowest price distributor.
+	 */
+	public function minPrice(): HasOne
+	{
+		return $this->distributorItems()->one()->ofMany('price', 'min');
+	}
+
+	/**
+	 * Get the item's largest price distributor.
+	 */
+	public function maxPrice(): HasOne
+	{
+		return $this->distributorItems()->one()->ofMany('price', 'max');
+	}
 
 	/**
      * Get the main category that contains the item
@@ -140,11 +156,11 @@ class Item extends Model
 		list($width, $height) = getimagesize($file);
 		$ratio = $width / $height;
 		if( $ratio > 1 ) {
-			$newWidth = self::IMAGE_SIZE;
-			$newHeight = round( self::IMAGE_SIZE / $ratio );
+			$newWidth = config('app.imageSize');
+			$newHeight = round( $newWidth / $ratio );
 		} else {
-			$newHeight = self::IMAGE_SIZE;
-			$newWidth = round( self::IMAGE_SIZE * $ratio );
+			$newHeight = config('app.imageSize');
+			$newWidth = round( $newHeight * $ratio );
 		}
 		if( $type === self::IMAGE_TYPES[0] ) {
 			$image = imagecreatefrompng($file);
@@ -223,9 +239,9 @@ class Item extends Model
     public static function getMainPageItems()
     {
 		return [
-			'newest' => self::orderByDesc('updated_at')->limit(env('ITEMS_ON_MAIN_PAGE'))->get(),
-			'discussed' => self::withCount(['posts'])->orderByDesc('posts_count')->limit(env('ITEMS_ON_MAIN_PAGE'))->get(),
-			'liked' => self::orderByDesc('like')->limit(env('ITEMS_ON_MAIN_PAGE'))->get(),
+			'newest' => self::with(['maxPrice', 'minPrice'])->orderByDesc('updated_at')->limit(env('ITEMS_ON_MAIN_PAGE'))->get(),
+			'discussed' => self::with(['maxPrice', 'minPrice'])->withCount(['posts'])->orderByDesc('posts_count')->limit(env('ITEMS_ON_MAIN_PAGE'))->get(),
+			'liked' => self::with(['maxPrice', 'minPrice'])->orderByDesc('like')->limit(env('ITEMS_ON_MAIN_PAGE'))->get(),
 		];
     }
 

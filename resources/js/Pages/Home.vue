@@ -17,11 +17,14 @@ defineProps({
 		type: Object,
 		required: true,
 	},
+	imageSize: {
+		type: Number,
+	},
 });
 </script>
 
 <template>
 	<Page :title="$page.props.lang.navbar.home">
-		<CategoriesList :categories="categories" :items="items"/>
+		<CategoriesList :categories="categories" :items="items" :imageSize="imageSize"/>
 	</Page>
 </template>

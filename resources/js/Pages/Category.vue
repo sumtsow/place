@@ -10,12 +10,15 @@ defineProps({
 	links: {
 		type: Array,
 	},
+	imageSize: {
+		type: Number,
+	},
 });
 </script>
 
 <template>
 	<Page :title="$page.props.lang.admin.category">
 		<Breadcrumbs :links="links" />
-		<Category :category="category"/>
+		<Category :category="category" :imageSize="imageSize"/>
 	</Page>
 </template>

@@ -31,4 +31,6 @@ return [
 	'days' => 'days',
 	'currency' => 'UAH',
 	'order' => 'Order',
+	'from' => 'From',
+	'to' => 'To',
 ];
