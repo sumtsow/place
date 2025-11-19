@@ -36,8 +36,8 @@ const gtMedia = screen.width > 768;
 								<h6 class="card-title">{{ $page.props.lang.customer.price }}</h6>
 							</div>
 							<div class="col">
-								<p class="card-text text-end mb-0">{{ $page.props.lang.customer.from }} {{ item.min_price.price }} {{ $page.props.lang.customer.currency }}</p>
-								<p class="card-text text-end mb-0">{{ $page.props.lang.customer.to }} {{ item.max_price.price }} {{ $page.props.lang.customer.currency }}</p>
+								<p class="card-text text-end mb-0">{{ $page.props.lang.customer.from }} {{ item.min }} {{ $page.props.lang.customer.currency }}</p>
+								<p class="card-text text-end mb-0">{{ $page.props.lang.customer.to }} {{ item.max }} {{ $page.props.lang.customer.currency }}</p>
 							</div>
 						</div>
 					</div>

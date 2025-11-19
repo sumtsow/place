@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Arr;
@@ -27,7 +26,6 @@ class Item extends Model
 		'like' => 0,
 		'is_enabled' => 0,
 		'description' => '',
-		//'images' => '',
 		'categories' => [],
 	];
 
@@ -53,20 +51,31 @@ class Item extends Model
 		return $this->hasMany(DistributorItem::class);
     }
 
+	public function allPrices()
+	{
+		$prices = [];
+		foreach($this->distributorItems as $distributorItem) {
+			$prices[$distributorItem->id] = $distributorItem->discountPrice();
+		}
+		return $prices;
+	}
+
 	/**
 	 * Get the item's lowest price distributor.
 	 */
-	public function minPrice(): HasOne
+	public function minPrice()
 	{
-		return $this->distributorItems()->one()->ofMany('price', 'min');
+		$prices = $this->allPrices();
+		return $prices ? min( $prices ) : 0;
 	}
 
 	/**
 	 * Get the item's largest price distributor.
 	 */
-	public function maxPrice(): HasOne
+	public function maxPrice()
 	{
-		return $this->distributorItems()->one()->ofMany('price', 'max');
+		$prices = $this->allPrices();
+		return $prices ? max( $prices ) : 0;
 	}
 
 	/**
@@ -238,10 +247,25 @@ class Item extends Model
      */
     public static function getMainPageItems()
     {
+		$newest = self::orderByDesc('updated_at')->limit(env('ITEMS_ON_MAIN_PAGE'))->get();
+		foreach($newest as $item) {
+			$item->min = $item->minPrice();
+			$item->max = $item->maxPrice();
+		}
+		$discussed = self::withCount(['posts'])->orderByDesc('posts_count')->limit(env('ITEMS_ON_MAIN_PAGE'))->get();
+		foreach($discussed as $item) {
+			$item->min = $item->minPrice();
+			$item->max = $item->maxPrice();
+		}
+		$liked =  self::orderByDesc('like')->limit(env('ITEMS_ON_MAIN_PAGE'))->get();
+		foreach($liked as $item) {
+			$item->min = $item->minPrice();
+			$item->max = $item->maxPrice();
+		}
 		return [
-			'newest' => self::with(['maxPrice', 'minPrice'])->orderByDesc('updated_at')->limit(env('ITEMS_ON_MAIN_PAGE'))->get(),
-			'discussed' => self::with(['maxPrice', 'minPrice'])->withCount(['posts'])->orderByDesc('posts_count')->limit(env('ITEMS_ON_MAIN_PAGE'))->get(),
-			'liked' => self::with(['maxPrice', 'minPrice'])->orderByDesc('like')->limit(env('ITEMS_ON_MAIN_PAGE'))->get(),
+			'newest' => $newest,
+			'discussed' => $discussed,
+			'liked' => $liked,
 		];
     }
 

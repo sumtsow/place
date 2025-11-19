@@ -43,7 +43,13 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
-		$category = Category::with(['subcategories', 'subcategories.subcategories', 'items.minPrice', 'items.maxPrice', 'subcategories.items'])->findOrFail($id);
+		$category = Category::with(['subcategories', 'subcategories.subcategories', 'items', 'subcategories.items'])->findOrFail($id);
+		if( $category->items ) {
+			foreach( $category->items as $item) {
+				$item->min = $item->minPrice();
+				$item->max = $item->maxPrice();
+			}
+		}
         return Inertia::render('Category', [
 			'canLogin' => Route::has('login'),
 			'canRegister' => Route::has('register'),

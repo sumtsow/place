@@ -69,4 +69,8 @@ class DistributorItem extends Model
 	public static function getEmptyModel() {
 		return self::$emptyModel;
 	}
+
+	public function discountPrice() {
+		return round( $this->price * ( ( 1 - 0.01 * $this->discount ) ), 2);
+	}
 }

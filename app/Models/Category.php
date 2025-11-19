@@ -113,6 +113,10 @@ class Category extends Model
 		foreach ($cat->subcategories as $sub) {
 			self::loadSubcategories($sub);
 		}
+		foreach( $cat->items as $item) {
+			$item->min = $item->minPrice();
+			$item->max = $item->maxPrice();
+		}
 		return true;
 	}
 }
