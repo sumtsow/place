@@ -111,7 +111,6 @@ const saveDistributor = () => {
 								type="text"
 								class="col"
 								v-model="form.email"
-								required
 								autofocus
 								autocomplete="email"
 							/>
@@ -125,7 +124,6 @@ const saveDistributor = () => {
 								type="text"
 								class="col"
 								v-model="form.phone"
-								required
 								autofocus
 								autocomplete="phone"
 							/>
