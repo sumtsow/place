@@ -36,7 +36,11 @@ const savePost = () => {
 	form.user_id = props.post ? props.post.user_id : props.emptyPost.user_id;
 	form.is_enabled = props.post ? props.post.is_enabled : props.emptyPost.is_enabled;
 	form.text = props.post ? props.post.text : props.emptyPost.text;
-	return !!form.id ? form.put( route('post.update', [form.id])) : form.put( route('post.store') );
+	return !!form.id ? form.put( route('post.update', [form.id])) : form.put( route('post.store'), {
+		onSuccess: () => {
+			alert( props.lang.customer.post_added );
+		},
+	});
 };
 </script>
 

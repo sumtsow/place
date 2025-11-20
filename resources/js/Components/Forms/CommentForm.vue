@@ -34,7 +34,11 @@ const saveComment = () => {
 	form.user_id = props.comment ? props.comment.user_id : props.emptyComment.user_id;
 	form.is_enabled = props.comment ? props.comment.is_enabled : props.emptyCommentis_enabled;
 	form.text = props.comment ? props.comment.text : props.emptyComment.text;
-	return !!form.id ? form.put( route('comment.update', [form.id])) : form.put( route('comment.store') );
+	return !!form.id ? form.put( route('comment.update', [form.id])) : form.put( route('comment.store'), {
+		onSuccess: () => {
+			alert( props.lang.customer.comment_added );
+		},
+	});
 };
 </script>
 
