@@ -50,9 +50,6 @@ class ItemController extends Controller
 				},
 				'parameters.group',
 				'posts',
-				'distributors' => function (Builder $query) {
-					$query->orderBy('name');
-				},
 			])->findOrFail($id);
 		} else {
 			$item = Item::with([
@@ -65,9 +62,6 @@ class ItemController extends Controller
 				'posts.comments' => function (Builder $query) {
 					$query->where('is_enabled', 1);
 				},
-				'distributors' => function (Builder $query) {
-					$query->where('distributors.is_enabled', 1)->wherePivot('is_enabled', 1);
-				},
 				])->findOrFail($id);
 		}
 		foreach($item->posts as $post) {
@@ -76,6 +70,7 @@ class ItemController extends Controller
 				$comment->load([ 'user' => fn ($query) => $query->select(['id', 'firstname', 'lastname', 'patronymic']) ]);
 			};
 		};
+		$item->distributorItems = $item->distributorItems->sortBy('discountPrice')->values();
         return Inertia::render('Item', [
 			'item' => $item,
 			'emptyPost' => Post::getEmptyModel(),

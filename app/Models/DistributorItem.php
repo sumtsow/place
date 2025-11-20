@@ -10,9 +10,13 @@ class DistributorItem extends Model
 {
 	protected $table = 'distributor_has_item';
 
+	protected $with = ['distributor'];
+
 	protected $casts = [
 		'is_enabled' => 'boolean',
 	];
+
+	protected $appends = ['discountPrice'];
 
     /**
      * The attributes that are mass assignable.
@@ -70,7 +74,11 @@ class DistributorItem extends Model
 		return self::$emptyModel;
 	}
 
-	public function discountPrice() {
-		return round( $this->price * ( ( 1 - 0.01 * $this->discount ) ), 2);
-	}
+    /**
+     * Get the item's price with a discount.
+     */
+    public function getDiscountPriceAttribute()
+    {
+        return round( $this->price * ( ( 1 - 0.01 * $this->discount ) ), 2);
+    }
 }

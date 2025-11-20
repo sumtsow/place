@@ -19,7 +19,7 @@ const gtMedia = screen.width > 768;
 </script>
 
 <template>
-	<div class="pb-1" :class="{'overflow-x-scroll': !wrapCols && gtMedia }">
+	<div class="pb-1 custom-scroll" :class="{'overflow-x-scroll': !wrapCols && gtMedia }">
 		<div class="row g-4 py-2" :class="{'flex-nowrap': !wrapCols && gtMedia }">
 			<div v-for="item in items" class="col-auto">
 				<Link class="card h-100 m-1 pt-3 text-decoration-none" style="min-width: 180px; max-width: 267px;" :href="route('item', [item.id])">
@@ -31,13 +31,16 @@ const gtMedia = screen.width > 768;
                             <span>{{ item.name }}</span>
                         </h6>
 						<p class="card-text text-truncate text-wrap" style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3;">{{ item.description }}</p>
-						<div class="row">
+						<div class="row" v-if="item.min && item.max">
 							<div class="col-auto">
 								<h6 class="card-title">{{ $page.props.lang.customer.price }}</h6>
 							</div>
-							<div class="col">
-								<p class="card-text text-end mb-0">{{ $page.props.lang.customer.from }} {{ item.min }} {{ $page.props.lang.customer.currency }}</p>
-								<p class="card-text text-end mb-0">{{ $page.props.lang.customer.to }} {{ item.max }} {{ $page.props.lang.customer.currency }}</p>
+							<div v-if="item.min === item.max" class="col">
+							<p class="card-text text-end mb-0"><span class="fs-5 fw-bold">{{ item.min.toFixed(2) }}</span> {{ $page.props.lang.customer.currency }}</p>
+							</div>
+							<div v-else class="col">
+								<p class="card-text text-end mb-0">{{ $page.props.lang.customer.from }} <span class="fs-5 fw-bold">{{ item.min.toFixed(2) }}</span> {{ $page.props.lang.customer.currency }}</p>
+								<p class="card-text text-end mb-0">{{ $page.props.lang.customer.to }} <span class="fs-5 fw-bold">{{ item.max.toFixed(2) }}</span> {{ $page.props.lang.customer.currency }}</p>
 							</div>
 						</div>
 					</div>

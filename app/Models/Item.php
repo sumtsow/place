@@ -55,7 +55,7 @@ class Item extends Model
 	{
 		$prices = [];
 		foreach($this->distributorItems as $distributorItem) {
-			$prices[$distributorItem->id] = $distributorItem->discountPrice();
+			if ($distributorItem->is_enabled) $prices[$distributorItem->id] = $distributorItem->discount_price;
 		}
 		return $prices;
 	}
@@ -252,12 +252,12 @@ class Item extends Model
 			$item->min = $item->minPrice();
 			$item->max = $item->maxPrice();
 		}
-		$discussed = self::withCount(['posts'])->orderByDesc('posts_count')->limit(env('ITEMS_ON_MAIN_PAGE'))->get();
+		$discussed = self::withCount(['posts'])->has('posts')->orderByDesc('posts_count')->limit(env('ITEMS_ON_MAIN_PAGE'))->get();
 		foreach($discussed as $item) {
 			$item->min = $item->minPrice();
 			$item->max = $item->maxPrice();
 		}
-		$liked =  self::orderByDesc('like')->limit(env('ITEMS_ON_MAIN_PAGE'))->get();
+		$liked =  self::where('like', '>', 0)->orderByDesc('like')->limit(env('ITEMS_ON_MAIN_PAGE'))->get();
 		foreach($liked as $item) {
 			$item->min = $item->minPrice();
 			$item->max = $item->maxPrice();

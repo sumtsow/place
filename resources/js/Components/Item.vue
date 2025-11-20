@@ -10,6 +10,9 @@ defineProps({
 	item: {
         type: Object,
 	},
+	distributors: {
+		type: Array,
+	},
 	emptyParamGroup: {
 		type: String,
 	},
@@ -54,18 +57,18 @@ const formatDescription = (text) => {
 			</div>
 		</div>
 		<div class="col">
-			<h4 v-if="item.distributors.length">{{ $page.props.lang.customer.price }}</h4>
-			<div v-for="distributor in item.distributors" class="row fs-5" :class="{ 'text-body-tertiary': !distributor.is_enabled || !distributor.pivot.is_enabled }">
-				<div class="col">
-					{{( (1 - 0.01 * distributor.pivot.discount) * distributor.pivot.price ).toFixed(2) + ' ' + $page.props.lang.customer.currency }}
-					<small v-if="distributor.pivot.discount" class="badge rounded-pill text-bg-danger">&ndash; {{ distributor.pivot.discount }}%</small>
+			<h4 v-if="item.distributorItems.length">{{ $page.props.lang.customer.price }}</h4>
+			<div v-for="distributor in item.distributorItems" class="row fs-5" :class="{ 'text-body-tertiary': !distributor.is_enabled || !distributor.is_enabled }">
+				<div class="col-auto">
+					<span class="fs-4 fw-bold">{{ distributor.discountPrice }}</span> {{ $page.props.lang.customer.currency }}
+					<small v-if="distributor.discount" class="badge rounded-pill text-bg-danger">&ndash; {{ distributor.discount }}%</small>
 				</div>
-				<div class="col">
-					<a v-if="distributor.pivot.url" target="_blank" :href="distributor.pivot.url" class="">
-					{{ distributor.name }}
+				<div class="col mt-1">
+					<a v-if="distributor.url" target="_blank" :href="distributor.url" class="">
+					{{ distributor.distributor.name }}
 					</a>
 					<template v-else>
-					{{ distributor.name }}
+					{{ distributor.distributor.name }}
 					</template>
 				</div>
 			</div>

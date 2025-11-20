@@ -7,6 +7,9 @@ defineProps({
 	item: {
         type: Object,
 	},
+	distributors: {
+		type: Array,
+	},
 	links: {
 		type: Array,
 	},
@@ -28,6 +31,6 @@ defineProps({
 <template>
 	<Page :title="$page.props.lang.admin.item">
 		<Breadcrumbs :links="links" />
-		<Item :item="item" :emptyParameter="emptyParameter" :emptyPost="emptyPost" :emptyComment="emptyComment" :emptyParamGroup="emptyParamGroup"/>
+		<Item :item="item" :distributors="distributors" :emptyParameter="emptyParameter" :emptyPost="emptyPost" :emptyComment="emptyComment" :emptyParamGroup="emptyParamGroup"/>
 	</Page>
 </template>
