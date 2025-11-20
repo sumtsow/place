@@ -5,11 +5,9 @@ import CommentForm from '@/Components/Forms/CommentForm.vue';
 import Post from '@/Pages/Admin/Post.vue';
 import PostForm from '@/Components/Forms/PostForm.vue';
 import PostCard from '@/Components/PostCard.vue';
-import { ref } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
 
 const props = usePage().props;
-const isComment = ref(false);
 
 defineProps({
 	posts: {
@@ -32,12 +30,18 @@ defineProps({
 	},
 });
 
+props.emptyPost.item_id = props.post.item_id;
+
 const addComment = (postId) => {
 	props.comment.post_id = postId;
 };
 
 const selectPost = (post) => {
-	if (post) props.post = post;
+	if (post) {
+		props.post = post;
+	} else {
+		props.post = { item_id: props.item.id };
+	}
 };
 
 const selectComment = (comment) => {
@@ -62,7 +66,7 @@ const selectComment = (comment) => {
 				<Link v-for=" (link, index) in posts.links" :key="index" :href="link.url" class="btn btn-outline-primary mx-1" :class="{ active: link.active }" v-html="link.label"/>
 			</div>
 		</div>
-		<PostForm v-if="modal"/>
+		<PostForm v-if="modal" :post="post"/>
 		<CommentForm v-if="modal"/>
 	</Page>
 </template>

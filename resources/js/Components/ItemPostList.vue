@@ -19,6 +19,7 @@ defineProps({
 });
 
 const props = usePage().props;
+props.emptyPost.item_id = props.item.id;
 
 const addComment = (postId) => {
 	props.comment.post_id = postId;
@@ -29,12 +30,16 @@ const selectComment = (comment) => {
 };
 
 const selectPost = (post) => {
-	if (post) props.post = post;
+	if (post) {
+		props.post = post;
+	} else {
+		props.post = { item_id: props.item.id };
+	}
 };
 </script>
 
 <template>
-	<PostForm :post="post"/>
+	<PostForm :post="post" :emptyPost="post"/>
 	<CommentForm :comment="props.comment"/>
 	<div class="row row-cols-1 mx-0">
 		<template v-if="item.posts && item.posts.length">
@@ -46,7 +51,7 @@ const selectPost = (post) => {
 	</div>
 	<div class="row my-3">
 		<div class="col text-end">
-			<PrimaryButton data-bs-toggle="modal" data-bs-target="#postFormModal" :disabled="!props.auth || !props.auth.user">{{ $page.props.lang.admin.add + $page.props.lang.admin.new_male + $page.props.lang.customer.post_ }}</PrimaryButton>
+			<PrimaryButton @click="selectPost(0)" data-bs-toggle="modal" data-bs-target="#postFormModal" :disabled="!props.auth || !props.auth.user">{{ $page.props.lang.admin.add + $page.props.lang.admin.new_male + $page.props.lang.customer.post_ }}</PrimaryButton>
 		</div>
 	</div>
 </template>

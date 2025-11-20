@@ -50,7 +50,7 @@ const savePost = () => {
 						<button v-if="modal" type="button" class="btn-close" data-bs-dismiss="modal" :aria-label="$page.props.lang.admin.close" @click="closeForm"></button>
 					</div>
 					<div :class="{'modal-body': modal}">
-						<div v-if="props.auth && props.auth.user" class="input-group mb-3 row text-md-left justify-content-start has-validation">
+						<div v-if="props.auth && props.auth.isAdmin" class="input-group mb-3 row text-md-left justify-content-start has-validation">
 							<div class="col-3"><InputError :message="form.errors.is_enabled" /></div>
 							<div class="col">
 								<div class="form-check form-switch">

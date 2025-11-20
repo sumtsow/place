@@ -252,7 +252,9 @@ class Item extends Model
 			$item->min = $item->minPrice();
 			$item->max = $item->maxPrice();
 		}
-		$discussed = self::withCount(['posts'])->has('posts')->orderByDesc('posts_count')->limit(env('ITEMS_ON_MAIN_PAGE'))->get();
+		$discussed = self::withCount(['posts'])->whereHas('posts', function (Builder $query) {
+			$query->where('is_enabled', '=', '1');
+		})->orderByDesc('posts_count')->limit(env('ITEMS_ON_MAIN_PAGE'))->get();
 		foreach($discussed as $item) {
 			$item->min = $item->minPrice();
 			$item->max = $item->maxPrice();

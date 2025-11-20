@@ -58,8 +58,10 @@ const formatDescription = (text) => {
 		</div>
 		<div class="col">
 			<h4 v-if="item.distributorItems.length">{{ $page.props.lang.customer.price }}</h4>
+			
 			<div v-for="distributor in item.distributorItems" class="row fs-5" :class="{ 'text-body-tertiary': !distributor.is_enabled || !distributor.is_enabled }">
-				<div class="col-auto">
+				<template v-if="props.auth.isAdmin || distributor.is_enabled">
+				<div class="col">
 					<span class="fs-4 fw-bold">{{ distributor.discountPrice.toFixed(2) }}</span> {{ $page.props.lang.customer.currency }}
 					<small v-if="distributor.discount" class="badge rounded-pill text-bg-danger">&ndash; {{ distributor.discount }}%</small>
 				</div>
@@ -71,6 +73,7 @@ const formatDescription = (text) => {
 					{{ distributor.distributor.name }}
 					</template>
 				</div>
+				</template>
 			</div>
 		</div>
 	</div>
