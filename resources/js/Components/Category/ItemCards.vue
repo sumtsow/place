@@ -1,5 +1,6 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
+import CommentIcon from '@/Components/CommentIcon.vue';
 import LikeIcon from '@/Components/LikeIcon.vue';
 
 defineProps({
@@ -26,14 +27,30 @@ const gtMedia = screen.width > 768;
 					<div class="px-2">
 						<img :src="item.images ? '/storage/img/' + JSON.parse(item.images)[0] : '/storage/img/no-image.png'" class="d-block card-img-top mx-auto" :style="'width: ' + imageSize + 'px; height: ' + imageSize + 'px;'" :alt="item.name">
 					</div>
-					<div class="card-body">
+					<div class="card-body pb-1">
 						<h6 class="card-title d-flex align-items-center justify-content-center text-truncate text-wrap" style="min-height: 4em; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3;">
                             <span>{{ item.name }}</span>
                         </h6>
 						<p class="card-text text-truncate text-wrap" style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3;">{{ item.description }}</p>
-						<div class="row" v-if="item.min && item.max">
+						<div class="row" style="min-height: 2rem;">
+							<div class="col">
+								<template v-if="item.posts_count">
+								<div class="d-inline-block" style="width: 26px; height: 26px;">
+									<CommentIcon />
+								</div>
+								<div class="d-inline-block ms-1 align-bottom">{{ item.posts_count }}</div>
+								</template>
+							</div>
+							<div v-if="item.like" class="col text-end">
+								<div class="d-inline-block" style="width: 24px; height: 24px;">
+									<LikeIcon />
+								</div>
+								<div class="d-inline-block ms-1 align-bottom">{{ item.like }}</div>
+							</div>
+						</div>
+						<div class="row mt-2" v-if="item.min && item.max">
 							<div class="col-auto">
-								<h6 class="card-title">{{ $page.props.lang.customer.price }}</h6>
+								<h6 class="card-title mt-2">{{ $page.props.lang.customer.price }}</h6>
 							</div>
 							<div v-if="item.min === item.max" class="col">
 							<p class="card-text text-end mb-0"><span class="fs-5 fw-bold">{{ item.min.toFixed(2) }}</span> {{ $page.props.lang.customer.currency }}</p>
@@ -46,10 +63,6 @@ const gtMedia = screen.width > 768;
 					</div>
 					<div class="card-footer text-secondary">
 						<small>{{ $page.props.lang.admin.updated + ' ' +  new Date( item.updated_at ).toLocaleString() }}</small>
-						<div v-if="item.like" class="d-inline float-end">
-							<LikeIcon class="d-inline-block mx-1"/>
-							<small class="d-inline-block text-secondary">{{ item.like }}</small>
-						</div>
 					</div>
 				</Link>
 			</div>

@@ -37,13 +37,17 @@ const formatDescription = (text) => {
 <template>
 	<div class="row">
 		<div class="col">
-			<h2>
-				{{ item.name }}
-				<template  v-if="item.like">
-				<LikeIcon class="d-inline-block mx-2"/>
-				<small class="d-inline-block text-secondary fs-6">{{ item.like }}</small>
-				</template>
-			</h2>
+			<div class="align-items-start">
+				<div class="d-inline-block h2 align-top">
+					{{ item.name }}
+				</div>
+				<div v-if="item.like" class="d-inline-block ms-3 me-1 pt-1"style="width: 24px; height: 24px;">
+					<LikeIcon />
+				</div>
+				<div class="d-inline-block fs-5 align-middle">
+					{{ item.like }}
+				</div>
+			</div>
 		</div>
 	</div>
 	<div class="row align-items-center">
@@ -87,7 +91,10 @@ const formatDescription = (text) => {
 					<button class="nav-link" id="params-tab" data-bs-toggle="tab" data-bs-target="#params-tab-pane" type="button" role="tab" aria-controls="params-tab-pane" aria-selected="false">{{ $page.props.lang.admin.parameters }}</button>
 				</li>
 				<li class="nav-item" role="presentation">
-					<button class="nav-link" id="posts-tab" data-bs-toggle="tab" data-bs-target="#posts-tab-pane" type="button" role="tab" aria-controls="posts-tab-pane" aria-selected="false">{{ $page.props.lang.customer.posts }}</button>
+					<button class="nav-link" id="posts-tab" data-bs-toggle="tab" data-bs-target="#posts-tab-pane" type="button" role="tab" aria-controls="posts-tab-pane" aria-selected="false">
+					{{ $page.props.lang.customer.posts }}
+					<span v-if="item.posts_count" class="badge rounded-pill text-bg-primary ms-1">{{ item.posts_count }}</span>
+					</button>
 				</li>
 			</ul>
 			<div class="tab-content" id="itemTabContent">

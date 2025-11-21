@@ -50,7 +50,7 @@ class ItemController extends Controller
 				},
 				'parameters.group',
 				'posts',
-			])->findOrFail($id);
+			])->withCount(['posts'])->findOrFail($id);
 		} else {
 			$item = Item::with([
 				'parameters.group' => function (Builder $query) {
@@ -62,7 +62,9 @@ class ItemController extends Controller
 				'posts.comments' => function (Builder $query) {
 					$query->where('is_enabled', 1);
 				},
-				])->findOrFail($id);
+				])->withCount(['posts' => function (Builder $query) {
+					$query->where('is_enabled', '=', '1');
+				}])->findOrFail($id);
 		}
 		foreach($item->posts as $post) {
 			$post->load([ 'user' => fn ($query) => $query->select(['id', 'firstname', 'lastname', 'patronymic']) ]);

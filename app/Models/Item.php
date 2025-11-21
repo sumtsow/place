@@ -247,19 +247,23 @@ class Item extends Model
      */
     public static function getMainPageItems()
     {
-		$newest = self::orderByDesc('updated_at')->limit(env('ITEMS_ON_MAIN_PAGE'))->get();
+		$newest = self::withCount(['posts' => function (Builder $query) {
+			$query->where('posts.is_enabled', '=', '1');
+		}])->orderByDesc('updated_at')->limit(env('ITEMS_ON_MAIN_PAGE'))->get();
 		foreach($newest as $item) {
 			$item->min = $item->minPrice();
 			$item->max = $item->maxPrice();
 		}
 		$discussed = self::withCount(['posts'])->whereHas('posts', function (Builder $query) {
-			$query->where('is_enabled', '=', '1');
+			$query->where('posts.is_enabled', '=', '1');
 		})->orderByDesc('posts_count')->limit(env('ITEMS_ON_MAIN_PAGE'))->get();
 		foreach($discussed as $item) {
 			$item->min = $item->minPrice();
 			$item->max = $item->maxPrice();
 		}
-		$liked =  self::where('like', '>', 0)->orderByDesc('like')->limit(env('ITEMS_ON_MAIN_PAGE'))->get();
+		$liked =  self::where('like', '>', 0)->orderByDesc('like')->withCount(['posts' => function (Builder $query) {
+			$query->where('posts.is_enabled', '=', '1');
+		}])->limit(env('ITEMS_ON_MAIN_PAGE'))->get();
 		foreach($liked as $item) {
 			$item->min = $item->minPrice();
 			$item->max = $item->maxPrice();
