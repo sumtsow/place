@@ -24,7 +24,6 @@ class OrderController
     public function index()
     {
 		$orders = Order::with(['customer', 'customer.user'])->get();
-		Order::setTotals($orders);
         return Inertia::render('Admin/OrdersList', [
 			'orders' => $orders,
 			'order' => Order::getEmptyModel(),

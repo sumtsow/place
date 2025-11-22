@@ -2,6 +2,7 @@
 import Page from '@/Layouts/PageLayout.vue';
 import Breadcrumbs from '@/Components/Breadcrumbs.vue';
 import DistributorForm from '@/Components/Forms/DistributorForm.vue';
+import LikeIcon from '@/Components/LikeIcon.vue';
 import Parameter from '@/Pages/Admin/Parameter.vue';
 import { Link, usePage } from '@inertiajs/vue3';
 
@@ -74,13 +75,23 @@ const selectDistributor = (distr) => {
 								<Link class="btn btn-primary py-0 px-2" :href="route('distributor-item.admin', [distributor.id])">{{ distributor.distributor_items.length }}</Link>
 							</td>
 							<td :class="{ 'text-body-tertiary': !distributor.is_enabled }">
-								<span class="badge text-bg-success fs-6 fw-normal">{{ +distributor.like }}</span>
+								<span class="d-inline-block me-2" style="width: 20px; height: 20px;">
+									<LikeIcon />
+								</span>
+								<span class="d-inline-block fs-6 align-middle">
+									{{ distributor.like }}
+								</span>
 							</td>
 							<td :class="{ 'text-body-tertiary': !distributor.is_enabled }">
-								<span class="badge text-bg-danger fs-6 fw-normal">{{ +distributor.dislike }}</span>
+								<span class="d-inline-block me-2" style="width: 20px; height: 20px; transform: scaleY(-1);">
+									<LikeIcon />
+								</span>
+								<span class="d-inline-block fs-6 align-middle">
+									{{ distributor.dislike }}
+								</span>
 							</td>
 							<td :class="{ 'text-body-tertiary': !distributor.is_enabled }">
-								<span class="badge text-bg-info fs-6 fw-normal">{{ +distributor.sales }}</span>
+								{{ +distributor.sales }}
 							</td>
 							<td :class="{ 'text-body-tertiary': !distributor.is_enabled }">{{ new Date(distributor.created_at).toLocaleString() }}</td>
 							<td :class="{ 'text-body-tertiary': !distributor.is_enabled }">{{ new Date(distributor.updated_at).toLocaleString() }}</td>

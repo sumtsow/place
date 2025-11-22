@@ -53,6 +53,9 @@ class ItemController extends Controller
 			])->withCount(['posts'])->findOrFail($id);
 		} else {
 			$item = Item::with([
+				'parameters' => function (Builder $query) {
+					$query->leftJoin('paramgroups', 'paramgroups.id', '=', 'parameters.paramgroup_id')->orderByRaw('ISNULL(paramgroups.order), paramgroups.order, parameters.order');
+				},
 				'parameters.group' => function (Builder $query) {
 					$query->orderBy('order');
 				},

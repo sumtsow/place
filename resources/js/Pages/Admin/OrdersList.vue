@@ -88,7 +88,7 @@ const toggleState = (order) => {
 									{{ order.status }}
 								</Link>
 							</td>
-							<td :class="{ 'text-body-tertiary': !order.is_enabled }">{{ order.total }}</td>
+							<td :class="{ 'text-body-tertiary': !order.is_enabled }">{{ order.totalPrice.toFixed(2) }} {{ $page.props.lang.customer.currency }}</td>
 							<td :class="{ 'text-body-tertiary': !order.is_enabled }">
 								<Link class="btn btn-primary py-0 px-2" :href="route('proposition.admin', [order.id])">{{ order.propositions.length }}</Link>
 							</td>

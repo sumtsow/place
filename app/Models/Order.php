@@ -15,6 +15,8 @@ class Order extends Model
 
 	protected $with = ['propositions'];
 
+	protected $appends = ['totalPrice'];
+
 	private static $emptyModel = [
 		'id' => 0,
 		'customer_id' => 0,
@@ -44,21 +46,19 @@ class Order extends Model
 		return self::$emptyModel;
 	}
 
-	public function total() {
-		$total = 0;
+    /**
+     * Get the item's price with a discount.
+     */
+    public function getTotalPriceAttribute()
+    {
+        $total = 0;
 		$prop = [];
 		foreach($this->propositions as $proposition) {
 			if ( $proposition->is_enabled ) {
-				$total += $proposition->distributorItem->price * $proposition->count;
-				$prop[] = $proposition->distributorItem->id . ' - ' . $proposition->distributorItem->item->name . ' - ' . $proposition->distributorItem->price . ' x ' . $proposition->count;
+				$total += $proposition->distributorItem->discountPrice * $proposition->count;
+				$prop[] = $proposition->distributorItem->id . ' - ' . $proposition->distributorItem->item->name . ' - ' . $proposition->distributorItem->discountPrice . ' x ' . $proposition->count;
 			}
 		}
 		return $total;
-	}
-
-	public static function setTotals($orders) {
-		foreach($orders as $order) {
-			$order->total = $order->total();
-		}
-	}
+    }
 }

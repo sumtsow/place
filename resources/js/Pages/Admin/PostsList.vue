@@ -30,8 +30,6 @@ defineProps({
 	},
 });
 
-props.emptyPost.item_id = props.post.item_id;
-
 const addComment = (postId) => {
 	props.comment.post_id = postId;
 };

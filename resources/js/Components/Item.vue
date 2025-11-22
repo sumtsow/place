@@ -41,7 +41,7 @@ const formatDescription = (text) => {
 				<div class="d-inline-block h2 align-top">
 					{{ item.name }}
 				</div>
-				<div v-if="item.like" class="d-inline-block ms-3 me-1 pt-1"style="width: 24px; height: 24px;">
+				<div v-if="item.like" class="d-inline-block ms-3 me-1 pt-1" style="width: 24px; height: 24px;">
 					<LikeIcon />
 				</div>
 				<div class="d-inline-block fs-5 align-middle">

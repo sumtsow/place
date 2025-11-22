@@ -152,7 +152,9 @@ const toggleState = (prop) => {
 						<th>Id</th>
 						<th>{{ $page.props.lang.admin.name }}</th>
 						<th>{{ $page.props.lang.admin.distributor }}</th>
+						<th>{{ $page.props.lang.customer.price }}</th>
 						<th>{{ $page.props.lang.admin.count }}</th>
+						<th>{{ $page.props.lang.admin.total }}</th>
 						<th>{{ $page.props.lang.admin.enabled }}</th>
 						<th>{{ $page.props.lang.admin.created }}</th>
 						<th>{{ $page.props.lang.admin.updated }}</th>
@@ -164,6 +166,10 @@ const toggleState = (prop) => {
 						<td :class="{ 'text-body-tertiary': !proposition.is_enabled }">{{ proposition.distributor_item && proposition.distributor_item.item ? proposition.distributor_item.item.name : '' }}</td>
 						<td :class="{ 'text-body-tertiary': !proposition.is_enabled }">
 						{{ proposition.distributor_item && proposition.distributor_item.distributor ? proposition.distributor_item.distributor.name : '' }}
+						</td>
+						<td class="text-nowrap" :class="{ 'text-body-tertiary': !proposition.is_enabled }">
+						{{ proposition.distributor_item.discountPrice.toFixed(2) }} {{ $page.props.lang.customer.currency }}
+						<small v-if="proposition.distributor_item.discount" class="badge rounded-pill text-bg-danger">&ndash; {{ proposition.distributor_item.discount }}%</small>
 						</td>
 						<td :class="{ 'text-body-tertiary': !proposition.is_enabled && !proposition.id }">
 						<template v-if="modal">
@@ -181,12 +187,22 @@ const toggleState = (prop) => {
 						</template>
 						</td>
 						<td :class="{ 'text-body-tertiary': !proposition.is_enabled }">
+						{{ ( proposition.distributor_item.discountPrice * proposition.count ).toFixed(2) }} {{ $page.props.lang.customer.currency }}
+						</td>
+						<td :class="{ 'text-body-tertiary': !proposition.is_enabled }">
 							<div class="d-inline-block form-check form-switch">
 								<CheckInput name="is_enabled" v-model="proposition.is_enabled" label="Enabled" @toggleState="toggleState(proposition)" :disabled="!proposition.id"/>
 							</div>
 						</td>
 						<td :class="{ 'text-body-tertiary': !proposition.is_enabled }">{{ proposition.created_at ? new Date(proposition.created_at).toLocaleString() : ''}}</td>
 						<td :class="{ 'text-body-tertiary': !proposition.is_enabled }">{{ proposition.updated_at ? new Date(proposition.updated_at).toLocaleString() : '' }}</td>
+					</tr>
+					<tr>
+						<td colspan="9" class="text-end">
+						{{ $page.props.lang.admin.total }}:
+						<span class="fs-4 fw-bold">{{ order.totalPrice.toFixed(2) }}</span>
+						{{ $page.props.lang.customer.currency }}
+						</td>
 					</tr>
 				</tbody>
 			</table>
