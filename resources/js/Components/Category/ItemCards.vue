@@ -56,8 +56,8 @@ const scrollRight = (e) => {
 			<div class="row g-4 py-2" :class="{'flex-nowrap': !wrapCols && gtMedia }">
 				<div v-for="item in items" class="col-auto">
 					<Link class="card h-100 m-1 pt-3 text-decoration-none" style="min-width: 180px; max-width: 267px;" :href="route('item', [item.id])">
-						<div class="px-2">
-							<img :src="item.images ? '/storage/img/' + JSON.parse(item.images)[0] : '/storage/img/no-image.png'" class="d-block card-img-top mx-auto" :style="'width: ' + imageSize + 'px; height: ' + imageSize + 'px;'" :alt="item.name">
+						<div class="card-img text-center w-100" :style="'width: ' + imageSize + 'px; height: ' + imageSize + 'px;'">
+							<img :src="item.images ? '/storage/img/' + JSON.parse(item.images)[0] : '/storage/img/no-image.png'" class="d-inline-block h-100" :alt="item.name">
 						</div>
 						<div class="card-body pb-1">
 							<h6 class="card-title d-flex align-items-center justify-content-center text-truncate text-wrap" style="min-height: 4em; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3;">
