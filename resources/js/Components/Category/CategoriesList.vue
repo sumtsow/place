@@ -23,8 +23,8 @@ const openLink = (e) => {
 
 <template>
 	<div class="container-fluid overflow-hidden pe-5">
-		<div class="row flex-md-nowrap pb-5">
-			<div class="col-12 col-md-3 mt-3" style="min-width: 320px;">
+		<div class="row flex-lg-nowrap pb-5">
+			<div class="col-12 col-lg-3 mt-3" style="min-width: 320px;">
 				<div class="accordion" id="accordionList">
 					<template v-for="cat in categories">
 					<div v-if="cat.subcategories.length" class="accordion-item">
@@ -53,13 +53,13 @@ const openLink = (e) => {
 					</template>
 				</div>
 			</div>
-			<div class="col-12 col-md-9 mt-2">
+			<div class="col-12 col-lg-9 mt-2">
 				<TabLabel :label="$page.props.lang.customer.new" />
-				<ItemCards :items="items.newest" :imageSize="imageSize"/>
+				<ItemCards :items="items.newest" :imageSize="imageSize" id="new"/>
 				<TabLabel :label="$page.props.lang.customer.favorites" />
-				<ItemCards :items="items.liked" :imageSize="imageSize"/>
+				<ItemCards :items="items.liked" :imageSize="imageSize" id="favorites"/>
 				<TabLabel :label="$page.props.lang.customer.discussed" />
-				<ItemCards :items="items.discussed" :imageSize="imageSize"/>
+				<ItemCards :items="items.discussed" :imageSize="imageSize" id="discussed"/>
 			</div>
 		</div>
 	</div>
