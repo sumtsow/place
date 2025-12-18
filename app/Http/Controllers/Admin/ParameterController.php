@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 use App\Models\Parameter;
 use App\Models\Paramgroup;
 use App\Models\Unit;
@@ -16,12 +17,14 @@ class ParameterController extends Controller
      * Display a listing of the resource.
 	 * @param \Illuminate\Http\Request $request
      */
-    public function index(string $id = null)
+    public function index(Request $request, string $id = null)
     {
+		$sort = Parameter::validSortField( $request->sort );
+		$order = Unit::validOrder( $request->order );
 		if ($id) {
-			$parameters = Parameter::where('paramgroup_id', $id)->with(['unit', 'group'])->orderBy('name')->paginate( env('ITEMS_PER_PAGE') )->withQueryString();
+			$parameters = Parameter::where('paramgroup_id', $id)->with(['unit', 'group'])->orderBy($sort, $order)->paginate( env('ITEMS_PER_PAGE') )->withQueryString();
 		} else {
-			$parameters = Parameter::with(['unit', 'group'])->orderBy('name')->paginate( env('ITEMS_PER_PAGE') )->withQueryString();
+			$parameters = Parameter::with(['unit', 'group'])->orderBy($sort, $order)->paginate( env('ITEMS_PER_PAGE') )->withQueryString();
 		}
         return Inertia::render('Admin/ParametersList', [
 			'parameters' => $parameters,

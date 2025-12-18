@@ -9,6 +9,10 @@ import SelectList from '@/Components/SelectList.vue';
 import { Link, useForm, usePage, router } from '@inertiajs/vue3';
 
 const props = usePage().props;
+const url = new URL(usePage().url, window.location.origin);
+const params = new URLSearchParams(url.search);
+const sort = params.get('sort') ? params.get('sort') : 'id';
+const order = params.get('order') === 'desc' ? 'asc' : 'desc';
 
 defineProps({
 	parameters: {
@@ -31,6 +35,7 @@ defineProps({
 	},
 	groupId: {
 		type: Number,
+		default: 0,
 	},
 });
 
@@ -81,14 +86,38 @@ const toggleState = (group) => {
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th>Id</th>
-					<th>{{ $page.props.lang.admin.name }}</th>
-					<th>{{ $page.props.lang.admin.order }}</th>
-					<th>{{ $page.props.lang.admin.group }}</th>
-					<th>{{ $page.props.lang.admin.measuring_unit }}</th>
-					<th>{{ $page.props.lang.admin.enabled }}</th>
-					<th>{{ $page.props.lang.admin.created }}</th>
-					<th>{{ $page.props.lang.admin.updated }}</th>
+					<th>
+						<Link :class="{ active: sort === 'id' }" :href="route('parameter.admin', { id: ''+props.groupId, sort: 'id', order: order, page: parameters.current_page })">Id</Link>
+						<span v-if="sort === 'id'" v-html="order==='asc' ? '&darr;' : '&uarr;'"/>
+					</th>
+					<th>
+						<Link :class="{ active: sort === 'name' }" :href="route('parameter.admin', { id: ''+props.groupId, sort: 'name', order: order, page: parameters.current_page })">{{ $page.props.lang.admin.name }}</Link>
+						<span v-if="sort === 'name'" v-html="order==='asc' ? '&darr;' : '&uarr;'"/>
+						</th>
+					<th>
+						<Link :class="{ active: sort === 'order' }" :href="route('parameter.admin', { id: ''+props.groupId, sort: 'order', order: order, page: parameters.current_page })">{{ $page.props.lang.customer.order }}</Link>
+						<span v-if="sort === 'order'" v-html="order==='asc' ? '&darr;' : '&uarr;'"/>
+					</th>
+					<th>
+						<Link :class="{ active: sort === 'paramgroup_id' }" :href="route('parameter.admin', { id: ''+props.groupId, sort: 'paramgroup_id', order: order, page: parameters.current_page })">{{ $page.props.lang.admin.group }}</Link>
+						<span v-if="sort === 'paramgroup_id'" v-html="order==='asc' ? '&darr;' : '&uarr;'"/>
+					</th>
+					<th>
+						<Link :class="{ active: sort === 'unit_id' }" :href="route('parameter.admin', { id: ''+props.groupId, sort: 'unit_id', order: order, page: parameters.current_page })">{{ $page.props.lang.admin.measuring_unit }}</Link>
+						<span v-if="sort === 'unit_id'" v-html="order==='asc' ? '&darr;' : '&uarr;'"/>
+					</th>
+					<th>
+						<Link :class="{ active: sort === 'is_enabled' }" :href="route('parameter.admin', { id: ''+props.groupId, sort: 'is_enabled', order: order, page: parameters.current_page })">{{ $page.props.lang.admin.enabled }}</Link>
+						<span v-if="sort === 'is_enabled'" v-html="order==='asc' ? '&darr;' : '&uarr;'"/>
+					</th>
+					<th>
+						<Link :class="{ active: sort === 'created_at' }" :href="route('parameter.admin', { id: ''+props.groupId, sort: 'created_at', order: order, page: parameters.current_page })">{{ $page.props.lang.admin.created }}</Link>
+						<span v-if="sort === 'created_at'" v-html="order==='asc' ? '&darr;' : '&uarr;'"/>
+					</th>
+					<th>
+						<Link :class="{ active: sort === 'updated_at' }" :href="route('parameter.admin', { id: ''+props.groupId, sort: 'updated_at', order: order, page: parameters.current_page })">{{ $page.props.lang.admin.updated }}</Link>
+						<span v-if="sort === 'updated_at'" v-html="order==='asc' ? '&darr;' : '&uarr;'"/>
+					</th>
 				</tr>
 			</thead>
 			<tbody>

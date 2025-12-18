@@ -6,6 +6,10 @@ import UnitForm from '@/Components/Forms/UnitForm.vue';
 import { Link, usePage } from '@inertiajs/vue3';
 
 const props = usePage().props;
+const url = new URL(usePage().url, window.location.origin);
+const params = new URLSearchParams(url.search);
+const sort = params.get('sort') ? params.get('sort') : 'id';
+const order = params.get('order') === 'asc' ? 'desc' : 'asc';
 
 defineProps({
 	units: {
@@ -25,7 +29,7 @@ defineProps({
 	},
 });
 
-let selectUnit = (unit) => {
+const selectUnit = (unit) => {
 	if ( !unit ) {
 		unit = {
 			id: 0,
@@ -36,7 +40,6 @@ let selectUnit = (unit) => {
 	};
 	unit.is_enabled = !!unit.is_enabled;
 	props.unit = unit;
-	return true;
 };
 </script>
 
@@ -58,12 +61,30 @@ let selectUnit = (unit) => {
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th>Id</th>
-					<th>{{ $page.props.lang.admin.name }}</th>
-					<th>{{ $page.props.lang.admin.type }}</th>
-					<th>{{ $page.props.lang.admin.enabled }}</th>
-					<th>{{ $page.props.lang.admin.created }}</th>
-					<th>{{ $page.props.lang.admin.updated }}</th>
+					<th>
+						<Link :class="{ active: sort === 'id' }" :href="route('unit.admin', { sort: 'id', order: order, page: units.current_page })">Id</Link>
+						<span v-if="sort === 'id'" v-html="order==='asc' ? '&darr;' : '&uarr;'"/>
+					</th>
+					<th>
+						<Link :class="{ active: sort === 'name' }" :href="route('unit.admin', { sort: 'name', order: order, page: units.current_page })">{{ $page.props.lang.admin.name }}</Link>
+						<span v-if="sort === 'name'" v-html="order==='asc' ? '&darr;' : '&uarr;'"/>
+					</th>
+					<th>
+						<Link :class="{ active: sort === 'type' }" :href="route('unit.admin', { sort: 'type', order: order, page: units.current_page })">{{ $page.props.lang.admin.type }}</Link>
+						<span v-if="sort === 'type'" v-html="order==='asc' ? '&darr;' : '&uarr;'"/>
+					</th>
+					<th>
+						<Link :class="{ active: sort === 'is_enabled' }" :href="route('unit.admin', { sort: 'is_enabled', order: order, page: units.current_page })">{{ $page.props.lang.admin.enabled }}</Link>
+						<span v-if="sort === 'is_enabled'" v-html="order==='asc' ? '&darr;' : '&uarr;'"/>
+					</th>
+					<th>
+						<Link :class="{ active: sort === 'created_at' }" :href="route('unit.admin', { sort: 'created_at', order: order, page: units.current_page })">{{ $page.props.lang.admin.created }}</Link>
+						<span v-if="sort === 'created_at'" v-html="order==='asc' ? '&darr;' : '&uarr;'"/>
+					</th>
+					<th>
+						<Link :class="{ active: sort === 'updated_at' }" :href="route('unit.admin', { sort: 'updated_at', order: order, page: units.current_page })">{{ $page.props.lang.admin.updated }}</Link>
+						<span v-if="sort === 'updated_at'" v-html="order==='asc' ? '&darr;' : '&uarr;'"/>
+					</th>
 				</tr>
 			</thead>
 			<tbody>

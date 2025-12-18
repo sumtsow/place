@@ -21,6 +21,17 @@ class Parameter extends Model
 		'is_enabled' => false,
 	];
 
+	private static $sortFields = [
+		'id',
+		'name',
+		'order',
+		'paramgroup_id',
+		'unit_id',
+		'is_enabled',
+		'created_at',
+		'updated_at',
+	];
+
 	/**
      * Get the items that use with this parameter
      */
@@ -47,5 +58,9 @@ class Parameter extends Model
 
 	public static function getEmptyModel() {
 		return self::$emptyModel;
+	}
+
+	public static function validSortField( $field ) {
+		return $field && in_array( $field, self::$sortFields ) ? $field : self::$sortFields[0];
 	}
 }

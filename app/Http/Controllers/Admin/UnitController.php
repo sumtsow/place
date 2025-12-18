@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Support\Arr;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Inertia\Inertia;
 use App\Models\Unit;
@@ -10,25 +11,21 @@ use App\Http\Requests\UpdateUnitRequest;
 
 class UnitController extends Controller
 {
-	protected $emptyUnit = [
-		'name' => '',
-		'type' => 0,
-		'is_enabled' => 1,
-	];
-
     /**
      * Display a listing of the resource.
 	 * @param \Illuminate\Http\Request $request
      */
-    public function index()
+    public function index(Request $request)
     {
+		$sort = Unit::validSortField( $request->sort );
+		$order = Unit::validOrder( $request->order );
 		$unitTypes = config('app.unitType');
 		$types = Arr::map($unitTypes, function (string $type, int $key) {
 			return [ 'id' => $key, 'name' => $type, ];
 		});
         return Inertia::render('Admin/UnitsList', [
-			'units' => Unit::paginate( env('ITEMS_PER_PAGE') )->withQueryString(),
-			'unit' => $this->emptyUnit,
+			'units' => Unit::orderBy($sort, $order)->paginate( env('ITEMS_PER_PAGE') )->withQueryString(),
+			'unit' => Unit::getEmptyModel(),
 			'types' => $types,
 			'unitTypes' => $unitTypes,
 		]);
@@ -40,7 +37,7 @@ class UnitController extends Controller
     public function create()
     {
         return Inertia::render('Admin/UnitEdit', [
-			'unit' => $this->emptyUnit,
+			'unit' => Unit::getEmptyModel(),
 			'types' => $types = Arr::map(config('app.unitType'), function (string $type, int $key) {
 				return [ 'id' => $key, 'name' => $type, ];
 			}),
