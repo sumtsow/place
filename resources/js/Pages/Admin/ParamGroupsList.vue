@@ -50,7 +50,7 @@ const toggleState = (group) => {
 				<tr>
 					<th>Id</th>
 					<th>{{ $page.props.lang.admin.name }}</th>
-					<th>{{ $page.props.lang.admin.order }}</th>
+					<th>{{ $page.props.lang.customer.order }}</th>
 					<th>{{ $page.props.lang.admin.enabled }}</th>
 					<th>{{ $page.props.lang.admin.created }}</th>
 					<th>{{ $page.props.lang.admin.updated }}</th>

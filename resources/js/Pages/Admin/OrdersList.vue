@@ -4,11 +4,14 @@ import Breadcrumbs from '@/Components/Breadcrumbs.vue';
 import CheckInput from '@/Components/CheckInput.vue';
 import OrderForm from '@/Components/Forms/OrderForm.vue';
 import { Link, usePage, useForm } from '@inertiajs/vue3';
-import { ref } from 'vue';
 
 const props = usePage().props;
 const modal = props.modal;
 const emptyOrder = {...props.order};
+const url = new URL(usePage().url, window.location.origin);
+const params = new URLSearchParams(url.search);
+const sort = params.get('sort') ? params.get('sort') : 'id';
+const sortOrder = params.get('sortorder') === 'desc' ? 'asc' : 'desc';
 
 defineProps({
 	orders: {
@@ -59,16 +62,44 @@ const toggleState = (order) => {
 				<table class="table table-striped">
 					<thead>
 						<tr>
-							<th>Id</th>
-							<th>{{ $page.props.lang.admin.name }}</th>
-							<th>{{ $page.props.lang.admin.enabled }}</th>
-							<th>{{ $page.props.lang.admin.status }}</th>
-							<th>{{ $page.props.lang.admin.total }}</th>
-							<th>{{ $page.props.lang.admin.propositions }}</th>
-							<th>{{ $page.props.lang.auth.address }}</th>
-							<th>{{ $page.props.lang.admin.expired }}</th>
-							<th>{{ $page.props.lang.admin.created }}</th>
-							<th>{{ $page.props.lang.admin.updated }}</th>
+							<th>
+								<Link :class="{ active: sort === 'id' }" :href="route('order.admin', { sort: 'id', sortorder: sortOrder, page: orders.current_page })">Id</Link>
+								<span v-if="sort === 'id'" v-html="sortOrder==='asc' ? '&darr;' : '&uarr;'"/>
+							</th>
+							<th>
+								<Link :class="{ active: sort === 'customer_id' }" :href="route('order.admin', { sort: 'customer_id', sortorder: sortOrder, page: orders.current_page })">{{ $page.props.lang.admin.name }}</Link>
+								<span v-if="sort === 'customer_id'" v-html="sortOrder==='asc' ? '&darr;' : '&uarr;'"/>
+							</th>
+							<th>
+								<Link :class="{ active: sort === 'is_enabled' }" :href="route('order.admin', { sort: 'is_enabled', sortorder: sortOrder, page: orders.current_page })">{{ $page.props.lang.admin.enabled }}</Link>
+								<span v-if="sort === 'is_enabled'" v-html="sortOrder==='asc' ? '&darr;' : '&uarr;'"/>
+							</th>
+							<th>
+								<Link :class="{ active: sort === 'status' }" :href="route('order.admin', { sort: 'status', sortorder: sortOrder, page: orders.current_page })">{{ $page.props.lang.admin.status }}</Link>
+								<span v-if="sort === 'status'" v-html="sortOrder==='asc' ? '&darr;' : '&uarr;'"/>
+							</th>
+							<th>
+								{{ $page.props.lang.admin.total }}
+							</th>
+							<th>
+								{{ $page.props.lang.admin.propositions }}
+							</th>
+							<th>
+								<Link :class="{ active: sort === 'address' }" :href="route('order.admin', { sort: 'address', sortorder: sortOrder, page: orders.current_page })">{{ $page.props.lang.auth.address }}</Link>
+								<span v-if="sort === 'address'" v-html="sortOrder==='asc' ? '&darr;' : '&uarr;'"/>
+							</th>
+							<th>
+								<Link :class="{ active: sort === 'expired' }" :href="route('order.admin', { sort: 'expired', sortorder: sortOrder, page: orders.current_page })">{{ $page.props.lang.admin.expired }}</Link>
+								<span v-if="sort === 'expired'" v-html="sortOrder==='asc' ? '&darr;' : '&uarr;'"/>
+							</th>
+							<th>
+								<Link :class="{ active: sort === 'created_at' }" :href="route('order.admin', { sort: 'created_at', sortorder: sortOrder, page: orders.current_page })">{{ $page.props.lang.admin.created }}</Link>
+								<span v-if="sort === 'created_at'" v-html="sortOrder==='asc' ? '&darr;' : '&uarr;'"/>
+							</th>
+							<th>
+								<Link :class="{ active: sort === 'updated_at' }" :href="route('order.admin', { sort: 'updated_at', sortorder: sortOrder, page: orders.current_page })">{{ $page.props.lang.admin.updated }}</Link>
+								<span v-if="sort === 'updated_at'" v-html="sortOrder==='asc' ? '&darr;' : '&uarr;'"/>
+							</th>
 						</tr>
 					</thead>
 					<tbody>

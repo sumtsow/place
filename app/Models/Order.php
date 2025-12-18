@@ -26,6 +26,19 @@ class Order extends Model
 		'address' => '',
 	];
 
+	private static $sortFields = [
+		'id',
+		'customer_id',
+		'is_enabled',
+		'status',
+		'totalPrice',
+		'propositions',
+		'address',
+		'expired',
+		'created_at',
+		'updated_at',
+	];
+
 	/**
      * Get the cusomer for the order.
      */
@@ -61,4 +74,8 @@ class Order extends Model
 		}
 		return $total;
     }
+
+	public static function validSortField( $field ) {
+		return $field && in_array( $field, self::$sortFields ) ? $field : self::$sortFields[0];
+	}
 }

@@ -4,16 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use Inertia\Inertia;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\UpdateOrderRequest;
-use App\Http\Requests\UpdateOrderItemRequest;
-use App\Http\Requests\UpdateOrderItemsRequest;
-use App\Http\Requests\UpdateOrderItemStateRequest;
-use App\Models\Distributor;
 use App\Models\Item;
 use App\Models\Order;
-use App\Models\Proposition;
+use App\Models\Unit;
 use App\Models\User;
 
 class OrderController
@@ -21,9 +18,11 @@ class OrderController
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-		$orders = Order::with(['customer', 'customer.user'])->get();
+		$sort = Order::validSortField( $request->sort );
+		$sortOrder = Unit::validOrder( $request->sortorder );
+		$orders = Order::with(['customer', 'customer.user'])->orderBy($sort, $sortOrder)->get();
         return Inertia::render('Admin/OrdersList', [
 			'orders' => $orders,
 			'order' => Order::getEmptyModel(),
