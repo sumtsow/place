@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Schema;
 
 class Unit extends Model
 {
@@ -11,20 +12,6 @@ class Unit extends Model
 		'name' => '',
 		'type' => 0,
 		'is_enabled' => 1,
-	];
-
-	private static $sortFields = [
-		'id',
-		'name',
-		'type',
-		'is_enabled',
-		'created_at',
-		'updated_at',
-	];
-
-	private static $orders = [
-		'asc',
-		'desc',
 	];
 
 	/**
@@ -48,10 +35,11 @@ class Unit extends Model
 	}
 
 	public static function validSortField( $field ) {
-		return $field && in_array( $field, self::$sortFields ) ? $field : self::$sortFields[0];
+		$fieldList = Schema::getColumnListing('units');
+		return in_array( $field, $fieldList ) ? $field : $fieldList[0];
 	}
 
 	public static function validOrder( $order ) {
-		return $order && in_array( $order, self::$orders ) ? $order : self::$orders[0];
+		return $order && in_array( $order, config('app.sortOrder') ) ? $order : config('app.sortOrder')[0];
 	}
 }

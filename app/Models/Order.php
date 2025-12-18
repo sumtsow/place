@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-//use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Schema;
 
 class Order extends Model
 {
@@ -24,19 +24,6 @@ class Order extends Model
 		'status' => 'undefined',
 		'expired' => null,
 		'address' => '',
-	];
-
-	private static $sortFields = [
-		'id',
-		'customer_id',
-		'is_enabled',
-		'status',
-		'totalPrice',
-		'propositions',
-		'address',
-		'expired',
-		'created_at',
-		'updated_at',
 	];
 
 	/**
@@ -76,6 +63,7 @@ class Order extends Model
     }
 
 	public static function validSortField( $field ) {
-		return $field && in_array( $field, self::$sortFields ) ? $field : self::$sortFields[0];
+		$fieldList = Schema::getColumnListing('orders');
+		return in_array( $field, $fieldList ) ? $field : $fieldList[0];
 	}
 }

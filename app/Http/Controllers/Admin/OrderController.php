@@ -21,7 +21,7 @@ class OrderController
     public function index(Request $request)
     {
 		$sort = Order::validSortField( $request->sort );
-		$sortOrder = Unit::validOrder( $request->sortorder );
+		$sortOrder = $order = Unit::validOrder( $request->sortorder );
 		$orders = Order::with(['customer', 'customer.user'])->orderBy($sort, $sortOrder)->get();
         return Inertia::render('Admin/OrdersList', [
 			'orders' => $orders,

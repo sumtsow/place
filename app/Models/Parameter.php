@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Schema;
 
 class Parameter extends Model
 {
@@ -19,17 +20,6 @@ class Parameter extends Model
 		'name' => '',
 		'order' => 0,
 		'is_enabled' => false,
-	];
-
-	private static $sortFields = [
-		'id',
-		'name',
-		'order',
-		'paramgroup_id',
-		'unit_id',
-		'is_enabled',
-		'created_at',
-		'updated_at',
 	];
 
 	/**
@@ -61,6 +51,7 @@ class Parameter extends Model
 	}
 
 	public static function validSortField( $field ) {
-		return $field && in_array( $field, self::$sortFields ) ? $field : self::$sortFields[0];
+		$fieldList = Schema::getColumnListing('parameters');
+		return in_array( $field, $fieldList ) ? $field : $fieldList[0];
 	}
 }
