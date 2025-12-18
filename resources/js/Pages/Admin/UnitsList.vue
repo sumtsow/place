@@ -9,7 +9,7 @@ const props = usePage().props;
 const url = new URL(usePage().url, window.location.origin);
 const params = new URLSearchParams(url.search);
 const sort = params.get('sort') ? params.get('sort') : 'id';
-const order = params.get('order') === 'asc' ? 'desc' : 'asc';
+const order = params.get('order') === 'desc' ? 'asc' : 'desc';
 
 defineProps({
 	units: {
