@@ -9,6 +9,10 @@ import { Link, useForm, usePage } from '@inertiajs/vue3';
 
 const props = usePage().props;
 let category_id = route().params.category_id ? route().params.category_id : 0;
+const params = new URLSearchParams( new URL( usePage().url, window.location.origin ).search );
+const sort = params.get('sort') ? params.get('sort') : 'id';
+const order = params.get('order') === 'desc' ? 'asc' : 'desc';
+const page = params.get('page') ? params.get('page') : 1;
 
 defineProps({
 	categories: {
@@ -81,18 +85,54 @@ const selectCategory = () => {
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th>Id</th>
-					<th>{{ $page.props.lang.admin.name }}</th>
-					<th>{{ $page.props.lang.admin.description }}</th>
-					<th>{{ $page.props.lang.admin.images }}</th>
-					<th>{{ $page.props.lang.admin.measuring_units }}</th>
-					<th>{{ $page.props.lang.admin.likes }}</th>
-					<th>{{ $page.props.lang.admin.enabled }}</th>
-					<th>{{ $page.props.lang.admin.category }}</th>
-					<th>{{ $page.props.lang.admin.parameters }}</th>
-					<th>{{ $page.props.lang.customer.posts }}</th>
-					<th>{{ $page.props.lang.admin.created }}</th>
-					<th>{{ $page.props.lang.admin.updated }}</th>
+					<th>
+						<Link :class="{ active: sort === 'id' }" :href="route('item.admin', { category_id: category_id, sort: 'id', order: order, page: page })">Id</Link>
+						<span v-if="sort === 'id'" v-html="order==='asc' ? props.arrow.down : props.arrow.up"/>
+					</th>
+					<th>
+						<Link :class="{ active: sort === 'name' }" :href="route('item.admin', { category_id: category_id, sort: 'name', order: order, page: page })">{{ $page.props.lang.admin.name }}</Link>
+						<span v-if="sort === 'name'" v-html="order==='asc' ? props.arrow.down : props.arrow.up"/>
+					</th>
+					<th>
+						<Link :class="{ active: sort === 'description' }" :href="route('item.admin', { category_id: category_id, sort: 'description', order: order, page: page })">{{ $page.props.lang.admin.description }}</Link>
+						<span v-if="sort === 'description'" v-html="order==='asc' ? props.arrow.down : props.arrow.up"/>
+					</th>
+					<th>
+						<Link :class="{ active: sort === 'images' }" :href="route('item.admin', { category_id: category_id, sort: 'images', order: order, page: page })">{{ $page.props.lang.admin.images }}</Link>
+						<span v-if="sort === 'images'" v-html="order==='asc' ? props.arrow.down : props.arrow.up"/>
+					</th>
+					<th>
+						<Link :class="{ active: sort === 'unit_id' }" :href="route('item.admin', { category_id: category_id, sort: 'unit_id', order: order, page: page })">{{ $page.props.lang.admin.measuring_units }}</Link>
+						<span v-if="sort === 'unit_id'" v-html="order==='asc' ? props.arrow.down : props.arrow.up"/>
+					</th>
+					<th>
+						<Link :class="{ active: sort === 'like' }" :href="route('item.admin', { category_id: category_id, sort: 'like', order: order, page: page })">{{ $page.props.lang.admin.likes }}</Link>
+						<span v-if="sort === 'like'" v-html="order==='asc' ? props.arrow.down : props.arrow.up"/>
+					</th>
+					<th>
+						<Link :class="{ active: sort === 'is_enabled' }" :href="route('item.admin', { category_id: category_id, sort: 'is_enabled', order: order, page: page })">{{ $page.props.lang.admin.enabled }}</Link>
+						<span v-if="sort === 'is_enabled'" v-html="order==='asc' ? props.arrow.down : props.arrow.up"/>
+					</th>
+					<th>
+						<Link :class="{ active: sort === 'categories' }" :href="route('item.admin', { category_id: category_id, sort: 'categories', order: order, page: page })">{{ $page.props.lang.admin.category }}</Link>
+						<span v-if="sort === 'categories'" v-html="order==='asc' ? props.arrow.down : props.arrow.up"/>
+					</th>
+					<th>
+						<Link :class="{ active: sort === 'parameters' }" :href="route('item.admin', { category_id: category_id, sort: 'parameters', order: order, page: page })">{{ $page.props.lang.admin.parameters }}</Link>
+						<span v-if="sort === 'parameters'" v-html="order==='asc' ? props.arrow.down : props.arrow.up"/>
+					</th>
+					<th>
+						<Link :class="{ active: sort === 'posts' }" :href="route('item.admin', { category_id: category_id, sort: 'posts', order: order, page: page })">{{ $page.props.lang.customer.posts }}</Link>
+						<span v-if="sort === 'posts'" v-html="order==='asc' ? props.arrow.down : props.arrow.up"/>
+					</th>
+					<th>
+						<Link :class="{ active: sort === 'created_at' }" :href="route('item.admin', { category_id: category_id, sort: 'created_at', order: order, page: page })">{{ $page.props.lang.admin.created }}</Link>
+						<span v-if="sort === 'created_at'" v-html="order==='asc' ? props.arrow.down : props.arrow.up"/>
+					</th>
+					<th>
+						<Link :class="{ active: sort === 'updated_at' }" :href="route('item.admin', { category_id: category_id, sort: 'updated_at', order: order, page: page })">{{ $page.props.lang.admin.updated }}</Link>
+						<span v-if="sort === 'updated_at'" v-html="order==='asc' ? props.arrow.down : props.arrow.up"/>
+					</th>
 				</tr>
 			</thead>
 			<tbody>

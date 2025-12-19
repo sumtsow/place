@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Schema;
 
 class Order extends Model
 {
+	public const RELATED =  ['propositions'];
+
 	protected $casts = [
 		'is_enabled' => 'boolean',
 	];
@@ -64,6 +66,10 @@ class Order extends Model
 
 	public static function validSortField( $field ) {
 		$fieldList = Schema::getColumnListing('orders');
-		return in_array( $field, $fieldList ) ? $field : $fieldList[0];
+		$exists = in_array( $field, $fieldList );
+		if ( !$exists ) {
+			$exists = in_array( $field, self::RELATED );
+		}
+		return $exists ? $field : $fieldList[0];
 	}
 }

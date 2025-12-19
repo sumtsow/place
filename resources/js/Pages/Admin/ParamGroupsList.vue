@@ -7,6 +7,10 @@ import ParamGroupForm from '@/Components/Forms/ParamGroupForm.vue';
 import { Link, useForm, usePage } from '@inertiajs/vue3';
 
 const props = usePage().props;
+const params = new URLSearchParams( new URL( usePage().url, window.location.origin ).search );
+const sort = params.get('sort') ? params.get('sort') : 'id';
+const order = params.get('order') === 'desc' ? 'asc' : 'desc';
+const page = params.get('page') ? params.get('page') : 1;
 
 defineProps({
 	paramGroups: {
@@ -48,12 +52,30 @@ const toggleState = (group) => {
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th>Id</th>
-					<th>{{ $page.props.lang.admin.name }}</th>
-					<th>{{ $page.props.lang.customer.order }}</th>
-					<th>{{ $page.props.lang.admin.enabled }}</th>
-					<th>{{ $page.props.lang.admin.created }}</th>
-					<th>{{ $page.props.lang.admin.updated }}</th>
+					<th>
+						<Link :class="{ active: sort === 'id' }" :href="route('param-group.admin', { sort: 'id', order: order, page: page })">Id</Link>
+						<span v-if="sort === 'id'" v-html="order==='asc' ? props.arrow.down : props.arrow.up"/>
+					</th>
+					<th>
+						<Link :class="{ active: sort === 'name' }" :href="route('param-group.admin', { sort: 'name', order: order, page: page })">{{ $page.props.lang.admin.name }}</Link>
+						<span v-if="sort === 'name'" v-html="order==='asc' ? props.arrow.down : props.arrow.up"/>
+					</th>
+					<th>
+						<Link :class="{ active: sort === 'order' }" :href="route('param-group.admin', { sort: 'order', order: order, page: page })">{{ $page.props.lang.customer.order }}</Link>
+						<span v-if="sort === 'order'" v-html="order==='asc' ? props.arrow.down : props.arrow.up"/>
+					</th>
+					<th>
+						<Link :class="{ active: sort === 'is_enabled' }" :href="route('param-group.admin', { sort: 'is_enabled', order: order, page: page })">{{ $page.props.lang.admin.enabled }}</Link>
+						<span v-if="sort === 'is_enabled'" v-html="order==='asc' ? props.arrow.down : props.arrow.up"/>
+					</th>
+					<th>
+						<Link :class="{ active: sort === 'created_at' }" :href="route('param-group.admin', { sort: 'created_at', order: order, page: page })">{{ $page.props.lang.admin.created }}</Link>
+						<span v-if="sort === 'created_at'" v-html="order==='asc' ? props.arrow.down : props.arrow.up"/>
+					</th>
+					<th>
+						<Link :class="{ active: sort === 'updated_at' }" :href="route('param-group.admin', { sort: 'updated_at', order: order, page: page })">{{ $page.props.lang.admin.updated }}</Link>
+						<span v-if="sort === 'updated_at'" v-html="order==='asc' ? props.arrow.down : props.arrow.up"/>
+					</th>
 				</tr>
 			</thead>
 			<tbody>

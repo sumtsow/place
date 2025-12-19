@@ -24,7 +24,7 @@ class UnitController extends Controller
 			return [ 'id' => $key, 'name' => $type, ];
 		});
         return Inertia::render('Admin/UnitsList', [
-			'units' => Unit::orderBy($sort, $order)->paginate( env('ITEMS_PER_PAGE') )->withQueryString(),
+			'units' => Unit::orderBy($sort, $order)->paginate( config('app.itemsPerPage') )->withQueryString(),
 			'unit' => Unit::getEmptyModel(),
 			'types' => $types,
 			'unitTypes' => $unitTypes,

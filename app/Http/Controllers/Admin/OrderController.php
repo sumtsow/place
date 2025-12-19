@@ -22,7 +22,9 @@ class OrderController
     {
 		$sort = Order::validSortField( $request->sort );
 		$sortOrder = $order = Unit::validOrder( $request->sortorder );
-		$orders = Order::with(['customer', 'customer.user'])->orderBy($sort, $sortOrder)->get();
+		$orders = in_array( $sort, Order::RELATED ) ?
+				Order::withCount( $sort )->orderBy( $sort . '_count', $sortOrder)->with(['customer', 'customer.user'])->get() :
+				Order::with(['customer', 'customer.user'])->orderBy($sort, $sortOrder)->get();
         return Inertia::render('Admin/OrdersList', [
 			'orders' => $orders,
 			'order' => Order::getEmptyModel(),

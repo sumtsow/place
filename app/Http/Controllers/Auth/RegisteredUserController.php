@@ -44,7 +44,7 @@ class RegisteredUserController extends Controller
             'firstname' => $request->firstname,
 			'patronymic' => $request->patronymic,
 			'lastname' => $request->lastname,
-			'is_enabled' => config('app.default_user_state'),
+			'is_enabled' => config('app.defaultUserState'),
 			'address' => $request->address,
 			'birthdate' => $request->birthdate,
             'email' => $request->email,

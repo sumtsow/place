@@ -5,9 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Schema;
 
 class Distributor extends Model
 {
+	public const RELATED =  [ 'items' ];
+
 	protected $casts = [
 		'is_enabled' => 'boolean',
 	];
@@ -49,5 +52,14 @@ class Distributor extends Model
 
 	public static function getEmptyModel() {
 		return self::$emptyModel;
+	}
+
+	public static function validSortField( $field ) {
+		$fieldList = Schema::getColumnListing('distributors');
+		$exists = in_array( $field, $fieldList );
+		if ( !$exists ) {
+			$exists = in_array( $field, self::RELATED );
+		}
+		return $exists ? $field : $fieldList[0];
 	}
 }

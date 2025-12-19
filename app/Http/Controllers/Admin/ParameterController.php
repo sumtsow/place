@@ -22,9 +22,9 @@ class ParameterController extends Controller
 		$sort = Parameter::validSortField( $request->sort );
 		$order = Unit::validOrder( $request->order );
 		if ($id) {
-			$parameters = Parameter::where('paramgroup_id', $id)->with(['unit', 'group'])->orderBy($sort, $order)->paginate( env('ITEMS_PER_PAGE') )->withQueryString();
+			$parameters = Parameter::where('paramgroup_id', $id)->with(['unit', 'group'])->orderBy($sort, $order)->paginate( config('app.itemsPerPage') )->withQueryString();
 		} else {
-			$parameters = Parameter::with(['unit', 'group'])->orderBy($sort, $order)->paginate( env('ITEMS_PER_PAGE') )->withQueryString();
+			$parameters = Parameter::with(['unit', 'group'])->orderBy($sort, $order)->paginate( config('app.itemsPerPage') )->withQueryString();
 		}
         return Inertia::render('Admin/ParametersList', [
 			'parameters' => $parameters,

@@ -38,6 +38,7 @@ class HandleInertiaRequests extends Middleware
 				'isAdmin' => $request->user() ? $request->user()->can('admin', User::class) : false,
 				'isOperator' => $request->user() ? $request->user()->can('operator', User::class) : false,
             ],
+			'arrow' => config('app.arrow'),
 			'locale' => self::setLang($request),
 			'locales' => config('app.lang'),
 			'csrf_token' => csrf_token(),

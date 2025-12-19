@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Category;
 use App\Models\Comment;
@@ -22,12 +23,15 @@ class ItemController extends Controller
 {
     /**
      * Display a listing of the resource.
+	 * @param string $category_id
 	 * @param \Illuminate\Http\Request $request
      */
-    public function index(string $category_id = '0')
+    public function index(Request $request, string $category_id = '0')
     {
+		$sort = Item::validSortField( $request->sort );
+		$order = Unit::validOrder( $request->order );
         return Inertia::render('Admin/ItemsList', [
-			'items' => Item::getList($category_id),
+			'items' => Item::getList($category_id, $sort, $order),
 			'item' => Item::getEmptyModel(),
 			'units' => Unit::all(),
 			'categories' => Category::getPlainCatList(),

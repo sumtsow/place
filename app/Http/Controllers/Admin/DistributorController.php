@@ -3,18 +3,25 @@
 namespace App\Http\Controllers\Admin;
 
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 use App\Http\Requests\UpdateDistributorRequest;
 use App\Models\Distributor;
+use App\Models\Unit;
 
 class DistributorController
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+		$sort = Distributor::validSortField( $request->sort );
+		$order = Unit::validOrder( $request->order );
+		$distributors = in_array( $sort, Distributor::RELATED ) ?
+			Distributor::withCount( $sort )->orderBy( $sort . '_count', $order)->with(['distributorItems', 'distributorItems.item' ])->get() :
+			Distributor::orderBy($sort, $order)->with(['distributorItems', 'distributorItems.item' ])->get();
         return Inertia::render('Admin/DistributorsList', [
-			'distributors' => Distributor::with(['distributorItems', 'distributorItems.item' ])->get(),
+			'distributors' => $distributors,
 			'distributor' => Distributor::getEmptyModel(),
 		]);
     }

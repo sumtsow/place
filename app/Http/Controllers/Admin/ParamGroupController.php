@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 use App\Models\Paramgroup;
+use App\Models\Unit;
 use App\Http\Requests\UpdateParamGroupRequest;
 
 class ParamGroupController extends Controller
@@ -13,10 +15,12 @@ class ParamGroupController extends Controller
      * Display a listing of the resource.
 	 * @param \Illuminate\Http\Request $request
      */
-    public function index()
+    public function index(Request $request)
     {
+		$sort = Paramgroup::validSortField( $request->sort );
+		$order = Unit::validOrder( $request->order );
         return Inertia::render('Admin/ParamGroupsList', [
-			'paramGroups' => Paramgroup::paginate( env('ITEMS_PER_PAGE') )->withQueryString(),
+			'paramGroups' => Paramgroup::orderBy($sort, $order)->paginate( config('app.itemsPerPage') )->withQueryString(),
 			'paramGroup' => Paramgroup::getEmptyModel(),
 		]);
     }

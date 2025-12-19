@@ -8,8 +8,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Arr;
+use App\Models\Unit;
 
 class Item extends Model
 {
@@ -19,6 +21,7 @@ class Item extends Model
 
 	public const IMAGE_DIR = 'img';
 	public const IMAGE_TYPES =  [ 'image/png', 'image/jpeg' ];
+	public const RELATED =  [ 'posts', 'parameters', 'categories' ];
 	
 	private static $emptyModel = [
 		'unit_id' => 0,
@@ -209,17 +212,33 @@ class Item extends Model
 	/**
      * Return all items.
      */
-	public static function getList($category_id = null)
+	public static function getList($category_id = null, $sort = 'name', $order = 'asc')
 	{
-		return $category_id ? self::whereHas('categories', function (Builder $query) use ($category_id) {
-						$query->where('categories.id', '=', $category_id);
-					})->orderBy('name')
-					->with([ 'categories', 'mainCategory', 'unit', 'parameters', 'posts' ])
-					->paginate( env('ITEMS_PER_PAGE') )
-					->withQueryString()
-				: self::orderBy('name')->with([ 'categories', 'mainCategory', 'unit', 'parameters', 'posts' ])
-					->paginate( env('ITEMS_PER_PAGE') )
-					->withQueryString();
+		if ( in_array( $sort, self::RELATED ) ) {
+			$items = $category_id ? self::whereHas('categories', function (Builder $query) use ($category_id) {
+					$query->where('categories.id', '=', $category_id);
+				})->withCount( $sort )
+				->orderBy( $sort . '_count', $order)
+				->with([ 'categories', 'mainCategory', 'unit', 'parameters', 'posts' ])
+				->paginate( config('app.itemsPerPage') )
+				->withQueryString()
+			: self::withCount( $sort )
+				->orderBy( $sort . '_count', $order)
+				->with([ 'categories', 'mainCategory', 'unit', 'parameters', 'posts' ])
+				->paginate( config('app.itemsPerPage') )
+				->withQueryString();
+		} else {
+			$items = $category_id ? self::whereHas('categories', function (Builder $query) use ($category_id) {
+					$query->where('categories.id', '=', $category_id);
+				})->orderBy($sort, $order)
+				->with([ 'categories', 'mainCategory', 'unit', 'parameters', 'posts' ])
+				->paginate( config('app.itemsPerPage') )
+				->withQueryString()
+			: self::orderBy($sort, $order)->with([ 'categories', 'mainCategory', 'unit', 'parameters', 'posts' ])
+				->paginate( config('app.itemsPerPage') )
+				->withQueryString();
+		}
+		return $items;
 	}
 
 	/**
@@ -249,21 +268,21 @@ class Item extends Model
     {
 		$newest = self::withCount(['posts' => function (Builder $query) {
 			$query->where('posts.is_enabled', '=', '1');
-		}])->orderByDesc('updated_at')->limit(env('ITEMS_ON_MAIN_PAGE'))->get();
+		}])->orderByDesc('updated_at')->limit( config('app.itemsOnMainPage') )->get();
 		foreach($newest as $item) {
 			$item->min = $item->minPrice();
 			$item->max = $item->maxPrice();
 		}
 		$discussed = self::withCount(['posts'])->whereHas('posts', function (Builder $query) {
 			$query->where('posts.is_enabled', '=', '1');
-		})->orderByDesc('posts_count')->limit(env('ITEMS_ON_MAIN_PAGE'))->get();
+		})->orderByDesc('posts_count')->limit( config('app.itemsOnMainPage') )->get();
 		foreach($discussed as $item) {
 			$item->min = $item->minPrice();
 			$item->max = $item->maxPrice();
 		}
 		$liked =  self::where('like', '>', 0)->orderByDesc('like')->withCount(['posts' => function (Builder $query) {
 			$query->where('posts.is_enabled', '=', '1');
-		}])->limit(env('ITEMS_ON_MAIN_PAGE'))->get();
+		}])->limit( config('app.itemsOnMainPage') )->get();
 		foreach($liked as $item) {
 			$item->min = $item->minPrice();
 			$item->max = $item->maxPrice();
@@ -404,7 +423,6 @@ class Item extends Model
 		} else {
 			$changes['updated'] = $updated;
 		}
-		//dd($data, $changes); die();
 		foreach ($changes['updated'] as $key => $param) {
 			$this->parameters()->updateExistingPivot($old[$key], [
 				'parameter_id' => $param,
@@ -418,7 +436,15 @@ class Item extends Model
 	public static function getEnumValues($tablename, $fieldname)
 	{
 		$values = DB::select("DESCRIBE `$tablename` `$fieldname`");
-        $values = explode(',',str_replace("'","",substr($values[0]->Type,5,-1)));
-		return $values;
+		return explode(',',str_replace("'","",substr($values[0]->Type,5,-1)));
+	}
+
+	public static function validSortField( $field ) {
+		$fieldList = Schema::getColumnListing('items');
+		$exists = in_array( $field, $fieldList );
+		if ( !$exists ) {
+			$exists = in_array( $field, self::RELATED );
+		}
+		return $exists ? $field : $fieldList[0];
 	}
 }
