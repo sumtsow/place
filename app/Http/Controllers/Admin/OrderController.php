@@ -22,9 +22,15 @@ class OrderController
     {
 		$sort = Order::validSortField( $request->sort );
 		$sortOrder = $order = Unit::validOrder( $request->sortorder );
-		$orders = in_array( $sort, Order::RELATED ) ?
+		if ( $sort === 'totalPrice' ) {
+			$orders = Order::with(['customer', 'customer.user'])->get();
+			$orders = ( $sortOrder === 'asc' ? $orders->sortBy('totalPrice') : $orders->sortByDesc('totalPrice') )->values();
+		} else {
+			$orders = in_array( $sort, Order::RELATED ) ?
 				Order::withCount( $sort )->orderBy( $sort . '_count', $sortOrder)->with(['customer', 'customer.user'])->get() :
 				Order::with(['customer', 'customer.user'])->orderBy($sort, $sortOrder)->get();
+		}
+		//dd($sort, $sortOrder, $orders);
         return Inertia::render('Admin/OrdersList', [
 			'orders' => $orders,
 			'order' => Order::getEmptyModel(),

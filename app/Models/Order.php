@@ -69,6 +69,9 @@ class Order extends Model
 		$exists = in_array( $field, $fieldList );
 		if ( !$exists ) {
 			$exists = in_array( $field, self::RELATED );
+			if ( !$exists ) {
+				$exists = ( $field === 'totalPrice' );
+			}
 		}
 		return $exists ? $field : $fieldList[0];
 	}

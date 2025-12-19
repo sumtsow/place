@@ -79,7 +79,8 @@ const toggleState = (order) => {
 								<span v-if="sort === 'status'" v-html="sortOrder==='asc' ? props.arrow.down : props.arrow.up"/>
 							</th>
 							<th>
-								{{ $page.props.lang.admin.total }}
+								<Link :class="{ active: sort === 'totalPrice' }" :href="route('order.admin', { sort: 'totalPrice', sortorder: sortOrder, page: orders.current_page })">{{ $page.props.lang.admin.total }}</Link>
+								<span v-if="sort === 'totalPrice'" v-html="sortOrder==='asc' ? props.arrow.down : props.arrow.up"/>
 							</th>
 							<th>
 								<Link :class="{ active: sort === 'propositions' }" :href="route('order.admin', { sort: 'propositions', sortorder: sortOrder, page: orders.current_page })">{{ $page.props.lang.admin.propositions }}</Link>
